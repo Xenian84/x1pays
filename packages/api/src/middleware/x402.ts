@@ -24,6 +24,26 @@ export function x402(domainBrand = "X1Pays") {
 
     try {
       const payment = JSON.parse(String(paymentHeader));
+      
+      // Server-side validation: ensure payment matches expected configuration
+      if (payment.network !== (process.env.NETWORK || "x1-mainnet")) {
+        return res.status(402).json({ error: "Invalid network" });
+      }
+      
+      if (payment.payTo !== process.env.PAYTO_ADDRESS) {
+        return res.status(402).json({ error: "Invalid payTo address" });
+      }
+      
+      if (payment.asset !== process.env.WXNT_MINT) {
+        return res.status(402).json({ error: "Invalid asset" });
+      }
+      
+      // Validate amount meets minimum requirement
+      const requiredAmount = BigInt("1000"); // Should be configurable per endpoint
+      if (BigInt(payment.amount) < requiredAmount) {
+        return res.status(402).json({ error: "Insufficient payment amount" });
+      }
+      
       const verify = await axios.post(
         `${process.env.FACILITATOR_URL}/verify`,
         payment,

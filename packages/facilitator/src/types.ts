@@ -6,5 +6,6 @@ export type X402Payment = {
   amount: string;
   buyer: string;
   signature?: string;
+  txSignature?: string; // Buyer's signature on the transaction (base58)
   memo?: string | null;
 };

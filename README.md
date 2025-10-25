@@ -299,25 +299,25 @@ docker run -d -p 3000:3000 --env-file .env x1pays-api
 
 ## Security & Production Notes
 
-### Current Implementation (MVP)
+⚠️ **IMPORTANT**: This is an MVP implementation that demonstrates the x402 protocol architecture. For production deployment, please review [PRODUCTION_NOTES.md](PRODUCTION_NOTES.md) for critical implementation considerations.
 
-The MVP uses a **fee-payer sponsorship** model:
+### Current MVP Status
 
-- Facilitator pays transaction fees using `FEE_PAYER_SECRET` wallet
-- Buyer signs payment intent (off-chain signature)
-- Facilitator constructs and submits SPL token transfer
-- **Security assumption**: Buyer has pre-funded the associated token account
+**Implemented**:
+- ✅ x402 protocol structure and handshake
+- ✅ Payment signature verification (Ed25519)
+- ✅ Server-side validation (network, asset, amount, merchant address)
+- ✅ Rate limiting (HTTP 420)
+- ✅ Structured logging with Pino
 
-### Production Recommendations
+**Production Requirements** (see PRODUCTION_NOTES.md):
+- 🔧 Settlement requires buyer transaction signature or delegate approval pattern
+- 🔧 Replay attack prevention (nonces + timestamps)
+- 🔧 Dynamic pricing catalog per endpoint
+- 🔧 Distributed rate limiting with Redis
+- 🔧 Comprehensive monitoring and alerting
 
-For production, implement **delegate approval** pattern:
-
-1. Buyer approves facilitator as delegate for exact amount
-2. Facilitator executes transfer using delegated authority
-3. Buyer revokes delegate approval after settlement
-4. Add request ID + nonce to prevent replay attacks
-
-Example (pseudo-code):
+### Recommended Production Pattern: Delegate Approval
 
 ```typescript
 // 1. Buyer approves delegate
@@ -332,21 +332,15 @@ const approveIx = createApproveInstruction(
 const transferIx = createTransferInstruction(
   buyerAta,
   merchantAta,
-  facilitatorPubkey, // delegate
+  facilitatorPubkey, // delegate authority
   amount
 );
 
-// 3. Buyer revokes after settlement
+// 3. Buyer revokes (optional)
 const revokeIx = createRevokeInstruction(buyerAta, buyerPubkey);
 ```
 
-### Additional Security
-
-- **Store secrets safely**: Use environment variables, never commit to git
-- **Request IDs**: Add unique IDs to payment payloads to prevent replay
-- **Pricing catalog**: Implement server-side price validation per endpoint
-- **Logging**: Enable structured JSON logging with Pino for audit trails
-- **Monitoring**: Add Prometheus metrics for observability
+See [PRODUCTION_NOTES.md](PRODUCTION_NOTES.md) for complete implementation patterns and security considerations.
 
 ## Testing
 
