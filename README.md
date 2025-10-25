@@ -7,6 +7,7 @@ X1Pays is a complete TypeScript monorepo enabling HTTP 402 Payment Required micr
 - **Facilitator Service** - Verifies signatures and settles wXNT token transfers
 - **x402-enabled API** - Returns HTTP 402 until valid payment is provided
 - **Client SDK** - Handles payment signing and x402 handshake for browsers/Node
+- **Documentation Website** - Landing page and interactive API documentation
 
 ## Architecture
 
@@ -51,7 +52,8 @@ x1pays/
 ├─ packages/
 │  ├─ facilitator/     # Payment verification & settlement service
 │  ├─ api/             # x402-enabled API server
-│  └─ sdk/             # Client SDK for Node/browser
+│  ├─ sdk/             # Client SDK for Node/browser
+│  └─ website/         # Documentation website (React + Vite)
 ├─ scripts/            # Utility scripts
 ├─ ops/                # Deployment configs (PM2, Nginx, Docker)
 ├─ package.json        # Root workspace config
@@ -104,13 +106,19 @@ node scripts/seed-merchant-wallet.js
 ### 4. Run Development Servers
 
 ```bash
-# Run both services concurrently
+# Run all services concurrently
 pnpm dev
 
 # Or run individually
 pnpm dev:fac  # Facilitator on :4000
 pnpm dev:api  # API on :3000
+pnpm dev:web  # Website on :5000
 ```
+
+Visit:
+- **Website**: http://localhost:5000
+- **API**: http://localhost:3000
+- **Facilitator**: http://localhost:4000
 
 ### 5. Build for Production
 
@@ -252,7 +260,7 @@ pm2 start ops/ecosystem.config.js
 pm2 save
 pm2 startup
 
-# Configure Nginx
+# Configure Nginx (update /var/www/x1pays path in ops/nginx.conf to match your installation)
 sudo cp ops/nginx.conf /etc/nginx/sites-available/x1pays
 sudo ln -s /etc/nginx/sites-available/x1pays /etc/nginx/sites-enabled/
 sudo nginx -t
@@ -260,8 +268,10 @@ sudo systemctl reload nginx
 
 # Setup SSL with Certbot
 sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d api.x1pays.xyz -d facilitator.x1pays.xyz
+sudo certbot --nginx -d x1pays.xyz -d www.x1pays.xyz -d api.x1pays.xyz -d facilitator.x1pays.xyz
 ```
+
+**Note**: The website is served as static files directly by Nginx from `packages/website/dist`. Make sure to run `pnpm build` before deploying and update the `root` path in `ops/nginx.conf` to match your installation directory.
 
 ### Docker Deployment
 
