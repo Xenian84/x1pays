@@ -1,8 +1,8 @@
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 
-const r = Router();
+const r: Router = Router();
 
-r.get("/data", async (req, res) => {
+r.get("/data", async (req: Request, res: Response) => {
   const tx = res.locals.txHash || "unpaid";
   res.setHeader("X-PAYMENT-RESPONSE", JSON.stringify({ txHash: tx }));
   res.json({
