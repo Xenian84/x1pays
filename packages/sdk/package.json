@@ -1,0 +1,22 @@
+{
+  "name": "@x1pays/sdk",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "tweetnacl": "^1.0.3",
+    "bs58": "^5.0.0",
+    "@solana/web3.js": "^1.87.6"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.1",
+    "vitest": "^1.0.4",
+    "@types/node": "^20.10.6"
+  }
+}
