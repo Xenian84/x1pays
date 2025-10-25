@@ -1,0 +1,115 @@
+openapi: 3.0.3
+info:
+  title: X1Pays x402 + Facilitator
+  version: 0.1.0
+  description: x402 payment protocol implementation on X1 blockchain using wXNT tokens
+servers:
+  - url: https://api.x1pays.xyz
+    description: Production API
+  - url: https://facilitator.x1pays.xyz
+    description: Production Facilitator
+  - url: http://localhost:3000
+    description: Local API
+  - url: http://localhost:4000
+    description: Local Facilitator
+
+paths:
+  /supported:
+    get:
+      summary: Get supported networks and assets
+      description: Returns facilitator's supported payment networks and assets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  x402Version:
+                    type: integer
+                  networks:
+                    type: array
+                    items:
+                      type: object
+
+  /verify:
+    post:
+      summary: Verify x402 payment payload
+      description: Validates payment signature and payload structure
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scheme:
+                  type: string
+                network:
+                  type: string
+                payTo:
+                  type: string
+                asset:
+                  type: string
+                amount:
+                  type: string
+                buyer:
+                  type: string
+                signature:
+                  type: string
+      responses:
+        '200':
+          description: Payment verified successfully
+        '400':
+          description: Bad Request - Invalid payment
+
+  /settle:
+    post:
+      summary: Settle payment on X1
+      description: Executes the wXNT token transfer on X1 blockchain
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Payment settled successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  txHash:
+                    type: string
+        '400':
+          description: Bad Request - Settlement failed
+
+  /premium/data:
+    get:
+      summary: Premium API endpoint (requires payment)
+      description: Sample endpoint requiring x402 payment via X-PAYMENT header
+      parameters:
+        - in: header
+          name: X-PAYMENT
+          schema:
+            type: string
+          description: JSON-encoded payment payload with signature
+      responses:
+        '200':
+          description: Access granted - payment successful
+        '402':
+          description: Payment Required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  x402Version:
+                    type: integer
+                  accepts:
+                    type: array
+        '420':
+          description: Enhance Your Calm - Rate limited
