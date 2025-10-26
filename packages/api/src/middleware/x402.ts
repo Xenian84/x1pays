@@ -61,7 +61,17 @@ export function x402(domainBrand = "X1Pays") {
         { timeout: 20_000 }
       );
 
-      res.locals.txHash = settle.data.txHash;
+      // Store settlement details (fee split model)
+      res.locals.merchantTx = settle.data.merchantTx;
+      res.locals.feeTx = settle.data.feeTx;
+      res.locals.feePercent = settle.data.feePercent;
+      res.locals.merchantAmount = settle.data.merchantAmount;
+      res.locals.feeAmount = settle.data.feeAmount;
+      res.locals.simulated = settle.data.simulated;
+      
+      // Backward compatibility: use merchantTx as primary txHash
+      res.locals.txHash = settle.data.merchantTx;
+      
       return next();
     } catch (e: any) {
       return res.status(402).json({
