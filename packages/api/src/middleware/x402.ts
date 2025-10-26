@@ -10,6 +10,7 @@ export function x402(domainBrand = "X1Pays") {
       return res.status(402).json({
         x402Version: 1,
         info: `${domainBrand} x402`,
+        feePercent: Number(process.env.FEE_PERCENT || 1),
         accepts: [{
           scheme: "exact",
           network: process.env.NETWORK || "x1-mainnet",
