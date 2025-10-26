@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Book, Rocket, Code } from 'lucide-react'
+import { Book, Rocket, Code, Coins } from 'lucide-react'
 
 export default function Docs() {
   const sections = [
@@ -16,6 +16,13 @@ export default function Docs() {
       description: 'Complete API documentation for facilitator and client SDK',
       link: '/docs/api-reference',
       color: 'bg-purple-100 text-purple-600'
+    },
+    {
+      icon: <Coins className="h-8 w-8" />,
+      title: 'Token Economy',
+      description: 'Dual-token model: wXNT for settlement, $XPY for governance',
+      link: '/docs/token-economy',
+      color: 'bg-green-100 text-green-600'
     }
   ]
 
