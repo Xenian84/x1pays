@@ -1,0 +1,124 @@
+Update the existing X1Pays project according to the following specification. 
+
+───────────────────────────────────────────────
+🔧 CORE CODE CHANGES
+─────────────────────────────────────────────── 
+
+1️⃣  Environment Variables
+--------------------------
+Add these keys to both facilitator `.env` and `.env.example`: 
+
+FEE_PERCENT=1          # facilitator fee in percent (1 = 1%)
+TREASURY_ADDRESS=ReplaceWithTreasuryPubkey
+XPY_MINT=ReplaceWith_XPY_Token_Mint
+# Note: XPY is governance token; not used for settlement yet. 
+
+2️⃣  Facilitator Logic (packages/facilitator/src/index.ts)
+----------------------------------------------------------
+Inside the `/settle` endpoint, after the successful wXNT transfer: 
+
+- Parse `FEE_PERCENT` from .env
+- Calculate `feeAmount = amount * FEE_PERCENT / 100`
+- Subtract `feeAmount` from merchant payout
+- Transfer `feeAmount` (in wXNT) to `TREASURY_ADDRESS`
+- Transfer `(amount - feeAmount)` to `merchantAddress`
+- Return both tx hashes in response 
+
+Example pseudocode: 
+
+```ts
+const percent = Number(process.env.FEE_PERCENT || 1);
+const feeAmount = BigInt(payment.amount) * BigInt(percent) / BigInt(100);
+const merchantAmount = BigInt(payment.amount) - feeAmount; 
+
+const treasury = new PublicKey(process.env.TREASURY_ADDRESS!);
+const merchant = new PublicKey(payment.payTo); 
+
+// 1. Transfer to merchant
+const merchantTx = await tokenTransferTx({
+  connection,
+  mint,
+  from: buyer,
+  to: merchant,
+  amount: merchantAmount,
+  feePayer
+}); 
+
+// 2. Transfer fee to treasury
+const feeTx = await tokenTransferTx({
+  connection,
+  mint,
+  from: buyer,
+  to: treasury,
+  amount: feeAmount,
+  feePayer
+}); 
+
+await connection.sendTransaction(merchantTx, [feePayer]);
+await connection.sendTransaction(feeTx, [feePayer]); 
+
+Include both hashes in JSON response: 
+
+res.json({ merchantTx, feeTx }); 
+
+3️⃣  API Layer (packages/api/src/middleware/x402.ts) 
+
+Keep all pricing denominated in wXNT. 
+
+Add field "feePercent": process.env.FEE_PERCENT in the 402 response payload. 
+
+This tells clients what facilitator fee applies.
+
+
+4️⃣  README Update ─────────────────────────────────────────────── Append the following section under “Token Model”:
+
+
+--- 
+
+💠 Token Economy 
+
+Settlement:
+All payments and facilitator fees are denominated and settled in wXNT, the wrapped native token of X1.
+Every x402 transaction transfers wXNT from the user to the merchant, with a small protocol fee routed to the X1Pays treasury. 
+
+Governance and Incentives:
+$XPY is the governance and rewards token of X1Pays.
+It is not used for settlement but governs key parameters: 
+
+Fee percentage (FEE_PERCENT) 
+
+Treasury allocation 
+
+Staking and discount logic 
+
+Future asset support (e.g., USDC)
+
+
+Fee Distribution Example: 
+
+99 % → Merchant (wXNT) 
+
+1 % → X1Pays Treasury (wXNT) 
+
+Treasury later distributes rewards to $XPY stakers or funds development.
+
+
+
+--- 
+
+5️⃣  Future Placeholder ─────────────────────────────────────────────── Create packages/facilitator/src/rewards.ts as a placeholder for later XPY reward distribution logic: 
+
+// Future: distribute collected wXNT fees proportionally to XPY stakers
+export function distributeRewardsExample() {
+  console.log("TODO: Implement XPY staking reward module");
+} 
+
+6️⃣  Testing & Validation ─────────────────────────────────────────────── 
+
+Simulate a payment with amount=100000 (atomic units). 
+
+Verify facilitator deducts 1 % fee and logs both transfers. 
+
+Ensure TREASURY_ADDRESS receives correct wXNT amount. 
+
+Update console logs to show: “Fee applied: X wXNT → Treasury”.
