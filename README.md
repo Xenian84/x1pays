@@ -45,6 +45,46 @@ HTTP 402 (Payment Required) is a standard status code reserved for digital micro
 - **Ed25519 signatures** - Client signs payment intent
 - **Facilitator pattern** - Sponsors transaction fees while verifying ownership
 
+## 💠 Token Economy
+
+The X1Pays Protocol operates on a dual-token model designed for the current stage of the X1 blockchain (no stablecoins yet) while remaining forward-compatible with future USDC deployments.
+
+### Settlement Layer — wXNT
+
+**wXNT (Wrapped XNT)** is the settlement token used for all transactions:
+
+- Every API call or x402 payment is settled in **wXNT**, transferred directly from the user's wallet to the merchant via the facilitator
+- The facilitator charges a small protocol fee (default 1%) also in **wXNT**
+- Because wXNT is SPL-compatible, it integrates seamlessly with the X1Pays smart contracts, the facilitator, and future DEX liquidity
+
+### Governance and Incentives — $XPY
+
+**$XPY** is the governance and rewards token of X1Pays:
+
+- It is **not used for settlement** but governs key protocol parameters:
+  - Fee percentage (`FEE_PERCENT`)
+  - Treasury allocation
+  - Staking and discount logic
+  - Future asset support (e.g., USDC)
+
+### Fee Distribution Example
+
+When a user pays **100 wXNT** for an API call:
+
+- **99 wXNT** → Merchant (99%)
+- **1 wXNT** → X1Pays Treasury (1%)
+
+The treasury later distributes accumulated wXNT rewards to $XPY stakers or funds protocol development.
+
+### Future Staking Model
+
+The protocol includes placeholder logic for **$XPY staking rewards** (see `packages/facilitator/src/rewards.ts`):
+
+- Stake $XPY tokens to earn proportional wXNT fees from the treasury
+- Lock periods with multipliers for higher rewards
+- Governance voting power based on staked amounts
+- Direct fee sharing from protocol revenue
+
 ## Project Structure
 
 ```
@@ -94,6 +134,9 @@ cp packages/api/.env.example packages/api/.env
 - `FEE_PAYER_SECRET` - Base58-encoded private key for transaction fees
 - `PAYTO_ADDRESS` - Merchant wallet receiving payments
 - `FACILITATOR_URL` - Facilitator service URL
+- `FEE_PERCENT` - Protocol fee percentage (default: 1 for 1%)
+- `TREASURY_ADDRESS` - X1Pays treasury address for fee collection
+- `XPY_MINT` - $XPY governance token mint address
 
 ### 3. Generate Wallet (Optional)
 
@@ -378,6 +421,9 @@ See `scripts/env.schema.md` for complete documentation.
 | `FEE_PAYER_SECRET` | Fee payer wallet (base58) | `base58...` |
 | `PAYTO_ADDRESS` | Merchant receiving wallet | `pubkey...` |
 | `FACILITATOR_URL` | Facilitator service URL | `https://facilitator.x1pays.xyz` |
+| `FEE_PERCENT` | Protocol fee percentage | `1` (for 1%) |
+| `TREASURY_ADDRESS` | X1Pays treasury address | `pubkey...` |
+| `XPY_MINT` | $XPY governance token mint | `XPY...` |
 
 ## Roadmap
 
