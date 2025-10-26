@@ -28,6 +28,15 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+app.get("/health", (_req, res) => {
+  res.json({ 
+    ok: true, 
+    service: "x1pays-facilitator",
+    network: process.env.NETWORK || "x1-mainnet",
+    feePercent: Number(process.env.FEE_PERCENT || 1)
+  });
+});
+
 app.get("/supported", (req, res) => {
   res.json({
     x402Version: 1,

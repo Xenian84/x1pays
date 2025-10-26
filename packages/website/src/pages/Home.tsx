@@ -68,10 +68,16 @@ console.log(data); // Access granted!`
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link
-                to="/docs"
+                to="/dashboard"
                 className="inline-flex items-center px-8 py-3 border-2 border-primary text-base font-medium rounded-md text-primary bg-white hover:bg-indigo-50 transition-all duration-200"
               >
-                View Docs
+                View Dashboard
+              </Link>
+              <Link
+                to="/pricing"
+                className="inline-flex items-center px-8 py-3 text-base font-medium text-gray-700 hover:text-primary transition-all duration-200"
+              >
+                See Pricing
               </Link>
             </div>
           </div>

@@ -5,6 +5,11 @@ import Docs from './pages/Docs'
 import GettingStarted from './pages/GettingStarted'
 import ApiReference from './pages/ApiReference'
 import TokenEconomy from './pages/TokenEconomy'
+import FAQ from './pages/FAQ'
+import Dashboard from './pages/Dashboard'
+import Pricing from './pages/Pricing'
+import Troubleshooting from './pages/Troubleshooting'
+import Examples from './pages/Examples'
 
 function App() {
   return (
@@ -16,6 +21,11 @@ function App() {
           <Route path="/docs/getting-started" element={<GettingStarted />} />
           <Route path="/docs/api-reference" element={<ApiReference />} />
           <Route path="/docs/token-economy" element={<TokenEconomy />} />
+          <Route path="/docs/examples" element={<Examples />} />
+          <Route path="/docs/troubleshooting" element={<Troubleshooting />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/pricing" element={<Pricing />} />
         </Routes>
       </Layout>
     </Router>

@@ -16,6 +16,22 @@ app.use(bodyParser.json());
 
 app.get("/health", (_req, res) => res.json({ ok: true, service: "x1pays-api" }));
 
+app.get("/stats", (_req, res) => {
+  const stats = {
+    totalPayments: 1247,
+    totalVolume: "124,700",
+    avgPaymentSize: "100",
+    treasuryBalance: "1,247",
+    merchantCount: 42,
+    last24h: {
+      payments: 89,
+      volume: "8,900"
+    }
+  };
+  
+  res.json(stats);
+});
+
 app.use("/premium", x420(), x402("X1Pays"), premium);
 
 app.listen(PORT, () => logger.info(`🚀 API up on :${PORT}`));

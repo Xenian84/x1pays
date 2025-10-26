@@ -23,6 +23,20 @@ export default function Docs() {
       description: 'Dual-token model: wXNT for settlement, $XPY for governance',
       link: '/docs/token-economy',
       color: 'bg-green-100 text-green-600'
+    },
+    {
+      icon: <Code className="h-8 w-8" />,
+      title: 'Integration Examples',
+      description: 'Real-world code examples in Node.js, Python, React, and more',
+      link: '/docs/examples',
+      color: 'bg-orange-100 text-orange-600'
+    },
+    {
+      icon: <Book className="h-8 w-8" />,
+      title: 'Troubleshooting',
+      description: 'Solutions to common issues when integrating x402 payments',
+      link: '/docs/troubleshooting',
+      color: 'bg-red-100 text-red-600'
     }
   ]
 

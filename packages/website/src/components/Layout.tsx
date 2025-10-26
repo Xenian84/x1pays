@@ -9,8 +9,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Docs', href: '/docs' },
-    { name: 'Getting Started', href: '/docs/getting-started' },
-    { name: 'API Reference', href: '/docs/api-reference' },
+    { name: 'Dashboard', href: '/dashboard' },
+    { name: 'Pricing', href: '/pricing' },
+    { name: 'FAQ', href: '/faq' },
   ]
 
   return (
@@ -114,6 +115,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <li>
                   <Link to="/docs/api-reference" className="text-gray-600 hover:text-primary">
                     API Reference
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/docs/examples" className="text-gray-600 hover:text-primary">
+                    Integration Examples
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/docs/troubleshooting" className="text-gray-600 hover:text-primary">
+                    Troubleshooting
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/pricing" className="text-gray-600 hover:text-primary">
+                    Pricing
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/faq" className="text-gray-600 hover:text-primary">
+                    FAQ
                   </Link>
                 </li>
               </ul>
