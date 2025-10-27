@@ -8,6 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const navigation = [
     { name: 'Home', href: '/' },
+    { name: 'Facilitator', href: '/facilitator' },
     { name: 'Docs', href: '/docs' },
     { name: 'Dashboard', href: '/dashboard' },
     { name: 'Pricing', href: '/pricing' },

@@ -11,6 +11,13 @@ import Pricing from './pages/Pricing'
 import Troubleshooting from './pages/Troubleshooting'
 import Examples from './pages/Examples'
 import Echo from './pages/Echo'
+import Facilitator from './pages/Facilitator'
+import ExpressQuickstart from './pages/ExpressQuickstart'
+import HonoQuickstart from './pages/HonoQuickstart'
+import AllServerOptions from './pages/AllServerOptions'
+import AxiosClient from './pages/AxiosClient'
+import FetchClient from './pages/FetchClient'
+import AllClientOptions from './pages/AllClientOptions'
 
 function App() {
   return (
@@ -28,6 +35,13 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/echo" element={<Echo />} />
+          <Route path="/facilitator" element={<Facilitator />} />
+          <Route path="/quickstart/express" element={<ExpressQuickstart />} />
+          <Route path="/quickstart/hono" element={<HonoQuickstart />} />
+          <Route path="/quickstart/servers" element={<AllServerOptions />} />
+          <Route path="/quickstart/axios" element={<AxiosClient />} />
+          <Route path="/quickstart/fetch" element={<FetchClient />} />
+          <Route path="/quickstart/clients" element={<AllClientOptions />} />
         </Routes>
       </Layout>
     </Router>
