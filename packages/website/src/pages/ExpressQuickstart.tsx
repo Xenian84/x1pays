@@ -20,7 +20,7 @@ const ExpressQuickstart = () => {
           </p>
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <code className="text-green-400">
-              npm install express @x1pays/x402-middleware
+              npm install express @x1pays/middleware
             </code>
           </div>
         </section>
@@ -34,18 +34,18 @@ const ExpressQuickstart = () => {
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <pre className="text-sm text-gray-300">
 {`import express from 'express'
-import { x402Middleware } from '@x1pays/x402-middleware'
+import { x402Middleware } from '@x1pays/middleware'
 
 const app = express()
 app.use(express.json())
 
 // Configure x402 middleware
 const paymentMiddleware = x402Middleware({
-  facilitatorUrl: 'https://facilitator.x1pays.network',
+  facilitatorUrl: process.env.FACILITATOR_URL || 'http://localhost:4000',
   network: 'x1-mainnet',
-  payToAddress: process.env.MERCHANT_WALLET,
-  amount: '1000000', // 0.001 wXNT in atomic units
-  tokenMint: process.env.WXNT_MINT
+  payToAddress: process.env.MERCHANT_WALLET!,
+  tokenMint: process.env.WXNT_MINT!,
+  amount: '1000'  // 0.001 wXNT
 })
 
 // Free endpoint - no payment required

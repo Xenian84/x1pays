@@ -85,7 +85,7 @@ app.get('/premium', x402({
         "Different mental model from Express"
       ],
       bestFor: "High-throughput APIs, microservices, performance-critical applications",
-      quickstartLink: "/quickstart/fastify",
+      quickstartLink: "/docs/examples",
       example: `import Fastify from 'fastify'
 import x402Plugin from '@x1pays/middleware/fastify'
 
@@ -122,7 +122,7 @@ fastify.get('/premium', {
         "Less flexible than standalone servers"
       ],
       bestFor: "Full-stack Next.js applications, serverless deployments",
-      quickstartLink: "/quickstart/nextjs",
+      quickstartLink: "/docs/examples",
       example: `// pages/api/premium.ts
 import { x402Handler } from '@x1pays/middleware/nextjs'
 

@@ -39,7 +39,7 @@ const HonoQuickstart = () => {
           </p>
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <code className="text-green-400">
-              npm install hono @x1pays/x402-middleware
+              npm install hono @x1pays/middleware
             </code>
           </div>
         </section>
@@ -53,17 +53,17 @@ const HonoQuickstart = () => {
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <pre className="text-sm text-gray-300">
 {`import { Hono } from 'hono'
-import { x402 } from '@x1pays/x402-middleware/hono'
+import { x402 } from '@x1pays/middleware/hono'
 
 const app = new Hono()
 
 // Configure x402 middleware
 const payment = x402({
-  facilitatorUrl: 'https://facilitator.x1pays.network',
+  facilitatorUrl: process.env.FACILITATOR_URL || 'http://localhost:4000',
   network: 'x1-mainnet',
   payToAddress: process.env.MERCHANT_WALLET!,
-  amount: '1000000', // 0.001 wXNT
-  tokenMint: process.env.WXNT_MINT!
+  tokenMint: process.env.WXNT_MINT!,
+  amount: '1000'  // 0.001 wXNT
 })
 
 // Free endpoint
@@ -74,16 +74,11 @@ app.get('/api/public/hello', (c) => {
 // Premium endpoint - requires payment
 app.get('/api/premium/data', payment, (c) => {
   // Payment verified! Access via context:
-  const txHash = c.get('txHash')
-  const amount = c.get('amount')
+  const paymentData = c.get('x402Payment')
   
   return c.json({
     data: 'Premium content here',
-    payment: {
-      txHash,
-      amount,
-      simulated: c.get('simulated')
-    }
+    payment: paymentData
   })
 })
 
