@@ -11,14 +11,12 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
-import IconButton from '@mui/material/IconButton'
 import JavascriptIcon from '@mui/icons-material/Javascript'
 import LanguageIcon from '@mui/icons-material/Language'
 import CodeIcon from '@mui/icons-material/Code'
 import TerminalIcon from '@mui/icons-material/Terminal'
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import CheckIcon from '@mui/icons-material/Check'
 import MenuBookIcon from '@mui/icons-material/MenuBook'
 import SecurityIcon from '@mui/icons-material/Security'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
@@ -105,6 +103,60 @@ async function getPremiumDataRaw() {
 }
 
 getPremiumData()`
+    },
+    {
+      title: 'React (X1 Blockchain)',
+      icon: <RocketLaunchIcon />,
+      code: `import { X402Paywall } from 'x402-x1-react'
+import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
+import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui'
+import { BackpackWalletAdapter } from '@solana/wallet-adapter-backpack'
+import '@solana/wallet-adapter-react-ui/styles.css'
+
+function App() {
+  const endpoint = 'https://x1-devnet-rpc.x1.network'
+  const wallets = [new BackpackWalletAdapter()]
+
+  return (
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
+          <PremiumPage />
+        </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  )
+}
+
+function PremiumPage() {
+  return (
+    <div style={{ padding: '2rem' }}>
+      <WalletMultiButton />
+      
+      <X402Paywall
+        amount={2.50}
+        description="Premium AI Chat Access"
+        network="x1-devnet"
+        showBalance={true}
+        onPaymentSuccess={(txId) => {
+          console.log('Payment successful! TX:', txId)
+          // Track analytics, unlock features, etc.
+        }}
+        onPaymentError={(error) => {
+          console.error('Payment failed:', error)
+        }}
+      >
+        {/* Content shown after payment */}
+        <div>
+          <h2>Premium Content Unlocked!</h2>
+          <p>You now have access to premium features.</p>
+        </div>
+      </X402Paywall>
+    </div>
+  )
+}
+
+export default App`
     },
     {
       title: 'Python',

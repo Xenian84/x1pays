@@ -7,6 +7,31 @@ Complete x402 payment protocol implementation for X1 blockchain with 0% protocol
 
 ## Recent Changes (October 2025)
 
+### 2025-10-27: NEW x402-x1-react Package for X1 Blockchain
+Created complete React component library for X1 blockchain paywall integration:
+
+**Package: x402-x1-react (v0.1.0-beta.1)**
+- **Drop-in React Components** - `<X402Paywall>` component for easy integration
+- **X1 Blockchain Native** - Built specifically for X1 blockchain using Solana wallet adapter
+- **Multi-Wallet Support** - Backpack, Phantom, Solflare via Solana wallet adapter
+- **Proper x402 Protocol** - Full implementation with facilitator /verify and /settle endpoints
+- **Material-UI Styled** - MUI components with X1Pays dark theme (midnight blue + cyan/lime)
+- **TypeScript** - Full type safety with exported types and utilities
+- **LocalStorage Persistence** - Paywall unlock state persists across page reloads
+- **USD to Atomic Units** - Proper 6-decimal conversion for wXNT/USDC payments
+
+**Technical Implementation:**
+- `useX402Payment` hook with internal useWallet() call (no wallet prop required)
+- `signPayment()` utility using wallet.signMessage + bs58 encoding
+- `verifyPayment()` and `settlePayment()` helpers for facilitator integration
+- Payment flow: sign → verify → settle → unlock (matches x402 protocol)
+- Build: 241KB bundle, zero TypeScript errors
+
+**Documentation:**
+- Complete README with setup, API reference, and examples
+- Added React example to website Examples page
+- Three usage examples: basic, custom styling, validation
+
 ### 2025-10-27: Complete MUI + SORA Font Redesign
 Redesigned documentation website with modern Material-UI components, SORA typography, and custom dark theme:
 
@@ -102,6 +127,14 @@ Added complete feature parity with PayAI's x402-solana repository:
 │   │   │   ├── fastify.ts       # Fastify plugin
 │   │   │   └── nextjs.ts        # Next.js handler
 │   │   └── package.json
+│   ├── x402-x1-react/    # x402-x1-react - React components for X1
+│   │   ├── src/
+│   │   │   ├── components/      # X402Paywall component
+│   │   │   ├── hooks/           # useX402Payment hook
+│   │   │   ├── utils/           # x402 protocol utilities
+│   │   │   └── types/           # TypeScript types
+│   │   ├── examples/            # Usage examples
+│   │   └── package.json
 │   └── website/          # Documentation website
 │       ├── src/pages/
 │       │   ├── Home.tsx
@@ -110,7 +143,7 @@ Added complete feature parity with PayAI's x402-solana repository:
 │       │   ├── HonoQuickstart.tsx
 │       │   ├── AxiosClient.tsx
 │       │   ├── FetchClient.tsx
-│       │   └── Examples.tsx
+│       │   └── Examples.tsx     # Now includes React/X1 example
 │       └── package.json
 ```
 
