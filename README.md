@@ -54,36 +54,41 @@ The X1Pays Protocol operates on a dual-token model designed for the current stag
 **wXNT (Wrapped XNT)** is the settlement token used for all transactions:
 
 - Every API call or x402 payment is settled in **wXNT**, transferred directly from the user's wallet to the merchant via the facilitator
-- The facilitator charges a small protocol fee (default 1%) also in **wXNT**
-- Because wXNT is SPL-compatible, it integrates seamlessly with the X1Pays smart contracts, the facilitator, and future DEX liquidity
+- The facilitator charges **0% protocol fees** - 100% of payments go to merchants
+- X1Pays covers all gas costs, making transactions completely free for users and merchants
+- Revenue comes from **$XPY token** appreciation, not transaction fees
+- wXNT is SPL-compatible and integrates seamlessly with X1 blockchain infrastructure
 
 ### Governance and Incentives — $XPY
 
-**$XPY** is the governance and rewards token of X1Pays:
+**$XPY** is the governance and value capture token of X1Pays:
 
-- It is **not used for settlement** but governs key protocol parameters:
-  - Fee percentage (`FEE_PERCENT`)
-  - Treasury allocation
-  - Staking and discount logic
+- It is **not used for settlement** but captures protocol value through:
+  - Token appreciation from ecosystem growth
+  - Governance over key protocol parameters
+  - Future staking rewards and treasury distributions
+  - Voting rights for protocol upgrades
   - Future asset support (e.g., USDC)
 
-### Fee Distribution Example
+### Payment Flow Example
 
 When a user pays **100 wXNT** for an API call:
 
-- **99 wXNT** → Merchant (99%)
-- **1 wXNT** → X1Pays Treasury (1%)
+- **100 wXNT** → Merchant (100%)
+- **0 wXNT** → Protocol Fee (0%)
+- **Gas fees** → Covered by X1Pays Treasury
 
-The treasury later distributes accumulated wXNT rewards to $XPY stakers or funds protocol development.
+X1Pays makes money through **$XPY token appreciation** as the protocol grows, not by taking a cut of your revenue.
 
-### Future Staking Model
+### Future Staking Model (Coming Soon)
 
-The protocol includes placeholder logic for **$XPY staking rewards** (see `packages/facilitator/src/rewards.ts`):
+The protocol will introduce **$XPY staking** for holders:
 
-- Stake $XPY tokens to earn proportional wXNT fees from the treasury
-- Lock periods with multipliers for higher rewards
-- Governance voting power based on staked amounts
-- Direct fee sharing from protocol revenue
+- Stake $XPY tokens to participate in protocol governance
+- Earn rewards from treasury reserves (funded by token sales and partnerships)
+- Lock periods with multipliers for higher governance weight
+- Direct participation in protocol development decisions
+- Early stakers receive bonus rewards
 
 ## Project Structure
 
@@ -133,17 +138,17 @@ cp packages/api/.env.example packages/api/.env
 - `NETWORK` - Network identifier (x1-mainnet or x1-devnet)
 - `WXNT_MINT` - wXNT SPL token mint address on X1
 - `FEE_PAYER_SECRET` - Base58-encoded private key for transaction fees
-- `TREASURY_ADDRESS` - Treasury wallet address receiving 1% protocol fee
-- `FEE_PERCENT` - Protocol fee percentage (default: 1 for 1%)
+- `TREASURY_ADDRESS` - Treasury wallet address (for gas fee coverage)
+- `FEE_PERCENT` - Protocol fee percentage (set to 0 for zero fees)
 - `XPY_MINT` - $XPY governance token mint address
 
 **API:**
 - `RPC_URL` - X1 RPC endpoint (same as facilitator)
 - `NETWORK` - Network identifier (same as facilitator)
 - `WXNT_MINT` - wXNT SPL token mint address (same as facilitator)
-- `PAYTO_ADDRESS` - Merchant wallet address receiving 99% of payments
+- `PAYTO_ADDRESS` - Merchant wallet address receiving 100% of payments
 - `FACILITATOR_URL` - Facilitator service URL (typically http://localhost:4000)
-- `FEE_PERCENT` - Protocol fee percentage (default: 1 for 1%)
+- `FEE_PERCENT` - Protocol fee percentage (set to 0 for zero fees)
 - `TREASURY_ADDRESS` - Treasury wallet address (same as facilitator)
 - `XPY_MINT` - $XPY governance token mint address (same as facilitator)
 

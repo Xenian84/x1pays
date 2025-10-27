@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard'
 import Pricing from './pages/Pricing'
 import Troubleshooting from './pages/Troubleshooting'
 import Examples from './pages/Examples'
+import Echo from './pages/Echo'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/echo" element={<Echo />} />
         </Routes>
       </Layout>
     </Router>
