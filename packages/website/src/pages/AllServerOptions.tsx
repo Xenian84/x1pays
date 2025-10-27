@@ -122,16 +122,19 @@ fastify.get('/premium', {
         "Less flexible than standalone servers"
       ],
       bestFor: "Full-stack Next.js applications, serverless deployments",
-      quickstartLink: "#",
-      comingSoon: true,
+      quickstartLink: "/quickstart/nextjs",
       example: `// pages/api/premium.ts
-import { x402Handler } from '@x1pays/x402-middleware/nextjs'
+import { x402Handler } from '@x1pays/middleware/nextjs'
 
 export default x402Handler({
-  amount: '1000000',
+  facilitatorUrl: process.env.FACILITATOR_URL!,
+  network: 'x1-mainnet',
+  payToAddress: process.env.MERCHANT_WALLET!,
+  tokenMint: process.env.WXNT_MINT!,
+  amount: '1000',
   handler: async (req, res) => {
-    const payment = req.x402Payment
-    res.json({ data: 'paid content' })
+    // Payment verified! req.x402Payment has payment info
+    res.status(200).json({ data: 'paid content' })
   }
 })`
     }
@@ -223,7 +226,7 @@ export default x402Handler({
                     </h3>
                     <p className="text-gray-700">{framework.description}</p>
                   </div>
-                  {framework.comingSoon && (
+                  {(framework as any).comingSoon && (
                     <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full">
                       Coming Soon
                     </span>
@@ -267,7 +270,7 @@ export default x402Handler({
                   </div>
                 </div>
 
-                {!framework.comingSoon && (
+                {!(framework as any).comingSoon && (
                   <a 
                     href={framework.quickstartLink}
                     className={`inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors`}
