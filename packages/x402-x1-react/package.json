@@ -1,0 +1,65 @@
+{
+  "name": "x402-x1-react",
+  "version": "0.1.0-beta.1",
+  "description": "React component library for x402 payment protocol on X1 blockchain",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "peerDependencies": {
+    "@solana/wallet-adapter-base": "^0.9.0",
+    "@solana/wallet-adapter-react": "^0.15.0",
+    "@solana/wallet-adapter-react-ui": "^0.9.0",
+    "@solana/web3.js": "^1.87.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^6.1.7",
+    "@mui/material": "^6.1.7",
+    "bs58": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.4.21",
+    "vite-plugin-dts": "^3.7.0"
+  },
+  "keywords": [
+    "x402",
+    "x1",
+    "blockchain",
+    "payment",
+    "paywall",
+    "react",
+    "backpack",
+    "wallet"
+  ],
+  "author": "X1Pays",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PayAINetwork/x1pays"
+  }
+}
