@@ -19,7 +19,7 @@ const AllClientOptions = () => {
       ],
       bestFor: "Complex applications, teams familiar with Axios, projects needing advanced HTTP features",
       quickstartLink: "/quickstart/axios",
-      example: `import { x402Client } from '@x1pays/x402-client'
+      example: `import { x402Client } from '@x1pays/client/axios'
 
 const response = await x402Client({
   url: 'https://api.example.com/premium',
@@ -54,54 +54,60 @@ console.log(response.payment.txHash)`
       ],
       bestFor: "Lightweight apps, modern browsers, streaming use cases, minimal dependencies",
       quickstartLink: "/quickstart/fetch",
-      example: `import { fetchX402 } from '@x1pays/fetch-x402'
+      example: `import { fetchX402JSON } from '@x1pays/client/fetch'
 
-const response = await fetchX402(
+const response = await fetchX402JSON(
   'https://api.example.com/premium',
-  { wallet }
+  { 
+    method: 'GET',
+    wallet 
+  }
 )
 
-const data = await response.json()
-const paymentTx = response.headers.get(
-  'X-Payment-Response'
-)`
+console.log(response.data)
+console.log(response.payment.txHash)`
     },
     {
-      name: "fetch-x402 SDK",
+      name: "Native Fetch",
       icon: "🚀",
       color: "indigo",
-      description: "Dedicated x402 SDK with advanced features",
+      description: "Manual implementation with native fetch API",
       pros: [
-        "Purpose-built for x402",
-        "Automatic payment caching",
-        "Multi-network support",
-        "Built-in wallet management",
-        "TypeScript-first design"
+        "Full control over flow",
+        "No dependencies",
+        "Educational",
+        "Maximum flexibility",
+        "Best performance"
       ],
       cons: [
-        "Newer, less battle-tested",
-        "Smaller community",
-        "Additional abstraction layer"
+        "More code to write",
+        "Manual error handling",
+        "No built-in retry logic"
       ],
-      bestFor: "x402-heavy applications, multi-chain support, advanced payment scenarios",
-      quickstartLink: "#",
-      comingSoon: true,
-      example: `import { X402Client } from '@x1pays/fetch-x402'
+      bestFor: "Learning x402 protocol, custom flows, maximum control",
+      quickstartLink: "/quickstart/fetch",
+      example: `// 1. Initial request
+let res = await fetch(url)
 
-const client = new X402Client({
-  wallet: wallet,
-  network: 'x1-mainnet',
-  cachePayments: true
-})
-
-const data = await client.get(
-  'https://api.example.com/premium'
-)
-
-// Automatic payment caching for repeated calls
-const cached = await client.get(
-  'https://api.example.com/premium'
-) // No second payment!`
+// 2. Handle 402
+if (res.status === 402) {
+  const req = await res.json()
+  
+  // 3. Sign payment
+  const payment = { /*...*/ }
+  const sig = signPayment(payment, wallet)
+  
+  // 4. Settle with facilitator
+  await fetch(\`\${req.facilitatorUrl}/settle\`, {
+    method: 'POST',
+    body: JSON.stringify({ ...payment, sig })
+  })
+  
+  // 5. Retry with proof
+  res = await fetch(url, {
+    headers: { 'X-Payment': JSON.stringify(payment) }
+  })
+}`
     }
   ];
 
@@ -183,7 +189,7 @@ const cached = await client.get(
                     </h3>
                     <p className="text-gray-700">{client.description}</p>
                   </div>
-                  {client.comingSoon && (
+                  {(client as any).comingSoon && (
                     <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full">
                       Coming Soon
                     </span>
@@ -227,7 +233,7 @@ const cached = await client.get(
                   </div>
                 </div>
 
-                {!client.comingSoon && (
+                {!(client as any).comingSoon && (
                   <a 
                     href={client.quickstartLink}
                     className={`inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors`}

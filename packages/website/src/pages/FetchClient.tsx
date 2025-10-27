@@ -20,11 +20,11 @@ const FetchClient = () => {
           </p>
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <code className="text-green-400">
-              npm install @x1pays/fetch-x402
+              npm install @x1pays/client
             </code>
           </div>
           <p className="text-gray-600 text-sm mt-2">
-            Or use native fetch with manual payment handling (shown below).
+            Uses native Fetch API with automatic x402 payment handling.
           </p>
         </section>
 
@@ -36,22 +36,24 @@ const FetchClient = () => {
           </p>
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <pre className="text-sm text-gray-300">
-{`import { fetchX402 } from '@x1pays/fetch-x402'
+{`import { fetchX402JSON } from '@x1pays/client/fetch'
 import { Keypair } from '@solana/web3.js'
 
 const wallet = Keypair.fromSecretKey(
   Buffer.from(process.env.WALLET_SECRET_KEY!, 'base64')
 )
 
-// Make paid request
-const response = await fetchX402(
+// Make paid request  
+const response = await fetchX402JSON(
   'https://api.example.com/premium/data',
-  { wallet }
+  { 
+    method: 'GET',
+    wallet 
+  }
 )
 
-const data = await response.json()
-console.log('Data:', data)
-console.log('Payment TX:', response.headers.get('X-Payment-Response'))`}
+console.log('Data:', response.data)
+console.log('Payment:', response.payment)`}
             </pre>
           </div>
         </section>

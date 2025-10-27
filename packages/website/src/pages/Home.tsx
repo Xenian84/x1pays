@@ -3,23 +3,19 @@ import { Zap, Shield, Code, DollarSign, ArrowRight, Sparkles, CheckCircle } from
 import CodeBlock from '../components/CodeBlock'
 
 export default function Home() {
-  const exampleCode = `import { getWithPayment } from "@x1pays/sdk";
+  const exampleCode = `import { x402Client } from "@x1pays/client/axios";
 import { Keypair } from "@solana/web3.js";
 
-const payer = Keypair.fromSecretKey(yourSecretKey);
+const wallet = Keypair.fromSecretKey(yourSecretKey);
 
-const data = await getWithPayment(
-  "https://api.x1pays.xyz/premium/data",
-  payer,
-  {
-    facilitatorUrl: "https://facilitator.x1pays.xyz",
-    payTo: process.env.MERCHANT_WALLET,
-    asset: process.env.WXNT_MINT,
-    amountAtomic: "1000" // 0.001 wXNT
-  }
-);
+const response = await x402Client({
+  url: "https://api.x1pays.xyz/premium/data",
+  method: "GET",
+  wallet: wallet
+});
 
-console.log(data); // Access granted!`
+console.log(response.data);        // Your data
+console.log(response.payment);     // Payment proof`
 
   return (
     <div className="bg-white">

@@ -19,12 +19,17 @@ const AllServerOptions = () => {
       bestFor: "Traditional REST APIs, established projects, teams familiar with Express",
       quickstartLink: "/quickstart/express",
       example: `import express from 'express'
-import { x402Middleware } from '@x1pays/x402-middleware'
+import { x402Middleware } from '@x1pays/middleware'
 
 const app = express()
-const payment = x402Middleware({ /* config */ })
 
-app.get('/premium', payment, (req, res) => {
+app.get('/premium', x402Middleware({
+  facilitatorUrl: 'http://localhost:4000',
+  network: 'x1-mainnet',
+  payToAddress: process.env.MERCHANT_WALLET,
+  tokenMint: process.env.WXNT_MINT,
+  amount: '1000'
+}), (req, res) => {
   res.json({ data: 'paid content' })
 })`
     },
@@ -48,12 +53,17 @@ app.get('/premium', payment, (req, res) => {
       bestFor: "Edge deployments, high-performance APIs, modern TypeScript projects",
       quickstartLink: "/quickstart/hono",
       example: `import { Hono } from 'hono'
-import { x402 } from '@x1pays/x402-middleware/hono'
+import { x402 } from '@x1pays/middleware/hono'
 
 const app = new Hono()
-const payment = x402({ /* config */ })
 
-app.get('/premium', payment, (c) => {
+app.get('/premium', x402({
+  facilitatorUrl: 'http://localhost:4000',
+  network: 'x1-mainnet',
+  payToAddress: process.env.MERCHANT_WALLET,
+  tokenMint: process.env.WXNT_MINT,
+  amount: '1000'
+}), (c) => {
   return c.json({ data: 'paid content' })
 })`
     },
@@ -75,17 +85,23 @@ app.get('/premium', payment, (c) => {
         "Different mental model from Express"
       ],
       bestFor: "High-throughput APIs, microservices, performance-critical applications",
-      quickstartLink: "#",
-      comingSoon: true,
+      quickstartLink: "/quickstart/fastify",
       example: `import Fastify from 'fastify'
-import { x402Plugin } from '@x1pays/x402-middleware/fastify'
+import x402Plugin from '@x1pays/middleware/fastify'
 
 const fastify = Fastify()
-await fastify.register(x402Plugin, { /* config */ })
+
+await fastify.register(x402Plugin, {
+  facilitatorUrl: 'http://localhost:4000',
+  network: 'x1-mainnet',
+  payToAddress: process.env.MERCHANT_WALLET,
+  tokenMint: process.env.WXNT_MINT,
+  amount: '1000'
+})
 
 fastify.get('/premium', {
-  preHandler: fastify.x402Payment
-}, async (request, reply) => {
+  preHandler: fastify.x402()
+}, async (request) => {
   return { data: 'paid content' }
 })`
     },

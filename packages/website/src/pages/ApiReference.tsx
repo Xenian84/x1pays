@@ -102,76 +102,50 @@ export default function ApiReference() {
 
       {/* Client SDK */}
       <div className="mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">Client SDK</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-6">Client Library</h2>
         <p className="text-gray-700 mb-6">
-          Install: <code className="bg-gray-100 px-2 py-1 rounded">pnpm add @x1pays/sdk</code>
+          Install: <code className="bg-gray-100 px-2 py-1 rounded">pnpm add @x1pays/client</code>
         </p>
 
-        {/* signPayment */}
+        {/* x402Client (Axios) */}
         <div className="mb-10 border border-gray-200 rounded-lg p-6">
-          <h3 className="text-xl font-semibold text-gray-900 mb-3">signPayment()</h3>
-          <p className="text-gray-700 mb-4">Signs a payment payload with buyer's keypair.</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">x402Client() - Axios</h3>
+          <p className="text-gray-700 mb-4">Makes HTTP requests with automatic x402 payment handling using Axios.</p>
           
           <h4 className="font-semibold text-gray-900 mb-2">Signature</h4>
-          <CodeBlock code={`function signPayment(payer: Keypair, payload: object): string`} language="typescript" />
+          <CodeBlock code={`async function x402Client<T>(
+  config: X402AxiosConfig
+): Promise<X402Response<T>>`} language="typescript" />
 
-          <h4 className="font-semibold text-gray-900 mb-2 mt-4">Example</h4>
-          <CodeBlock code={`import { Keypair } from "@solana/web3.js";
-import { signPayment } from "@x1pays/sdk";
-
-const payer = Keypair.fromSecretKey(secretKey);
-const payload = {
-  scheme: "exact",
-  network: "x1-mainnet",
-  payTo: "MERCHANT_PUBKEY",
-  asset: "WXNT_MINT",
-  amount: "1000",
-  buyer: payer.publicKey.toBase58(),
-  memo: null
-};
-
-const signature = signPayment(payer, payload);
-console.log(signature); // Base58-encoded signature`} language="typescript" />
-        </div>
-
-        {/* getWithPayment */}
-        <div className="mb-10 border border-gray-200 rounded-lg p-6">
-          <h3 className="text-xl font-semibold text-gray-900 mb-3">getWithPayment()</h3>
-          <p className="text-gray-700 mb-4">Makes a GET request with automatic payment handling.</p>
-          
-          <h4 className="font-semibold text-gray-900 mb-2">Signature</h4>
-          <CodeBlock code={`async function getWithPayment(
-  url: string,
-  payer: Keypair,
-  config: PayConfig
-): Promise<any>`} language="typescript" />
-
-          <h4 className="font-semibold text-gray-900 mb-2 mt-4">PayConfig Type</h4>
-          <CodeBlock code={`type PayConfig = {
-  facilitatorUrl: string;
-  payTo: string;
-  asset: string;
-  network?: "x1-mainnet" | "x1-devnet";
-  amountAtomic: string;
+          <h4 className="font-semibold text-gray-900 mb-2 mt-4">Config Type</h4>
+          <CodeBlock code={`interface X402AxiosConfig extends AxiosRequestConfig {
+  wallet: WalletSigner;  // Solana Keypair or wallet
+  retry?: {
+    maxRetries?: number;      // Default: 3
+    retryDelay?: number;      // Default: 1000ms
+    retryOn?: number[];       // Default: [408, 429, 500, 502, 503, 504]
+  };
+  paymentTimeout?: number;    // Default: 10000ms
 }`} language="typescript" />
 
           <h4 className="font-semibold text-gray-900 mb-2 mt-4">Example</h4>
           <CodeBlock code={`import { Keypair } from "@solana/web3.js";
-import { getWithPayment } from "@x1pays/sdk";
+import { x402Client } from "@x1pays/client/axios";
 
-const payer = Keypair.fromSecretKey(secretKey);
+const wallet = Keypair.fromSecretKey(secretKey);
 
-try {
-  const data = await getWithPayment(
-    "https://api.x1pays.xyz/premium/data",
-    payer,
-    {
-      facilitatorUrl: "https://facilitator.x1pays.xyz",
-      payTo: process.env.MERCHANT_PUBKEY!,
-      asset: process.env.WXNT_MINT!,
-      amountAtomic: "1000"
-    }
-  );
+const response = await x402Client({
+  url: "https://api.x1pays.xyz/premium/data",
+  method: "GET",
+  wallet: wallet,
+  retry: {
+    maxRetries: 3,
+    retryDelay: 1000
+  }
+});
+
+console.log(response.data);      // API response data
+console.log(response.payment);   // { txHash, amount, simulated }
   
   console.log("Access granted:", data);
 } catch (error) {

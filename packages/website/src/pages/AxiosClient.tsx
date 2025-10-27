@@ -20,7 +20,7 @@ const AxiosClient = () => {
           </p>
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <code className="text-green-400">
-              npm install axios @x1pays/x402-client
+              npm install @x1pays/client
             </code>
           </div>
         </section>
@@ -33,7 +33,7 @@ const AxiosClient = () => {
           </p>
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <pre className="text-sm text-gray-300">
-{`import { x402Client } from '@x1pays/x402-client'
+{`import { x402Client } from '@x1pays/client/axios'
 import { Keypair } from '@solana/web3.js'
 
 // Your wallet (for signing payments)

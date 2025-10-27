@@ -34,30 +34,32 @@ pnpm dev:fac  # Facilitator on port 4000
 pnpm dev:api  # API on port 3000`
 
   const clientCode = `import { Keypair } from "@solana/web3.js";
-import { getWithPayment } from "@x1pays/sdk";
+import { x402Client } from "@x1pays/client/axios";
 
 // Load your wallet
-const payer = Keypair.fromSecretKey(yourSecretKey);
+const wallet = Keypair.fromSecretKey(yourSecretKey);
 
-// Make a paid request
-const data = await getWithPayment(
-  "http://localhost:3000/premium/data",
-  payer,
-  {
-    facilitatorUrl: "http://localhost:4000",
-    payTo: process.env.PAYTO_ADDRESS!,
-    asset: process.env.WXNT_MINT!,
-    amountAtomic: "1000"
-  }
-);
+// Make a paid request - payment happens automatically!
+const response = await x402Client({
+  url: "http://localhost:3000/premium/data",
+  method: "GET",
+  wallet: wallet
+});
 
-console.log(data);`
+console.log(response.data);      // Your data
+console.log(response.payment);   // { txHash, amount, simulated }`
 
-  const middlewareCode = `import { x402 } from "./middleware/x402.js";
+  const middlewareCode = `import { x402Middleware } from "@x1pays/middleware";
 import { x420 } from "./middleware/x420.js";
 
 // Apply x420 rate limiting and x402 payment requirement
-app.use("/premium", x420(), x402("YourBrand"), premiumRoutes);`
+app.use("/premium", x420(), x402Middleware({
+  facilitatorUrl: process.env.FACILITATOR_URL || "http://localhost:4000",
+  network: "x1-mainnet",
+  payToAddress: process.env.PAYTO_ADDRESS || "",
+  tokenMint: process.env.WXNT_MINT || "",
+  amount: "1000"
+}), premiumRoutes);`
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
