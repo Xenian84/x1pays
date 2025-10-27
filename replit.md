@@ -7,6 +7,31 @@ Complete x402 payment protocol implementation for X1 blockchain with 0% protocol
 
 ## Recent Changes (December 2024)
 
+### 2024-12-XX: Comprehensive Codebase Audit for Parity
+Audited and updated ALL code (facilitator, documentation, examples) to use recent improvements:
+
+**Facilitator Service:**
+- Now uses PaymentPayloadSchema from @x1pays/client (removed local schema duplication)
+- Throws specific error types: InvalidSignatureError, InvalidNetworkError
+- Uses constants: X402_VERSION, NETWORKS.X1_MAINNET
+- Returns structured error responses with error name, message, and details
+
+**Documentation:**
+- Created comprehensive Advanced Usage page (/docs/advanced) covering:
+  - Constants usage (NETWORKS, FACILITATOR_URLS, X402_VERSION, etc.)
+  - Validation helpers (validatePaymentPayload, verifyPaymentSignature, etc.)
+  - Error handling with all 8 specific error types
+  - Type guards for runtime type safety
+  - Zod schemas for custom validation
+  - Production-ready complete example
+  - Best practices DO/DON'T section
+
+**Client README:**
+- Added comprehensive documentation for all 40+ new exports
+- Error handling section with all specific error types
+- Constants, validators, type guards, and schemas sections
+- Complete exports reference organized by category
+
 ### 2024-12-XX: Implemented All 7 Missing Features from PayAI
 Added complete feature parity with PayAI's x402-solana repository:
 

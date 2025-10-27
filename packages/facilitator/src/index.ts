@@ -3,26 +3,21 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import pino from "pino";
-import { z } from "zod";
 import { PublicKey } from "@solana/web3.js";
 import * as nacl from "tweetnacl";
 import bs58 from "bs58";
 import { getConnection, loadFeePayer, tokenTransferTx } from "./lib/solana.js";
+import { 
+  PaymentPayloadSchema, 
+  InvalidSignatureError,
+  InvalidNetworkError,
+  NetworkError,
+  X402_VERSION,
+  NETWORKS
+} from "@x1pays/client";
 
 const PORT = Number(process.env.PORT || 4000);
 const logger = pino({ transport: { target: "pino-pretty" } });
-
-const PaymentSchema = z.object({
-  scheme: z.literal("exact"),
-  network: z.enum(["x1-mainnet", "x1-devnet"]),
-  payTo: z.string().min(32),
-  asset: z.string().min(32),
-  amount: z.string().regex(/^\d+$/),
-  buyer: z.string().min(32),
-  signature: z.string().optional(),
-  txSignature: z.string().optional(), // Buyer's signature on the transaction
-  memo: z.string().optional().nullable()
-});
 
 const app = express();
 app.use(cors());
@@ -38,11 +33,11 @@ app.get("/health", (_req, res) => {
 
 app.get("/supported", (req, res) => {
   res.json({
-    x402Version: 1,
+    x402Version: X402_VERSION,
     networks: [
       {
         scheme: "exact",
-        network: process.env.NETWORK || "x1-mainnet",
+        network: process.env.NETWORK || NETWORKS.X1_MAINNET,
         asset: process.env.WXNT_MINT
       }
     ]
@@ -51,10 +46,14 @@ app.get("/supported", (req, res) => {
 
 app.post("/verify", async (req, res) => {
   try {
-    const payment = PaymentSchema.parse(req.body);
+    const payment = PaymentPayloadSchema.parse(req.body);
     
-    if (payment.network !== (process.env.NETWORK || "x1-mainnet")) {
-      throw new Error("Unsupported network");
+    const expectedNetwork = process.env.NETWORK || NETWORKS.X1_MAINNET;
+    if (payment.network !== expectedNetwork) {
+      throw new InvalidNetworkError(
+        `Unsupported network: ${payment.network}. Expected: ${expectedNetwork}`,
+        { expected: expectedNetwork, received: payment.network }
+      );
     }
 
     const message = Buffer.from(JSON.stringify({
@@ -68,7 +67,7 @@ app.post("/verify", async (req, res) => {
     }));
 
     if (!payment.signature) {
-      throw new Error("Missing signature");
+      throw new InvalidSignatureError("Missing payment signature", { payment });
     }
 
     const ok = nacl.sign.detached.verify(
@@ -78,19 +77,32 @@ app.post("/verify", async (req, res) => {
     );
 
     if (!ok) {
-      throw new Error("Signature invalid");
+      throw new InvalidSignatureError(
+        "Payment signature verification failed",
+        { buyer: payment.buyer, amount: payment.amount }
+      );
     }
 
     return res.json({ valid: true, message: "verified" });
   } catch (e: any) {
     logger.error(e, "Verification failed");
+    
+    if (e instanceof InvalidSignatureError || e instanceof InvalidNetworkError) {
+      return res.status(400).json({ 
+        valid: false, 
+        error: e.name,
+        message: e.message,
+        details: e.details 
+      });
+    }
+    
     return res.status(400).json({ valid: false, message: e.message });
   }
 });
 
 app.post("/settle", async (req, res) => {
   try {
-    const payment = PaymentSchema.parse(req.body);
+    const payment = PaymentPayloadSchema.parse(req.body);
     const connection = getConnection();
     const feePayer = loadFeePayer();
     const mint = new PublicKey(payment.asset);

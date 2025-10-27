@@ -136,16 +136,223 @@ Compatible with:
 ## Error Handling
 
 ```typescript
+import { 
+  InvalidSignatureError,
+  InsufficientFundsError,
+  NetworkError,
+  PaymentTimeoutError,
+  InvalidAmountError,
+  InvalidNetworkError,
+  PaymentVerificationError
+} from '@x1pays/client'
+
 try {
   const response = await x402Client({ ... });
 } catch (error) {
-  if (error instanceof X402Error) {
-    console.error(error.statusCode);  // 402, 500, etc.
-    console.error(error.message);     // Error description
-    console.error(error.details);     // Additional details
+  if (error instanceof InvalidSignatureError) {
+    console.error('Signature validation failed:', error.message)
+  } else if (error instanceof InsufficientFundsError) {
+    console.error('Insufficient funds:', error.message)
+  } else if (error instanceof NetworkError) {
+    console.error('Network error:', error.message)
+  } else if (error instanceof PaymentTimeoutError) {
+    console.error('Payment timed out:', error.message)
+  } else if (error instanceof InvalidAmountError) {
+    console.error('Invalid amount:', error.message)
+  } else if (error instanceof InvalidNetworkError) {
+    console.error('Invalid network:', error.message)
+  } else if (error instanceof PaymentVerificationError) {
+    console.error('Verification failed:', error.message)
   }
 }
 ```
+
+## Constants
+
+Use type-safe constants instead of hardcoding values:
+
+```typescript
+import { 
+  NETWORKS,
+  FACILITATOR_URLS,
+  X402_VERSION,
+  PAYMENT_SCHEME,
+  MAX_PAYMENT_AMOUNT,
+  X402_HEADERS
+} from '@x1pays/client'
+
+// Network constants
+const network = NETWORKS.X1_MAINNET  // 'x1-mainnet'
+const devNetwork = NETWORKS.X1_DEVNET  // 'x1-devnet'
+
+// Facilitator URLs
+const facilitatorUrl = FACILITATOR_URLS.MAINNET
+// 'https://facilitator.x1pays.network'
+
+// Protocol version
+console.log(X402_VERSION)  // 1
+console.log(PAYMENT_SCHEME)  // 'x402'
+console.log(MAX_PAYMENT_AMOUNT)  // 1000000000
+
+// Header names
+console.log(X402_HEADERS.PAYMENT)  // 'X-Payment'
+console.log(X402_HEADERS.PAYMENT_REQUIRED)  // 'X-Payment-Required'
+console.log(X402_HEADERS.PAYMENT_RESPONSE)  // 'X-Payment-Response'
+```
+
+## Validation Helpers
+
+Use built-in validation functions for runtime validation:
+
+```typescript
+import { 
+  validatePaymentPayload,
+  validatePaymentRequirement,
+  validatePaymentResponse,
+  validateAmount,
+  validateNetwork,
+  verifyPaymentSignature
+} from '@x1pays/client'
+
+// Validate payment structure
+validatePaymentPayload(paymentData)  // Throws if invalid
+
+// Validate 402 response
+const requirement = validatePaymentRequirement(data)
+
+// Validate atomic units (integer strings)
+validateAmount('1000')  // ✓ Valid
+validateAmount('1000.5')  // ✗ Throws InvalidAmountError
+
+// Validate network
+validateNetwork('x1-mainnet')  // ✓ Valid
+validateNetwork('ethereum')  // ✗ Throws InvalidNetworkError
+
+// Cryptographically verify payment signature
+const isValid = await verifyPaymentSignature(payment)
+```
+
+## Type Guards
+
+Use type guards for runtime type checking:
+
+```typescript
+import { 
+  isWalletSigner,
+  isValidPaymentPayload,
+  isValidPaymentRequirement,
+  isValidPaymentResponse,
+  isValidNetwork,
+  assertWalletSigner,
+  assertValidNetwork
+} from '@x1pays/client'
+
+// Check if object is a valid wallet
+if (isWalletSigner(wallet)) {
+  const signature = await wallet.signMessage(message)
+}
+
+// Validate payment data
+if (isValidPaymentPayload(data)) {
+  console.log(data.buyer, data.amount, data.signature)
+}
+
+// Validate 402 response
+if (isValidPaymentRequirement(response)) {
+  response.accepts.forEach(accept => {
+    console.log(accept.payTo, accept.maxAmountRequired)
+  })
+}
+
+// Assertion helpers (throw if invalid)
+assertWalletSigner(wallet)  // Throws if not a wallet
+assertValidNetwork(network)  // Throws InvalidNetworkError
+```
+
+## Zod Schemas
+
+Import Zod schemas for custom validation:
+
+```typescript
+import { 
+  PaymentPayloadSchema,
+  PaymentRequirementSchema,
+  PaymentResponseSchema,
+  MiddlewareConfigSchema,
+  ClientConfigSchema
+} from '@x1pays/client'
+
+// Parse and validate
+const result = PaymentPayloadSchema.safeParse(data)
+if (result.success) {
+  const payment = result.data
+}
+
+// Or throw on error
+const payment = PaymentPayloadSchema.parse(data)
+```
+
+## Complete Exports
+
+**Types:**
+- `PaymentPayload`, `PaymentRequirement`, `PaymentResponse`
+- `WalletSigner`, `X402Config`, `Network`
+- `X402AxiosConfig`, `X402FetchConfig`, `X402Response`
+
+**Constants:**
+- `NETWORKS` - Network identifiers
+- `FACILITATOR_URLS` - Default facilitator URLs
+- `X402_VERSION` - Protocol version
+- `PAYMENT_SCHEME` - Payment scheme identifier
+- `MAX_PAYMENT_AMOUNT` - Maximum payment limit
+- `X402_HEADERS` - Header name constants
+
+**Schemas (Zod):**
+- `PaymentPayloadSchema`
+- `PaymentRequirementSchema`
+- `PaymentResponseSchema`
+- `MiddlewareConfigSchema`
+- `ClientConfigSchema`
+
+**Validators:**
+- `validatePaymentPayload()`
+- `validatePaymentRequirement()`
+- `validatePaymentResponse()`
+- `validateAmount()`
+- `validateNetwork()`
+- `verifyPaymentSignature()`
+- `extractPaymentFromHeaders()`
+- `extractPaymentRequirement()`
+
+**Type Guards:**
+- `isWalletSigner()`
+- `isValidPaymentPayload()`
+- `isValidPaymentRequirement()`
+- `isValidPaymentResponse()`
+- `isValidNetwork()`
+- `assertWalletSigner()`
+- `assertValidNetwork()`
+
+**Errors:**
+- `X402Error` (base class)
+- `InvalidSignatureError`
+- `InsufficientFundsError`
+- `NetworkError`
+- `PaymentTimeoutError`
+- `InvalidAmountError`
+- `InvalidNetworkError`
+- `PaymentVerificationError`
+- `InvalidConfigError`
+
+**Utilities:**
+- `signPayment()`
+- `wXNTToAtomicUnits()`
+- `atomicUnitsToWXNT()`
+- `formatWXNT()`
+
+**Clients:**
+- `x402Client` (Axios)
+- `fetchX402`, `fetchX402JSON` (Fetch)
 
 ## License
 

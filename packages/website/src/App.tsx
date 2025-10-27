@@ -18,6 +18,7 @@ import AllServerOptions from './pages/AllServerOptions'
 import AxiosClient from './pages/AxiosClient'
 import FetchClient from './pages/FetchClient'
 import AllClientOptions from './pages/AllClientOptions'
+import AdvancedUsage from './pages/AdvancedUsage'
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="/quickstart/axios" element={<AxiosClient />} />
           <Route path="/quickstart/fetch" element={<FetchClient />} />
           <Route path="/quickstart/clients" element={<AllClientOptions />} />
+          <Route path="/docs/advanced" element={<AdvancedUsage />} />
         </Routes>
       </Layout>
     </Router>
