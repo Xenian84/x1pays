@@ -178,6 +178,35 @@ app.use("/premium", x420(), x402Middleware({
         <CodeBlock code={middlewareCode} language="typescript" filename="server.ts" />
       </div>
 
+      {/* Utility Functions */}
+      <div className="mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Helper Utilities</h2>
+        <p className="text-gray-700 mb-4">
+          X1Pays provides utility functions for working with wXNT amounts (6 decimal precision):
+        </p>
+        <CodeBlock code={`import { 
+  wXNTToAtomicUnits, 
+  atomicUnitsToWXNT, 
+  formatWXNT 
+} from "@x1pays/client";
+
+// Convert wXNT to atomic units
+const amount = wXNTToAtomicUnits(0.001);      // "1000"
+const amount2 = wXNTToAtomicUnits("1.5");     // "1500000"
+
+// Convert back to wXNT
+const wXNT = atomicUnitsToWXNT("1000");       // 0.001
+
+// Format for display
+const display = formatWXNT("1000");           // "0.001 wXNT"`} language="typescript" filename="utilities.ts" />
+        
+        <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-blue-900 text-sm">
+            <strong>💡 Tip:</strong> Use these helpers to avoid floating-point precision issues when working with payment amounts. They ensure exact conversions and reject invalid inputs.
+          </p>
+        </div>
+      </div>
+
       {/* MVP Notice */}
       <div className="mb-12 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
         <h3 className="text-lg font-semibold text-yellow-900 mb-2">⚠️ Important: MVP Mode</h3>

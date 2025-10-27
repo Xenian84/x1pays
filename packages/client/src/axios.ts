@@ -64,9 +64,15 @@ export async function x402Client<T = any>(
       throw new X402Error('Invalid payment requirement', 402, requirement);
     }
 
-    const accept = requirement.accepts[0];
+    // Select the best accept option:
+    // 1. Always choose the lowest-priced option
+    // 2. Verify it's within maxPaymentAmount if set
+    const accept = requirement.accepts.reduce((lowest, current) => {
+      const lowestAmount = parseInt(lowest.maxAmountRequired || '1000', 10);
+      const currentAmount = parseInt(current.maxAmountRequired || '1000', 10);
+      return currentAmount < lowestAmount ? current : lowest;
+    });
 
-    // Create payment
     const paymentAmount = accept.maxAmountRequired || '1000';
     
     // Check max payment amount safety limit

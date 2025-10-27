@@ -296,6 +296,12 @@ if (res.status === 402) {
                 <td className="border border-gray-300 px-4 py-3 text-center">✅</td>
               </tr>
               <tr>
+                <td className="border border-gray-300 px-4 py-3">Payment amount safety limit</td>
+                <td className="border border-gray-300 px-4 py-3 text-center">✅</td>
+                <td className="border border-gray-300 px-4 py-3 text-center">✅</td>
+                <td className="border border-gray-300 px-4 py-3 text-center">✅</td>
+              </tr>
+              <tr className="bg-gray-50">
                 <td className="border border-gray-300 px-4 py-3">TypeScript support</td>
                 <td className="border border-gray-300 px-4 py-3 text-center">✅</td>
                 <td className="border border-gray-300 px-4 py-3 text-center">✅</td>

@@ -53,37 +53,69 @@ export class X402Error extends Error {
 
 /**
  * Convert wXNT amount to atomic units (6 decimals)
- * Rejects inputs with excess precision to prevent underpayment
- * @param wXNT - Amount in wXNT (e.g., 0.001)
+ * Uses string-based parsing to avoid floating-point precision issues
+ * @param wXNT - Amount in wXNT as number or string (e.g., 0.001 or "0.001")
  * @returns Atomic units as string (e.g., "1000")
  * @throws Error if input has more than 6 decimal places or results in <1 atomic unit
  * @example wXNTToAtomicUnits(0.001) // "1000"
- * @example wXNTToAtomicUnits(0.000001) // "1"
+ * @example wXNTToAtomicUnits("0.000001") // "1"
  */
-export function wXNTToAtomicUnits(wXNT: number): string {
-  if (typeof wXNT !== 'number' || isNaN(wXNT) || !isFinite(wXNT) || wXNT < 0) {
-    throw new Error(`Invalid wXNT amount: ${wXNT}`);
+export function wXNTToAtomicUnits(wXNT: number | string): string {
+  let decimalStr: string;
+  
+  if (typeof wXNT === 'number') {
+    if (isNaN(wXNT) || !isFinite(wXNT) || wXNT < 0) {
+      throw new Error(`Invalid wXNT amount: ${wXNT}`);
+    }
+    // Convert number to canonical decimal string
+    // Use toString to preserve the exact number representation
+    decimalStr = wXNT.toString();
+    
+    // Handle scientific notation (e.g., 1e-7)
+    if (decimalStr.includes('e') || decimalStr.includes('E')) {
+      // For very small numbers in scientific notation, use toFixed with enough precision
+      // Then we'll validate the decimal places below
+      decimalStr = wXNT.toFixed(20); // Use large precision, will validate below
+      // Remove trailing zeros
+      decimalStr = decimalStr.replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '');
+    }
+  } else if (typeof wXNT === 'string') {
+    decimalStr = wXNT.trim();
+    // Validate string format
+    if (!/^(\d+\.?\d*|\.\d+)$/.test(decimalStr)) {
+      throw new Error(`Invalid wXNT string format: ${wXNT}`);
+    }
+  } else {
+    throw new Error(`Invalid wXNT type: ${typeof wXNT}`);
   }
   
-  // Multiply first to get atomic units, then check if it's a clean integer
-  // This prevents rounding during decimal checking
-  const atomicUnitsExact = wXNT * 1_000_000;
+  // Split into integer and fractional parts
+  const parts = decimalStr.split('.');
+  const integerPart = parts[0] || '0';
+  const fractionalPart = parts[1] || '';
   
-  // Check if the result is an integer (no fractional atomic units)
-  // If it has fractional parts, it means input had > 6 decimals
-  if (!Number.isInteger(atomicUnitsExact)) {
+  // Check decimal places (max 6)
+  if (fractionalPart.length > 6) {
     throw new Error(`wXNT amount has too many decimal places (max 6): ${wXNT}`);
   }
   
-  if (atomicUnitsExact < 1) {
+  // Build atomic units by combining integer and fractional parts
+  // Pad fractional part to 6 digits
+  const paddedFractional = fractionalPart.padEnd(6, '0');
+  const atomicUnitsStr = integerPart + paddedFractional;
+  
+  // Remove leading zeros
+  const atomicUnits = BigInt(atomicUnitsStr);
+  
+  if (atomicUnits < 1n) {
     throw new Error(`wXNT amount too small (min 0.000001 wXNT = 1 atomic unit): ${wXNT}`);
   }
   
-  if (atomicUnitsExact > Number.MAX_SAFE_INTEGER) {
+  if (atomicUnits > BigInt(Number.MAX_SAFE_INTEGER)) {
     throw new Error(`wXNT amount too large: ${wXNT}`);
   }
   
-  return atomicUnitsExact.toString();
+  return atomicUnits.toString();
 }
 
 /**

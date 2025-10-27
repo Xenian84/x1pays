@@ -141,6 +141,7 @@ export default function ApiReference() {
     retryOn?: number[];           // Default: [408, 429, 500, 502, 503, 504]
   };
   paymentTimeout?: number;        // Default: 10000ms
+  maxPaymentAmount?: string;      // Safety limit: reject payments above this (atomic units)
 }`} language="typescript" />
 
           <h4 className="font-semibold text-gray-900 mb-2 mt-4">Response</h4>
@@ -193,6 +194,7 @@ console.log(response.payment);   // { txHash, amount, simulated }`} language="ty
           <CodeBlock code={`interface X402FetchConfig extends RequestInit {
   wallet: WalletSigner;           // Solana Keypair or wallet adapter
   paymentTimeout?: number;        // Default: 10000ms
+  maxPaymentAmount?: string;      // Safety limit: reject payments above this (atomic units)
 }`} language="typescript" />
 
           <h4 className="font-semibold text-gray-900 mb-2 mt-4">Example</h4>
@@ -405,6 +407,73 @@ const payment = await signPayment({
 
 console.log(payment.signature);  // Base58-encoded signature
 console.log(payment.buyer);      // Wallet public key`} language="typescript" />
+        </div>
+
+        <div className="mb-10 border border-gray-200 rounded-lg p-6">
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">wXNTToAtomicUnits()</h3>
+          <p className="text-gray-700 mb-4">Convert wXNT amount to atomic units (6 decimals). Uses string-based parsing to avoid floating-point precision issues.</p>
+          
+          <h4 className="font-semibold text-gray-900 mb-2">Signature</h4>
+          <CodeBlock code={`function wXNTToAtomicUnits(wXNT: number | string): string`} language="typescript" />
+
+          <h4 className="font-semibold text-gray-900 mb-2 mt-4">Example</h4>
+          <CodeBlock code={`import { wXNTToAtomicUnits } from "@x1pays/client";
+
+wXNTToAtomicUnits(0.001)      // "1000"
+wXNTToAtomicUnits("0.000001") // "1"
+wXNTToAtomicUnits(1.5)        // "1500000"
+
+// Throws error if >6 decimal places
+wXNTToAtomicUnits(0.1234567)  // Error: too many decimal places
+
+// Throws error if amount too small
+wXNTToAtomicUnits(0.0000001)  // Error: min 0.000001 wXNT`} language="typescript" />
+        </div>
+
+        <div className="mb-10 border border-gray-200 rounded-lg p-6">
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">atomicUnitsToWXNT()</h3>
+          <p className="text-gray-700 mb-4">Convert atomic units to wXNT amount (6 decimals).</p>
+          
+          <h4 className="font-semibold text-gray-900 mb-2">Signature</h4>
+          <CodeBlock code={`function atomicUnitsToWXNT(atomicUnits: string | number): number`} language="typescript" />
+
+          <h4 className="font-semibold text-gray-900 mb-2 mt-4">Example</h4>
+          <CodeBlock code={`import { atomicUnitsToWXNT } from "@x1pays/client";
+
+atomicUnitsToWXNT("1000")      // 0.001
+atomicUnitsToWXNT("1")         // 0.000001
+atomicUnitsToWXNT(1500000)     // 1.5`} language="typescript" />
+        </div>
+
+        <div className="mb-10 border border-gray-200 rounded-lg p-6">
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">formatWXNT()</h3>
+          <p className="text-gray-700 mb-4">Format atomic units as human-readable wXNT string.</p>
+          
+          <h4 className="font-semibold text-gray-900 mb-2">Signature</h4>
+          <CodeBlock code={`function formatWXNT(atomicUnits: string | number): string`} language="typescript" />
+
+          <h4 className="font-semibold text-gray-900 mb-2 mt-4">Example</h4>
+          <CodeBlock code={`import { formatWXNT } from "@x1pays/client";
+
+formatWXNT("1000")      // "0.001 wXNT"
+formatWXNT("1")         // "0.000001 wXNT"
+formatWXNT(1500000)     // "1.5 wXNT"`} language="typescript" />
+        </div>
+
+        <div className="mb-10 border border-gray-200 rounded-lg p-6">
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">isValidAmount()</h3>
+          <p className="text-gray-700 mb-4">Validate atomic units amount (must be positive integer).</p>
+          
+          <h4 className="font-semibold text-gray-900 mb-2">Signature</h4>
+          <CodeBlock code={`function isValidAmount(amount: string | number): boolean`} language="typescript" />
+
+          <h4 className="font-semibold text-gray-900 mb-2 mt-4">Example</h4>
+          <CodeBlock code={`import { isValidAmount } from "@x1pays/client";
+
+isValidAmount("1000")     // true
+isValidAmount(1000)       // true
+isValidAmount("1.5")      // false (no decimals allowed)
+isValidAmount(-100)       // false (must be positive)`} language="typescript" />
         </div>
       </div>
 
