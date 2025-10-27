@@ -2,7 +2,14 @@
 export * from './types.js';
 
 // Export utilities
-export { signPayment, X402Error } from './utils.js';
+export { 
+  signPayment, 
+  X402Error,
+  wXNTToAtomicUnits,
+  atomicUnitsToWXNT,
+  formatWXNT,
+  isValidAmount 
+} from './utils.js';
 
 // Export axios client
 export { x402Client, type X402AxiosConfig } from './axios.js';

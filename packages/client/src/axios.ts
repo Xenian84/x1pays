@@ -4,6 +4,7 @@ import { signPayment, X402Error } from './utils.js';
 
 export interface X402AxiosConfig extends AxiosRequestConfig {
   wallet: WalletSigner;
+  maxPaymentAmount?: string;  // Max amount willing to pay (atomic units)
   retry?: {
     maxRetries?: number;
     retryDelay?: number;
@@ -17,6 +18,7 @@ export async function x402Client<T = any>(
 ): Promise<X402Response<T>> {
   const {
     wallet,
+    maxPaymentAmount,
     retry = {},
     paymentTimeout = 10000,
     ...axiosConfig
@@ -65,12 +67,27 @@ export async function x402Client<T = any>(
     const accept = requirement.accepts[0];
 
     // Create payment
+    const paymentAmount = accept.maxAmountRequired || '1000';
+    
+    // Check max payment amount safety limit
+    if (maxPaymentAmount) {
+      const requestedAmount = parseInt(paymentAmount, 10);
+      const maxAllowed = parseInt(maxPaymentAmount, 10);
+      if (requestedAmount > maxAllowed) {
+        throw new X402Error(
+          `Payment amount ${paymentAmount} exceeds max allowed ${maxPaymentAmount}`,
+          402,
+          { requestedAmount, maxAllowed }
+        );
+      }
+    }
+    
     const unsignedPayment = {
       scheme: accept.scheme,
       network: accept.network,
       payTo: accept.payTo,
       asset: accept.asset,
-      amount: accept.maxAmountRequired || '1000',
+      amount: paymentAmount,
       memo: null
     };
 

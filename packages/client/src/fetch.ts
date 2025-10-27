@@ -3,6 +3,7 @@ import { signPayment, X402Error } from './utils.js';
 
 export interface X402FetchConfig extends RequestInit {
   wallet: WalletSigner;
+  maxPaymentAmount?: string;  // Max amount willing to pay (atomic units)
   paymentTimeout?: number;
 }
 
@@ -10,7 +11,7 @@ export async function fetchX402(
   url: string | URL,
   config: X402FetchConfig
 ): Promise<Response & { x402Payment?: PaymentResponse }> {
-  const { wallet, paymentTimeout = 10000, ...fetchConfig } = config;
+  const { wallet, maxPaymentAmount, paymentTimeout = 10000, ...fetchConfig } = config;
 
   // First request - expect 402 Payment Required
   let response = await fetch(url, fetchConfig);
@@ -35,12 +36,27 @@ export async function fetchX402(
   const accept = requirement.accepts[0];
 
   // Create payment
+  const paymentAmount = accept.maxAmountRequired || '1000';
+  
+  // Check max payment amount safety limit
+  if (maxPaymentAmount) {
+    const requestedAmount = parseInt(paymentAmount, 10);
+    const maxAllowed = parseInt(maxPaymentAmount, 10);
+    if (requestedAmount > maxAllowed) {
+      throw new X402Error(
+        `Payment amount ${paymentAmount} exceeds max allowed ${maxPaymentAmount}`,
+        402,
+        { requestedAmount, maxAllowed }
+      );
+    }
+  }
+  
   const unsignedPayment = {
     scheme: accept.scheme,
     network: accept.network,
     payTo: accept.payTo,
     asset: accept.asset,
-    amount: accept.maxAmountRequired || '1000',
+    amount: paymentAmount,
     memo: null
   };
 
