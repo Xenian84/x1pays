@@ -7,28 +7,33 @@ const Examples = () => {
     nodejs: {
       title: 'Node.js / TypeScript',
       icon: '🟢',
-      code: `import { PaymentClient } from '@x1pays/client'
-import { Wallet } from '@x1pays/wallet'
+      code: `import { x402Client } from '@x1pays/client/axios'
+import { Keypair } from '@solana/web3.js'
+import fs from 'fs'
 
-// Initialize client
-const client = new PaymentClient({
-  apiUrl: 'https://api.yourapp.com'
-})
-
-// Create wallet from private key
-const wallet = new Wallet(process.env.PRIVATE_KEY!)
+// Load wallet from secret key file
+const secretKey = JSON.parse(
+  fs.readFileSync('./wallet-secret.json', 'utf-8')
+)
+const wallet = Keypair.fromSecretKey(new Uint8Array(secretKey))
 
 // Make a paid request
 async function fetchPremiumData() {
   try {
-    const response = await client.request({
-      url: '/api/premium/data',
+    const response = await x402Client({
+      url: 'https://api.yourapp.com/premium/data',
       method: 'GET',
-      wallet: wallet // Auto-pays if needed
+      wallet: wallet,
+      retry: {
+        maxRetries: 3,
+        retryDelay: 1000
+      }
     })
     
     console.log('Premium data:', response.data)
     console.log('Payment TX:', response.payment?.txHash)
+    console.log('Amount paid:', response.payment?.amount)
+    console.log('Simulated:', response.payment?.simulated)
   } catch (error) {
     console.error('Request failed:', error)
   }
@@ -36,102 +41,167 @@ async function fetchPremiumData() {
 
 fetchPremiumData()`
     },
+    fetch: {
+      title: 'Native Fetch API',
+      icon: '🌐',
+      code: `import { fetchX402JSON } from '@x1pays/client/fetch'
+import { Keypair } from '@solana/web3.js'
+
+// Load wallet
+const wallet = Keypair.fromSecretKey(secretKeyBytes)
+
+// Make paid request with automatic JSON parsing
+async function getPremiumData() {
+  try {
+    const response = await fetchX402JSON(
+      'https://api.yourapp.com/premium/data',
+      { 
+        method: 'GET',
+        wallet: wallet 
+      }
+    )
+    
+    console.log('Data:', response.data)
+    console.log('Payment:', response.payment)
+  } catch (error) {
+    console.error('Failed:', error)
+  }
+}
+
+// Or use fetchX402() for raw Response object
+import { fetchX402 } from '@x1pays/client/fetch'
+
+async function getPremiumDataRaw() {
+  const response = await fetchX402(url, { wallet, method: 'GET' })
+  const data = await response.json()
+  console.log('Payment info:', response.x402Payment)
+  return data
+}
+
+getPremiumData()`
+    },
     python: {
       title: 'Python',
       icon: '🐍',
       code: `import requests
 import json
 from nacl.signing import SigningKey
-from nacl.encoding import Base64Encoder
+import base58
 import time
 
 class X402Client:
-    def __init__(self, api_url, private_key_hex):
-        self.api_url = api_url
-        self.signing_key = SigningKey(bytes.fromhex(private_key_hex))
+    def __init__(self, wallet_secret_key_hex):
+        """Initialize with ed25519 secret key (64 bytes hex)"""
+        self.signing_key = SigningKey(bytes.fromhex(wallet_secret_key_hex))
+        self.public_key = self.signing_key.verify_key.encode().hex()
         
-    def make_request(self, endpoint):
-        url = f"{self.api_url}{endpoint}"
-        
-        # First request to get payment details
+    def make_request(self, url):
+        """Make x402-enabled request"""
+        # Step 1: Try request (will get 402)
         response = requests.get(url)
         
-        if response.status_code == 402:
-            # Payment required
-            payment_info = response.json()
-            
-            # Create payment
-            payment = {
-                'from': self.signing_key.verify_key.encode().hex(),
-                'to': payment_info['recipient'],
-                'amount': payment_info['amount'],
-                'timestamp': int(time.time() * 1000)
-            }
-            
-            # Sign payment
-            message = json.dumps(payment, separators=(',', ':')).encode()
-            signature = self.signing_key.sign(message).signature
-            sig_b64 = Base64Encoder.encode(signature).decode()
-            
-            # Retry with payment
-            headers = {
-                'X-Payment': json.dumps({
-                    **payment,
-                    'signature': sig_b64
-                })
-            }
-            
-            response = requests.get(url, headers=headers)
+        if response.status_code != 402:
+            return response.json()
+        
+        # Step 2: Parse payment requirement
+        payment_req_header = response.headers.get('X-Payment-Required')
+        requirement = json.loads(payment_req_header)
+        accept = requirement['accepts'][0]
+        
+        # Step 3: Create payment payload
+        payment = {
+            'scheme': accept['scheme'],
+            'network': accept['network'],
+            'payTo': accept['payTo'],
+            'asset': accept['asset'],
+            'amount': accept['maxAmountRequired'],
+            'buyer': self.public_key,
+            'memo': None
+        }
+        
+        # Step 4: Sign payment
+        message = json.dumps(payment, separators=(',', ':')).encode()
+        signature = self.signing_key.sign(message).signature
+        payment['signature'] = base58.b58encode(signature).decode()
+        
+        # Step 5: Verify with facilitator
+        facilitator_url = accept['facilitatorUrl']
+        verify_resp = requests.post(
+            f"{facilitator_url}/verify",
+            json=payment
+        )
+        
+        if not verify_resp.json()['valid']:
+            raise Exception('Payment verification failed')
+        
+        # Step 6: Settle payment
+        settle_resp = requests.post(
+            f"{facilitator_url}/settle",
+            json=payment
+        )
+        settlement = settle_resp.json()
+        
+        # Step 7: Retry with payment proof
+        payment['txHash'] = settlement['txHash']
+        headers = {'X-Payment': json.dumps(payment)}
+        response = requests.get(url, headers=headers)
         
         return response.json()
 
 # Usage
-client = X402Client(
-    api_url='https://api.yourapp.com',
-    private_key_hex='your_private_key_hex'
-)
-
-data = client.make_request('/api/premium/data')
+client = X402Client(wallet_secret_key_hex='your_64_byte_hex_key')
+data = client.make_request('https://api.yourapp.com/premium/data')
 print(data)`
     },
     curl: {
-      title: 'cURL',
+      title: 'cURL (Manual)',
       icon: '📡',
       code: `# Step 1: Try to access endpoint (will get 402)
-curl -i https://api.yourapp.com/api/premium/data
+curl -i https://api.yourapp.com/premium/data
 
 # Response:
 # HTTP/1.1 402 Payment Required
-# {
-#   "recipient": "MERCHANT_WALLET_ADDRESS",
-#   "amount": "100"
+# X-Payment-Required: {
+#   "accepts": [{
+#     "scheme": "exact",
+#     "network": "x1-mainnet",
+#     "payTo": "MERCHANT_WALLET",
+#     "asset": "WXNT_MINT",
+#     "maxAmountRequired": "1000",
+#     "facilitatorUrl": "https://facilitator.x1pays.xyz"
+#   }],
+#   "x402Version": 1
 # }
 
-# Step 2: Create and sign payment (use your preferred signing tool)
-# Payment object:
+# Step 2: Create payment payload
 PAYMENT='{
-  "from": "YOUR_WALLET_ADDRESS",
-  "to": "MERCHANT_WALLET_ADDRESS",
-  "amount": "100",
-  "timestamp": 1234567890000,
-  "signature": "BASE64_SIGNATURE_HERE"
+  "scheme": "exact",
+  "network": "x1-mainnet",
+  "payTo": "MERCHANT_WALLET",
+  "asset": "WXNT_MINT",
+  "amount": "1000",
+  "buyer": "YOUR_PUBKEY",
+  "signature": "BASE58_ED25519_SIGNATURE",
+  "memo": null
 }'
 
-# Step 3: Make request with payment header
-curl -H "X-Payment: $PAYMENT" \\
-     https://api.yourapp.com/api/premium/data
+# Step 3: Verify payment with facilitator
+curl -X POST https://facilitator.x1pays.xyz/verify \\
+  -H "Content-Type: application/json" \\
+  -d "$PAYMENT"
 
-# Response:
-# {
-#   "ok": true,
-#   "service": "x1pays-premium",
-#   "paidTx": "TRANSACTION_HASH",
-#   "payment": {
-#     "txHash": "TRANSACTION_HASH",
-#     "amount": "100",
-#     "simulated": true
-#   }
-# }`
+# Step 4: Settle payment with facilitator
+curl -X POST https://facilitator.x1pays.xyz/settle \\
+  -H "Content-Type: application/json" \\
+  -d "$PAYMENT"
+
+# Response: {"txHash": "SIM_ABC123...", "amount": "1000", "simulated": true}
+
+# Step 5: Retry request with payment proof
+curl -H "X-Payment: $PAYMENT" \\
+     https://api.yourapp.com/premium/data
+
+# Success! You get the data`
     },
     express: {
       title: 'Express.js Server',
@@ -141,12 +211,6 @@ import { x402Middleware } from '@x1pays/middleware'
 
 const app = express()
 
-// Configure x402 middleware
-const paymentMiddleware = x402Middleware({
-  facilitatorUrl: process.env.FACILITATOR_URL!,
-  merchantWallet: process.env.MERCHANT_WALLET!
-})
-
 // Public endpoints (no payment required)
 app.get('/api/public/hello', (req, res) => {
   res.json({ message: 'This is free!' })
@@ -154,90 +218,128 @@ app.get('/api/public/hello', (req, res) => {
 
 // Premium endpoints (payment required)
 app.get('/api/premium/data',
-  paymentMiddleware,
+  x402Middleware({
+    facilitatorUrl: process.env.FACILITATOR_URL!,
+    network: 'x1-mainnet',
+    payToAddress: process.env.MERCHANT_WALLET!,
+    tokenMint: process.env.WXNT_MINT!,
+    amount: '1000'  // 0.001 wXNT
+  }),
   (req, res) => {
-    // Payment verified - user paid to access this
-    const txHash = res.locals.txHash
+    // Payment verified! Access payment details
+    const payment = (req as any).x402Payment
     
     res.json({
       data: 'Premium content here',
-      paidTx: txHash,
       payment: {
-        txHash: res.locals.txHash,
-        amount: res.locals.amount,
-        simulated: res.locals.simulated
+        txHash: payment.txHash,
+        amount: payment.amount,
+        simulated: payment.simulated
       }
     })
   }
 )
 
-// Start server
+// Dynamic pricing example
+app.get('/api/premium/custom',
+  x402Middleware({
+    facilitatorUrl: process.env.FACILITATOR_URL!,
+    network: 'x1-mainnet',
+    payToAddress: process.env.MERCHANT_WALLET!,
+    tokenMint: process.env.WXNT_MINT!,
+    amount: '1000',
+    getDynamicAmount: async (req) => {
+      // Custom pricing logic
+      const tier = req.query.tier
+      return tier === 'premium' ? '5000' : '1000'
+    }
+  }),
+  (req, res) => {
+    res.json({ data: 'Custom priced content' })
+  }
+)
+
 app.listen(3000, () => {
-  console.log('Server with x402 running on port 3000')
+  console.log('x402-enabled server running on port 3000')
 })`
     },
-    react: {
-      title: 'React Frontend',
-      icon: '⚛️',
-      code: `import { useState } from 'react'
-import { PaymentClient } from '@x1pays/client'
-import { useWallet } from '@x1pays/react-hooks'
+    hono: {
+      title: 'Hono (Edge)',
+      icon: '🔥',
+      code: `import { Hono } from 'hono'
+import { x402 } from '@x1pays/middleware/hono'
 
-function PremiumContent() {
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const { wallet, connect } = useWallet()
-  
-  const client = new PaymentClient({
-    apiUrl: 'https://api.yourapp.com'
-  })
-  
-  const fetchPremiumData = async () => {
-    if (!wallet) {
-      await connect()
-      return
-    }
+const app = new Hono()
+
+// Public route
+app.get('/public', (c) => {
+  return c.json({ message: 'Free content' })
+})
+
+// Paid route with x402 middleware
+app.get('/premium', 
+  x402({
+    facilitatorUrl: process.env.FACILITATOR_URL!,
+    network: 'x1-mainnet',
+    payToAddress: process.env.MERCHANT_WALLET!,
+    tokenMint: process.env.WXNT_MINT!,
+    amount: '1000'
+  }),
+  (c) => {
+    // Payment verified!
+    const payment = c.get('x402Payment')
     
-    setLoading(true)
-    try {
-      const response = await client.request({
-        url: '/api/premium/data',
-        wallet: wallet
-      })
-      
-      setData(response.data)
-      
-      // Show payment confirmation
-      alert(\`Paid! TX: \${response.payment.txHash}\`)
-    } catch (error) {
-      console.error('Failed to fetch:', error)
-    } finally {
-      setLoading(false)
-    }
+    return c.json({ 
+      data: 'Premium content',
+      payment: payment
+    })
   }
-  
-  return (
-    <div>
-      <h2>Premium Content</h2>
-      {!wallet ? (
-        <button onClick={connect}>Connect Wallet</button>
-      ) : (
-        <button onClick={fetchPremiumData} disabled={loading}>
-          {loading ? 'Loading...' : 'Get Premium Data (100 wXNT)'}
-        </button>
-      )}
-      
-      {data && (
-        <div>
-          <h3>Your Premium Data:</h3>
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-        </div>
-      )}
-    </div>
-  )
-}
+)
 
-export default PremiumContent`
+export default app`
+    },
+    nextjs: {
+      title: 'Next.js API Route',
+      icon: '▲',
+      code: `// pages/api/premium/data.ts
+import { x402Handler } from '@x1pays/middleware/nextjs'
+
+export default x402Handler({
+  facilitatorUrl: process.env.FACILITATOR_URL!,
+  network: 'x1-mainnet',
+  payToAddress: process.env.MERCHANT_WALLET!,
+  tokenMint: process.env.WXNT_MINT!,
+  amount: '1000',
+  handler: async (req, res) => {
+    // Payment verified! Access payment info
+    const payment = req.x402Payment
+    
+    res.status(200).json({
+      data: 'Premium content from Next.js',
+      payment: {
+        txHash: payment?.txHash,
+        amount: payment?.amount,
+        simulated: payment?.simulated
+      }
+    })
+  }
+})
+
+// With dynamic pricing
+export const dynamicPricing = x402Handler({
+  facilitatorUrl: process.env.FACILITATOR_URL!,
+  network: 'x1-mainnet',
+  payToAddress: process.env.MERCHANT_WALLET!,
+  tokenMint: process.env.WXNT_MINT!,
+  amount: '1000',
+  getDynamicAmount: async (req) => {
+    const premium = req.query.premium === 'true'
+    return premium ? '5000' : '1000'
+  },
+  handler: async (req, res) => {
+    res.status(200).json({ data: 'content' })
+  }
+})`
     }
   }
 
@@ -248,15 +350,15 @@ export default PremiumContent`
       <div className="mb-12">
         <h1 className="text-4xl font-bold mb-4">Integration Examples</h1>
         <p className="text-xl text-gray-600">
-          Real-world code examples showing how to integrate x402 payments
+          Real-world code examples using our actual @x1pays packages
         </p>
       </div>
 
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-        <h3 className="font-semibold text-blue-900 mb-2">💡 Quick Start</h3>
+        <h3 className="font-semibold text-blue-900 mb-2">💡 All Examples Use Real APIs</h3>
         <p className="text-blue-800 text-sm">
-          These examples show both client-side (making paid requests) and server-side (accepting payments).
-          Choose the language that matches your stack and follow along!
+          These examples use the actual <code className="bg-blue-100 px-1 rounded">@x1pays/client</code> and <code className="bg-blue-100 px-1 rounded">@x1pays/middleware</code> packages.
+          Copy and paste directly into your project!
         </p>
       </div>
 
@@ -302,30 +404,30 @@ export default PremiumContent`
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
         <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-3">📚 Client-Side Integration</h3>
+          <h3 className="text-xl font-semibold mb-3">📚 Client-Side (Making Paid Requests)</h3>
           <p className="text-gray-600 mb-4">
-            Users making requests to x402-enabled APIs need to:
+            Use <code className="bg-gray-100 px-1 rounded">@x1pays/client</code> to make requests:
           </p>
-          <ol className="list-decimal list-inside space-y-2 text-gray-700">
-            <li>Attempt the API request</li>
-            <li>Receive HTTP 402 with payment details</li>
-            <li>Sign payment with wallet private key</li>
-            <li>Retry request with X-Payment header</li>
-            <li>Receive data + payment confirmation</li>
+          <ol className="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+            <li>Install: <code className="bg-gray-100 px-1 rounded text-xs">pnpm add @x1pays/client</code></li>
+            <li>Import x402Client (Axios) or fetchX402 (Fetch)</li>
+            <li>Provide your Solana wallet/keypair</li>
+            <li>Make requests - payment happens automatically!</li>
+            <li>Access response.data and response.payment</li>
           </ol>
         </div>
 
         <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-3">🔧 Server-Side Integration</h3>
+          <h3 className="text-xl font-semibold mb-3">🔧 Server-Side (Accepting Payments)</h3>
           <p className="text-gray-600 mb-4">
-            APIs accepting x402 payments need to:
+            Use <code className="bg-gray-100 px-1 rounded">@x1pays/middleware</code> on your API:
           </p>
-          <ol className="list-decimal list-inside space-y-2 text-gray-700">
-            <li>Apply x402 middleware to premium routes</li>
-            <li>Configure merchant wallet address</li>
-            <li>Set price per endpoint (amount required)</li>
-            <li>Let middleware handle verification/settlement</li>
-            <li>Access payment details from res.locals</li>
+          <ol className="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+            <li>Install: <code className="bg-gray-100 px-1 rounded text-xs">pnpm add @x1pays/middleware</code></li>
+            <li>Choose: Express, Hono, Fastify, or Next.js</li>
+            <li>Configure facilitator URL and merchant wallet</li>
+            <li>Set amount per endpoint (in atomic units)</li>
+            <li>Middleware handles verify + settle automatically</li>
           </ol>
         </div>
       </div>
@@ -335,62 +437,62 @@ export default PremiumContent`
           <div className="text-3xl mb-3">✅</div>
           <h4 className="font-semibold mb-2">Best Practices</h4>
           <ul className="text-sm text-gray-700 space-y-1">
-            <li>• Use simulation mode for testing</li>
-            <li>• Cache wallet signatures securely</li>
-            <li>• Handle 402 responses gracefully</li>
-            <li>• Log transaction hashes for records</li>
+            <li>• Use MVP/simulated mode for testing</li>
+            <li>• Store wallet keys in environment variables</li>
             <li>• Set reasonable payment amounts</li>
+            <li>• Log transaction hashes for records</li>
+            <li>• Test with small amounts first</li>
           </ul>
         </div>
 
         <div className="bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-6">
           <div className="text-3xl mb-3">⚠️</div>
-          <h4 className="font-semibold mb-2">Common Pitfalls</h4>
+          <h4 className="font-semibold mb-2">Common Mistakes</h4>
           <ul className="text-sm text-gray-700 space-y-1">
-            <li>• Not checking env variables</li>
-            <li>• Reusing old signatures</li>
-            <li>• Wrong signature encoding</li>
-            <li>• Forgetting middleware order</li>
-            <li>• Missing CORS headers</li>
+            <li>• Missing facilitatorUrl in config</li>
+            <li>• Wrong package names (@x1pays not @x402)</li>
+            <li>• Using bs58.encode() instead of base58</li>
+            <li>• Forgetting to await signPayment()</li>
+            <li>• Not checking environment variables</li>
           </ul>
         </div>
 
         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg p-6">
           <div className="text-3xl mb-3">🔒</div>
-          <h4 className="font-semibold mb-2">Security Notes</h4>
+          <h4 className="font-semibold mb-2">Security</h4>
           <ul className="text-sm text-gray-700 space-y-1">
-            <li>• Never expose private keys</li>
-            <li>• Validate payment amounts</li>
+            <li>• Never commit private keys to git</li>
+            <li>• Use .env files for secrets</li>
+            <li>• Verify signatures on server-side</li>
             <li>• Use HTTPS in production</li>
-            <li>• Verify signatures server-side</li>
-            <li>• Rate limit your endpoints</li>
+            <li>• Validate payment amounts match</li>
           </ul>
         </div>
       </div>
 
       <div className="mt-12 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg p-8 text-center">
-        <h3 className="text-2xl font-bold mb-3">Need More Help?</h3>
+        <h3 className="text-2xl font-bold mb-3">Ready to Integrate?</h3>
         <p className="mb-6 text-indigo-100">
-          Check out our complete API reference and documentation for detailed guides.
+          Check out our complete API reference and quickstart guides.
         </p>
         <div className="flex gap-4 justify-center flex-wrap">
           <a
             href="/docs/api-reference"
             className="px-6 py-3 bg-white text-indigo-600 rounded-lg font-medium hover:bg-indigo-50 transition-colors"
           >
-            API Reference
+            Complete API Reference
           </a>
           <a
             href="/docs/getting-started"
             className="px-6 py-3 bg-indigo-700 text-white border-2 border-white rounded-lg font-medium hover:bg-indigo-800 transition-colors"
           >
-            Getting Started Guide
+            Getting Started
           </a>
           <a
-            href="/troubleshooting"
+            href="/facilitator"
             className="px-6 py-3 bg-purple-700 text-white rounded-lg font-medium hover:bg-purple-800 transition-colors"
           >
-            Troubleshooting
+            Server Setup Guide
           </a>
         </div>
       </div>
