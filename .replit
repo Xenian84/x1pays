@@ -12,19 +12,19 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Dev Server"
+args = "Website"
 
 [[workflows.workflow]]
-name = "Dev Server"
+name = "Website"
 author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "pnpm dev"
+args = "pnpm dev:web"
 waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
 
 [[ports]]
 localPort = 3000
@@ -39,16 +39,8 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 5001
-externalPort = 3003
-
-[[ports]]
 localPort = 33573
 externalPort = 3002
-
-[[ports]]
-localPort = 34215
-externalPort = 4200
 
 [[ports]]
 localPort = 40561
