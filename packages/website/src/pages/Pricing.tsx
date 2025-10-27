@@ -61,8 +61,8 @@ const Pricing = () => {
         </Typography>
       </Stack>
 
-      <Grid container spacing={3} sx={{ mb: 10 }}>
-        <Grid size={{ xs: 12, lg: 4 }}>
+      <Grid container spacing={3} sx={{ mb: 10, mt: 3, overflow: 'visible' }}>
+        <Grid size={{ xs: 12, lg: 4 }} sx={{ overflow: 'visible' }}>
           <Card
             elevation={0}
             
@@ -70,6 +70,7 @@ const Pricing = () => {
               border: '1px solid',
               borderColor: 'primary.dark',
               height: '100%',
+              overflow: 'visible',
               '&:hover': {
                 borderColor: 'primary.main',
                 transform: 'translateY(-4px)',
@@ -114,7 +115,7 @@ const Pricing = () => {
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 12, lg: 4 }}>
+        <Grid size={{ xs: 12, lg: 4 }} sx={{ overflow: 'visible' }}>
           <Card
             elevation={0}
             
@@ -124,6 +125,7 @@ const Pricing = () => {
               border: '2px solid',
               borderColor: 'primary.light',
               height: '100%',
+              overflow: 'visible',
               transform: { lg: 'scale(1.05)' },
               '&:hover': {
                 transform: { lg: 'scale(1.07)' },
@@ -207,7 +209,7 @@ const Pricing = () => {
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 12, lg: 4 }}>
+        <Grid size={{ xs: 12, lg: 4 }} sx={{ overflow: 'visible' }}>
           <Card
             elevation={0}
             
@@ -215,6 +217,7 @@ const Pricing = () => {
               border: '1px solid',
               borderColor: 'warning.dark',
               height: '100%',
+              overflow: 'visible',
               '&:hover': {
                 borderColor: 'warning.main',
                 transform: 'translateY(-4px)',
