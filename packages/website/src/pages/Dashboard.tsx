@@ -92,10 +92,10 @@ const Dashboard = () => {
       color: 'bg-purple-50 border-purple-200'
     },
     {
-      title: 'Treasury Balance',
-      value: stats?.treasuryBalance || '0',
-      subtitle: 'Protocol fees collected',
-      icon: '🏦',
+      title: 'Active Merchants',
+      value: stats?.merchantCount.toLocaleString() || '0',
+      subtitle: 'Using X1Pays',
+      icon: '🏪',
       color: 'bg-indigo-50 border-indigo-200'
     }
   ]
@@ -153,7 +153,7 @@ const Dashboard = () => {
             </div>
             <div className="flex justify-between items-center py-3">
               <span className="text-gray-600">Protocol Fee</span>
-              <span className="text-2xl font-bold text-indigo-600">1%</span>
+              <span className="text-2xl font-bold text-green-600">0%</span>
             </div>
           </div>
         </div>
