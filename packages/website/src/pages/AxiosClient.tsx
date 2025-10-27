@@ -220,32 +220,38 @@ async function getPremiumData() {
           </div>
         </section>
 
-        {/* Reusable Client Instance */}
+        {/* Multiple Requests */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Reusable Client Instance</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Multiple Requests</h2>
           <p className="text-gray-700 mb-4">
-            Create a configured client instance for reuse:
+            Make multiple paid requests to the same API:
           </p>
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <pre className="text-sm text-gray-300">
-{`import { createX402Client } from '@x1pays/x402-client'
+{`import { x402Client } from '@x1pays/client/axios'
 
-// Create configured instance
-const apiClient = createX402Client({
-  baseURL: 'https://api.example.com',
+const baseConfig = {
   wallet: wallet,
   headers: {
     'X-Client-Version': '1.0.0'
   }
+}
+
+// Make multiple requests
+const userData = await x402Client({
+  ...baseConfig,
+  url: 'https://api.example.com/users/me',
+  method: 'GET'
 })
 
-// Make requests with the instance
-const userData = await apiClient.get('/users/me')
-const analytics = await apiClient.post('/analytics', { 
-  event: 'page_view' 
+const analytics = await x402Client({
+  ...baseConfig,
+  url: 'https://api.example.com/analytics',
+  method: 'POST',
+  data: { event: 'page_view' }
 })
 
-// All requests automatically handle x402 payments`}
+// Each request automatically handles x402 payments`}
             </pre>
           </div>
         </section>
@@ -259,7 +265,7 @@ const analytics = await apiClient.post('/analytics', {
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <pre className="text-sm text-gray-300">
 {`import { useState, useEffect } from 'react'
-import { x402Client } from '@x1pays/x402-client'
+import { x402Client } from '@x1pays/client/axios'
 
 function PremiumContent({ wallet }) {
   const [data, setData] = useState(null)
@@ -273,6 +279,7 @@ function PremiumContent({ wallet }) {
     try {
       const response = await x402Client({
         url: 'https://api.example.com/premium/data',
+        method: 'GET',
         wallet: wallet
       })
       

@@ -242,10 +242,11 @@ curl -v http://localhost:3000/api/premium/data
           </p>
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <pre className="text-sm text-gray-300">
-{`import { x402Client } from '@x1pays/x402-client'
+{`import { x402Client } from '@x1pays/client/axios'
 
 const response = await x402Client({
   url: 'http://localhost:3000/api/premium/data',
+  method: 'GET',
   wallet: myWallet
 })
 

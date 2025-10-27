@@ -103,10 +103,15 @@ class X402Client:
         if response.status_code != 402:
             return response.json()
         
-        # Step 2: Parse payment requirement
+        # Step 2: Parse payment requirement and choose lowest price
         payment_req_header = response.headers.get('X-Payment-Required')
         requirement = json.loads(payment_req_header)
-        accept = requirement['accepts'][0]
+        
+        # Choose the lowest-priced accept option
+        accept = min(
+            requirement['accepts'],
+            key=lambda a: int(a['maxAmountRequired'])
+        )
         
         # Step 3: Create payment payload
         payment = {

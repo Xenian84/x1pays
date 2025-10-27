@@ -206,24 +206,24 @@ const result = await response.json()`}
           </p>
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <pre className="text-sm text-gray-300">
-{`// index.html - include via CDN
-<script src="https://unpkg.com/@x1pays/fetch-x402/dist/browser.js"></script>
+{`import { fetchX402JSON } from '@x1pays/client/fetch'
 
-// app.js
 async function fetchPremiumData() {
   // Connect wallet
   const wallet = window.solana
   await wallet.connect()
   
   // Make paid request
-  const response = await window.fetchX402(
+  const response = await fetchX402JSON(
     'https://api.example.com/premium/data',
-    { wallet }
+    { 
+      method: 'GET',
+      wallet 
+    }
   )
   
-  const data = await response.json()
   document.getElementById('result').textContent = 
-    JSON.stringify(data, null, 2)
+    JSON.stringify(response.data, null, 2)
 }`}
             </pre>
           </div>
@@ -238,7 +238,7 @@ async function fetchPremiumData() {
           <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
             <pre className="text-sm text-gray-300">
 {`import { useState, useCallback } from 'react'
-import { fetchX402 } from '@x1pays/fetch-x402'
+import { fetchX402JSON } from '@x1pays/client/fetch'
 
 function usePaidFetch() {
   const [loading, setLoading] = useState(false)
@@ -249,16 +249,13 @@ function usePaidFetch() {
     setError(null)
     
     try {
-      const response = await fetchX402(url, {
+      const response = await fetchX402JSON(url, {
+        method: 'GET',
         ...options,
         wallet
       })
       
-      if (!response.ok) {
-        throw new Error(\`HTTP \${response.status}\`)
-      }
-      
-      return await response.json()
+      return response.data
     } catch (err) {
       setError(err.message)
       throw err
