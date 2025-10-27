@@ -1,0 +1,46 @@
+{
+  "name": "@x1pays/client",
+  "version": "0.1.0",
+  "description": "x402 payment client libraries for Axios and Fetch API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./axios": {
+      "types": "./dist/axios.d.ts",
+      "import": "./dist/axios.js",
+      "require": "./dist/axios.js"
+    },
+    "./fetch": {
+      "types": "./dist/fetch.d.ts",
+      "import": "./dist/fetch.js",
+      "require": "./dist/fetch.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "keywords": ["x402", "payments", "client", "x1", "blockchain", "axios", "fetch"],
+  "author": "X1Pays",
+  "license": "MIT",
+  "peerDependencies": {
+    "axios": "^1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "axios": {
+      "optional": true
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "axios": "^1.7.9",
+    "typescript": "^5.7.2"
+  }
+}
