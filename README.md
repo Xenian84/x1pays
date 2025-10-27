@@ -169,6 +169,46 @@ Visit:
 pnpm build
 ```
 
+## 🌐 Mainnet Deployment
+
+X1Pays is configured to connect to **X1 Mainnet** by default.
+
+### RPC Connection Status
+
+**X1 Mainnet RPC:** `https://rpc.mainnet.x1.xyz`
+- ✅ **Status:** Online and operational
+- **Solana Version:** 2.2.17
+- **Current Slot:** ~4.5M+
+
+### Quick Mainnet Check
+
+Test the RPC connection:
+```bash
+# Using the check script
+./scripts/check-mainnet.sh
+
+# Or manually with curl
+curl -X POST https://rpc.mainnet.x1.xyz \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getVersion"}'
+```
+
+### Production Setup
+
+For a complete guide to deploying on X1 mainnet, see **[MAINNET_SETUP.md](./MAINNET_SETUP.md)**.
+
+Quick checklist:
+1. ✅ Configure `.env` files with mainnet settings
+2. ✅ Deploy wXNT and $XPY token contracts (or use existing)
+3. ✅ Fund fee payer wallet with XNT for gas
+4. ✅ Create wXNT token accounts for merchant and treasury
+5. ✅ Test RPC connectivity
+6. ✅ Run services with `NODE_ENV=production`
+7. ✅ Verify end-to-end payment flow
+8. ✅ Monitor treasury and merchant balances
+
+**⚠️ Security:** Never commit private keys or `.env` files to version control!
+
 ## Usage Examples
 
 ### Unpaid Request (Returns 402)
