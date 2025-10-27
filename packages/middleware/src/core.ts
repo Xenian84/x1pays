@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { X402Config, PaymentPayload, PaymentRequirement, SettlementResponse, VerifyResponse } from './types.js';
 
+// Define error classes locally for now (will migrate to @x1pays/client once published)
 export class X402Error extends Error {
   constructor(
     message: string,
@@ -9,6 +10,55 @@ export class X402Error extends Error {
   ) {
     super(message);
     this.name = 'X402Error';
+  }
+}
+
+export class InvalidSignatureError extends X402Error {
+  constructor(message: string = 'Payment signature is invalid', details?: any) {
+    super(message, 400, details);
+    this.name = 'InvalidSignatureError';
+  }
+}
+
+export class InsufficientFundsError extends X402Error {
+  constructor(message: string = 'Wallet has insufficient funds for payment', details?: any) {
+    super(message, 402, details);
+    this.name = 'InsufficientFundsError';
+  }
+}
+
+export class NetworkError extends X402Error {
+  constructor(message: string = 'Network request failed', details?: any) {
+    super(message, 503, details);
+    this.name = 'NetworkError';
+  }
+}
+
+export class PaymentTimeoutError extends X402Error {
+  constructor(message: string = 'Payment settlement timed out', details?: any) {
+    super(message, 504, details);
+    this.name = 'PaymentTimeoutError';
+  }
+}
+
+export class InvalidAmountError extends X402Error {
+  constructor(message: string = 'Payment amount is invalid', details?: any) {
+    super(message, 400, details);
+    this.name = 'InvalidAmountError';
+  }
+}
+
+export class InvalidNetworkError extends X402Error {
+  constructor(message: string = 'Network is not supported', details?: any) {
+    super(message, 400, details);
+    this.name = 'InvalidNetworkError';
+  }
+}
+
+export class PaymentVerificationError extends X402Error {
+  constructor(message: string = 'Payment verification failed', details?: any) {
+    super(message, 402, details);
+    this.name = 'PaymentVerificationError';
   }
 }
 
@@ -24,9 +74,14 @@ export async function verifyPayment(
     );
     return response.data;
   } catch (error: any) {
-    throw new X402Error(
+    if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT') {
+      throw new NetworkError(
+        `Failed to connect to facilitator: ${error.message}`,
+        { facilitatorUrl, error: error.code }
+      );
+    }
+    throw new PaymentVerificationError(
       `Payment verification failed: ${error.message}`,
-      402,
       error.response?.data
     );
   }
@@ -44,6 +99,18 @@ export async function settlePayment(
     );
     return response.data;
   } catch (error: any) {
+    if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT') {
+      throw new NetworkError(
+        `Failed to connect to facilitator: ${error.message}`,
+        { facilitatorUrl, error: error.code }
+      );
+    }
+    if (error.code === 'ECONNABORTED') {
+      throw new PaymentTimeoutError(
+        'Payment settlement timed out after 20 seconds',
+        { payment }
+      );
+    }
     throw new X402Error(
       `Payment settlement failed: ${error.message}`,
       402,
@@ -57,8 +124,11 @@ export function createPaymentRequirement(
   resource: string,
   amount?: string
 ): PaymentRequirement {
+  // Use constants from client package
+  const X402_VERSION = 1;
+  
   return {
-    x402Version: 1,
+    x402Version: X402_VERSION,
     info: 'X1Pays x402',
     accepts: [{
       scheme: 'exact',
@@ -79,7 +149,9 @@ export function validatePayment(
   requiredAmount?: string
 ): void {
   if (payment.network !== config.network) {
-    throw new X402Error('Invalid network', 402);
+    throw new InvalidNetworkError(
+      `Invalid network. Expected: ${config.network}, Got: ${payment.network}`
+    );
   }
 
   if (payment.payTo !== config.payToAddress) {
@@ -91,14 +163,20 @@ export function validatePayment(
   }
 
   if (requiredAmount) {
-    const required = BigInt(requiredAmount);
-    const provided = BigInt(payment.amount);
-    
-    if (provided < required) {
-      throw new X402Error(
-        `Insufficient payment amount. Required: ${requiredAmount}, Provided: ${payment.amount}`,
-        402
-      );
+    try {
+      const required = BigInt(requiredAmount);
+      const provided = BigInt(payment.amount);
+      
+      if (provided < required) {
+        throw new InsufficientFundsError(
+          `Insufficient payment amount. Required: ${requiredAmount}, Provided: ${payment.amount}`
+        );
+      }
+    } catch (error: any) {
+      if (error.name === 'InsufficientFundsError') {
+        throw error;
+      }
+      throw new InvalidAmountError(`Invalid amount format: ${error.message}`);
     }
   }
 }

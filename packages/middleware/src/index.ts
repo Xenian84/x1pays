@@ -1,8 +1,21 @@
 // Export all types
 export * from './types.js';
 
-// Export core utilities
-export { X402Error, verifyPayment, settlePayment, createPaymentRequirement, validatePayment } from './core.js';
+// Export core utilities and errors
+export { 
+  X402Error,
+  InvalidSignatureError,
+  InsufficientFundsError,
+  NetworkError,
+  PaymentTimeoutError,
+  InvalidAmountError,
+  InvalidNetworkError,
+  PaymentVerificationError,
+  verifyPayment, 
+  settlePayment, 
+  createPaymentRequirement, 
+  validatePayment 
+} from './core.js';
 
 // Export framework middlewares
 export { x402Middleware, default as express } from './express.js';

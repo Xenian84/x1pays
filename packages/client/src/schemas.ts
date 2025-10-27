@@ -60,8 +60,30 @@ export const VerificationResponseSchema = z.object({
   details: z.any().optional(),
 });
 
-// Re-export runtime validated types
-export type PaymentPayload = z.infer<typeof PaymentPayloadSchema>;
-export type PaymentRequirement = z.infer<typeof PaymentRequirementSchema>;
-export type PaymentResponse = z.infer<typeof PaymentResponseSchema>;
-export type VerificationResponse = z.infer<typeof VerificationResponseSchema>;
+/**
+ * Middleware configuration schema
+ */
+export const MiddlewareConfigSchema = z.object({
+  facilitatorUrl: z.string().url('Facilitator URL must be a valid URL'),
+  network: z.enum(['x1-mainnet', 'x1-devnet'], {
+    errorMap: () => ({ message: "Network must be 'x1-mainnet' or 'x1-devnet'" })
+  }),
+  payToAddress: z.string().min(32, 'Payment address must be at least 32 characters'),
+  tokenMint: z.string().min(32, 'Token mint address must be at least 32 characters'),
+  amount: z.string().regex(/^\d+$/, 'Amount must be a positive integer string'),
+  maxPaymentAmount: z.string().regex(/^\d+$/).optional(),
+  getDynamicAmount: z.function().optional(),
+});
+
+/**
+ * Client configuration schema
+ */
+export const ClientConfigSchema = z.object({
+  wallet: z.any(), // WalletSigner type guard validated separately
+  maxPaymentAmount: z.string().regex(/^\d+$/).optional(),
+  timeout: z.number().positive().optional(),
+  paymentTimeout: z.number().positive().optional(),
+});
+
+// Note: Type interfaces are exported from types.ts to avoid duplicate exports
+// These Zod-inferred types match the TypeScript interfaces in types.ts

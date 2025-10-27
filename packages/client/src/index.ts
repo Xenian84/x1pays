@@ -1,10 +1,21 @@
 // Export all types
 export * from './types.js';
 
+// Export constants
+export * from './constants.js';
+
+// Export errors
+export * from './errors.js';
+
+// Export schemas for runtime validation
+export * from './schemas.js';
+
+// Export validators and helpers
+export * from './validators.js';
+
 // Export utilities
 export { 
-  signPayment, 
-  X402Error,
+  signPayment,
   wXNTToAtomicUnits,
   atomicUnitsToWXNT,
   formatWXNT,

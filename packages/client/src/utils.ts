@@ -1,10 +1,14 @@
 import bs58 from 'bs58';
 import type { WalletSigner, PaymentPayload } from './types.js';
+import { assertWalletSigner } from './validators.js';
 
 export async function signPayment(
   payment: Omit<PaymentPayload, 'signature' | 'buyer'>,
   wallet: WalletSigner
 ): Promise<PaymentPayload> {
+  // Validate wallet
+  assertWalletSigner(wallet);
+  
   // Get public key as string
   const publicKey = 'toBase58' in wallet.publicKey
     ? wallet.publicKey.toBase58()
@@ -40,16 +44,8 @@ export async function signPayment(
   };
 }
 
-export class X402Error extends Error {
-  constructor(
-    message: string,
-    public statusCode: number = 402,
-    public details?: any
-  ) {
-    super(message);
-    this.name = 'X402Error';
-  }
-}
+// Re-export errors from errors.ts for backwards compatibility
+export { X402Error } from './errors.js';
 
 /**
  * Convert wXNT amount to atomic units (6 decimals)

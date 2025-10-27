@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "bs58": "^5.0.0",
+    "tweetnacl": "^1.0.3",
     "zod": "^3.22.4"
   },
   "devDependencies": {
