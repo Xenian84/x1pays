@@ -5,7 +5,32 @@ Complete x402 payment protocol implementation for X1 blockchain with 0% protocol
 
 **Goal:** Achieve feature parity with PayAI.network's facilitator service while using wXNT for settlement and $XPY for governance.
 
-## Recent Changes (December 2024)
+## Recent Changes (October 2025)
+
+### 2025-10-27: Complete MUI + SORA Font Redesign
+Redesigned documentation website with modern Material-UI components, SORA typography, and custom dark theme:
+
+**Design System:**
+- **MUI v7.3.4** - Modern component library with proper Grid2 API (`size` prop)
+- **SORA Font** - Professional Google Font loaded from CDN for clean typography
+- **Custom Dark Theme** - Midnight blue (#0A1929) with electric cyan (#00E5FF) and lime (#76FF03) accents
+- **Hybrid Approach** - MUI components + Tailwind utilities for spacing/responsive design
+
+**UI Components:**
+- Replaced all Lucide icons with Material-UI icons across entire website
+- MUI AppBar for clean, professional navigation
+- MUI Cards, Typography, Buttons, and Paper components
+- Custom gradient text effects on hero section
+- Asymmetric layouts for modern, hand-crafted aesthetic
+
+**Technical Implementation:**
+- ThemeProvider wraps entire app with custom midnight theme
+- SORA font integrated via Google Fonts and applied through MUI theme
+- Proper MUI v7 Grid API with `size` prop for responsive layouts
+- Zero console errors, production build passes TypeScript + Vite validation
+- All dependencies properly installed: @mui/material, @mui/icons-material, @emotion/react, @emotion/styled, @mui/system
+
+**Result:** Professional, modern UI that avoids AI-generated aesthetic while maintaining full functionality.
 
 ### 2024-12-XX: Comprehensive Codebase Audit for Parity
 Audited and updated ALL code (facilitator, documentation, examples) to use recent improvements:
@@ -106,7 +131,10 @@ Added complete feature parity with PayAI's x402-solana repository:
 ### Website
 - **React** - UI framework
 - **Vite** - Build tool
-- **TailwindCSS** - Styling
+- **Material-UI v7** - Component library with custom dark theme
+- **SORA Font** - Professional Google Font typography
+- **TailwindCSS** - Utility-first styling (hybrid with MUI)
+- **Emotion** - CSS-in-JS for MUI styling
 
 ## Key Implementation Details
 
