@@ -137,10 +137,7 @@ cp packages/api/.env.example packages/api/.env
 - `RPC_URL` - X1 RPC endpoint (default: https://rpc.mainnet.x1.xyz)
 - `NETWORK` - Network identifier (x1-mainnet or x1-devnet)
 - `WXNT_MINT` - wXNT SPL token mint address on X1
-- `FEE_PAYER_SECRET` - Base58-encoded private key for transaction fees
-- `TREASURY_ADDRESS` - Treasury wallet address (for gas fee coverage)
-- `FEE_PERCENT` - Protocol fee percentage (set to 0 for zero fees)
-- `XPY_MINT` - $XPY governance token mint address
+- `FEE_PAYER_SECRET` - Base58-encoded private key that covers gas costs for all transactions
 
 **API:**
 - `RPC_URL` - X1 RPC endpoint (same as facilitator)
@@ -148,9 +145,7 @@ cp packages/api/.env.example packages/api/.env
 - `WXNT_MINT` - wXNT SPL token mint address (same as facilitator)
 - `PAYTO_ADDRESS` - Merchant wallet address receiving 100% of payments
 - `FACILITATOR_URL` - Facilitator service URL (typically http://localhost:4000)
-- `FEE_PERCENT` - Protocol fee percentage (set to 0 for zero fees)
-- `TREASURY_ADDRESS` - Treasury wallet address (same as facilitator)
-- `XPY_MINT` - $XPY governance token mint address (same as facilitator)
+- `DOMAIN` - Public domain for the service (e.g., x1pays.xyz)
 
 **Note:** The merchant wallet address is set in the API's `PAYTO_ADDRESS`. The facilitator is multi-tenant and processes payments for any merchant specified in the payment request.
 

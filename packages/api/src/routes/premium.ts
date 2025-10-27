@@ -5,14 +5,9 @@ const r: Router = Router();
 r.get("/data", async (req: Request, res: Response) => {
   const tx = res.locals.txHash || "unpaid";
   const paymentResponse = {
-    merchantTx: res.locals.merchantTx,
-    feeTx: res.locals.feeTx,
-    feePercent: res.locals.feePercent,
-    merchantAmount: res.locals.merchantAmount,
-    feeAmount: res.locals.feeAmount,
-    simulated: res.locals.simulated,
-    // Backward compatibility
-    txHash: tx
+    txHash: tx,
+    amount: res.locals.amount,
+    simulated: res.locals.simulated
   };
   
   res.setHeader("X-PAYMENT-RESPONSE", JSON.stringify(paymentResponse));

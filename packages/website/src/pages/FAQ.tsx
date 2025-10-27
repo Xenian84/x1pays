@@ -26,19 +26,19 @@ const FAQ = () => {
       questions: [
         {
           q: "What's the difference between wXNT and $XPY?",
-          a: "wXNT is the settlement token - users pay with it for API access. $XPY is the governance token - holders can stake it to earn protocol fees and vote on protocol changes. Think of wXNT as the payment rail and $XPY as ownership in the protocol."
+          a: "wXNT is the settlement token - users pay with it for API access. $XPY is the governance and value capture token - holders can stake it for governance rights and future treasury distributions. X1Pays charges 0% protocol fees, so all payments go directly to merchants."
         },
         {
           q: "How much does each payment cost?",
-          a: "Payment amounts are set by the merchant (API provider). The protocol takes a small 1% fee. For example, if an API endpoint costs 100 wXNT, the user pays 100 wXNT total, the merchant receives 99 wXNT, and 1 wXNT goes to the protocol treasury."
+          a: "Payment amounts are set by the merchant (API provider). X1Pays charges 0% protocol fees and covers all gas costs. For example, if an API endpoint costs 100 wXNT, the merchant receives 100 wXNT (100%). Zero fees, instant settlement."
         },
         {
           q: "Where can I get wXNT tokens?",
           a: "wXNT is a wrapped version of XNT (X1's native token). You can get XNT from X1 exchanges and wrap it to wXNT using the official X1 bridge or DEX protocols on X1."
         },
         {
-          q: "What happens to the 1% protocol fee?",
-          a: "Protocol fees accumulate in the treasury and will be distributed to $XPY stakers (governance token holders). This creates a sustainable revenue model for protocol participants."
+          q: "How does X1Pays make money with 0% fees?",
+          a: "X1Pays monetizes through $XPY token appreciation rather than transaction fees. As the protocol grows and more value flows through the network, $XPY holders benefit from increased demand and ecosystem value, not by taking a cut of merchant revenue."
         }
       ]
     },
@@ -93,7 +93,7 @@ const FAQ = () => {
         },
         {
           q: "Payments verify but don't settle - what's wrong?",
-          a: "Check your Facilitator configuration. Ensure MERCHANT_WALLET and TREASURY_ADDRESS environment variables are set correctly. In development mode, settlements are simulated by default."
+          a: "Check your Facilitator configuration. Ensure PAYTO_ADDRESS (merchant wallet) environment variable is set correctly in your API. In development mode, settlements are simulated by default."
         },
         {
           q: "How do I test without spending real tokens?",

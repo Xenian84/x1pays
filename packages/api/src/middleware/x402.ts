@@ -10,7 +10,6 @@ export function x402(domainBrand = "X1Pays") {
       return res.status(402).json({
         x402Version: 1,
         info: `${domainBrand} x402`,
-        feePercent: Number(process.env.FEE_PERCENT || 1),
         accepts: [{
           scheme: "exact",
           network: process.env.NETWORK || "x1-mainnet",
@@ -61,16 +60,10 @@ export function x402(domainBrand = "X1Pays") {
         { timeout: 20_000 }
       );
 
-      // Store settlement details (fee split model)
-      res.locals.merchantTx = settle.data.merchantTx;
-      res.locals.feeTx = settle.data.feeTx;
-      res.locals.feePercent = settle.data.feePercent;
-      res.locals.merchantAmount = settle.data.merchantAmount;
-      res.locals.feeAmount = settle.data.feeAmount;
+      // Store settlement details
+      res.locals.txHash = settle.data.txHash;
+      res.locals.amount = settle.data.amount;
       res.locals.simulated = settle.data.simulated;
-      
-      // Backward compatibility: use merchantTx as primary txHash
-      res.locals.txHash = settle.data.merchantTx;
       
       return next();
     } catch (e: any) {

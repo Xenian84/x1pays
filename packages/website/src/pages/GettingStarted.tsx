@@ -16,10 +16,7 @@ pnpm build`
 RPC_URL=https://rpc.mainnet.x1.xyz
 NETWORK=x1-mainnet
 WXNT_MINT=YOUR_WXNT_MINT_ADDRESS
-FEE_PAYER_SECRET=YOUR_BASE58_SECRET_KEY
-TREASURY_ADDRESS=YOUR_TREASURY_WALLET_ADDRESS
-FEE_PERCENT=1
-XPY_MINT=YOUR_XPY_TOKEN_MINT_ADDRESS`
+FEE_PAYER_SECRET=YOUR_BASE58_SECRET_KEY`
 
   const envApiCode = `PORT=3000
 RPC_URL=https://rpc.mainnet.x1.xyz
@@ -27,10 +24,7 @@ NETWORK=x1-mainnet
 WXNT_MINT=YOUR_WXNT_MINT_ADDRESS
 PAYTO_ADDRESS=YOUR_MERCHANT_PUBKEY
 FACILITATOR_URL=http://localhost:4000
-DOMAIN=localhost
-XPY_MINT=YOUR_XPY_TOKEN_MINT_ADDRESS
-TREASURY_ADDRESS=YOUR_TREASURY_WALLET_ADDRESS
-FEE_PERCENT=1`
+DOMAIN=localhost`
 
   const runCode = `# Run both services concurrently
 pnpm dev
@@ -118,10 +112,9 @@ app.use("/premium", x420(), x402("YourBrand"), premiumRoutes);`
               <strong>💡 Configuration Tips:</strong>
             </p>
             <ul className="list-disc list-inside space-y-1 ml-4">
-              <li><strong>PAYTO_ADDRESS (API):</strong> The merchant wallet that receives 99% of payments</li>
-              <li><strong>TREASURY_ADDRESS:</strong> The wallet that receives 1% protocol fee</li>
-              <li><strong>FEE_PERCENT:</strong> Protocol fee percentage (default: 1)</li>
-              <li><strong>XPY_MINT:</strong> $XPY governance token mint address</li>
+              <li><strong>PAYTO_ADDRESS (API):</strong> The merchant wallet that receives 100% of payments</li>
+              <li><strong>FEE_PAYER_SECRET:</strong> Wallet that covers gas costs for all transactions (X1Pays provides this)</li>
+              <li><strong>Zero Fees:</strong> X1Pays charges 0% protocol fees - merchants keep 100% of revenue</li>
               <li><strong>Note:</strong> The facilitator is multi-tenant and processes payments for any merchant</li>
             </ul>
           </div>
@@ -154,23 +147,20 @@ app.use("/premium", x420(), x402("YourBrand"), premiumRoutes);`
         <h3 className="text-xl font-semibold text-gray-900 mb-3">1. Unpaid Request (Returns 402)</h3>
         <CodeBlock code={`curl -i http://localhost:3000/premium/data`} language="bash" />
         <p className="text-gray-700 mt-2 mb-4">
-          You should receive a <code className="bg-gray-100 px-2 py-1 rounded">402 Payment Required</code> response with payment details including the <code className="bg-gray-100 px-2 py-1 rounded">feePercent</code> field.
+          You should receive a <code className="bg-gray-100 px-2 py-1 rounded">402 Payment Required</code> response with payment details including the merchant address and required amount.
         </p>
 
         <h3 className="text-xl font-semibold text-gray-900 mb-3">2. Using the Client SDK</h3>
         <CodeBlock code={clientCode} language="typescript" filename="example.ts" />
         
-        <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-6">3. Verify Fee Split</h3>
+        <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-6">3. Verify Payment Response</h3>
         <p className="text-gray-700 mb-3">
-          Check the X-Payment-Response header to see the fee distribution:
+          Check the X-Payment-Response header to see the settlement details:
         </p>
         <CodeBlock 
           code={`{
-  "merchantTx": "SIM_MERCHANT_...",
-  "feeTx": "SIM_FEE_...",
-  "merchantAmount": "99",
-  "feeAmount": "1",
-  "feePercent": 1,
+  "txHash": "SIM_TX_...",
+  "amount": "1000",
   "simulated": true
 }`} 
           language="json" 

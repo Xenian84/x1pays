@@ -32,8 +32,7 @@ app.get("/health", (_req, res) => {
   res.json({ 
     ok: true, 
     service: "x1pays-facilitator",
-    network: process.env.NETWORK || "x1-mainnet",
-    feePercent: Number(process.env.FEE_PERCENT || 1)
+    network: process.env.NETWORK || "x1-mainnet"
   });
 });
 
@@ -97,16 +96,7 @@ app.post("/settle", async (req, res) => {
     const mint = new PublicKey(payment.asset);
     const buyer = new PublicKey(payment.buyer);
     const merchant = new PublicKey(payment.payTo);
-    
-    // Calculate protocol fee
-    const feePercent = Number(process.env.FEE_PERCENT || 1);
     const totalAmount = BigInt(payment.amount);
-    const feeAmount = (totalAmount * BigInt(feePercent)) / BigInt(100);
-    const merchantAmount = totalAmount - feeAmount;
-    
-    const treasury = process.env.TREASURY_ADDRESS 
-      ? new PublicKey(process.env.TREASURY_ADDRESS)
-      : null;
 
     // MVP MODE: For demonstration, we return simulated transaction hashes
     // This allows the x402 flow to complete for testing the protocol
@@ -118,91 +108,54 @@ app.post("/settle", async (req, res) => {
     if (!payment.txSignature) {
       logger.warn("MVP mode: simulating settlement without actual on-chain transaction");
       
-      // Generate simulated transaction hashes for demonstration
-      const simulatedMerchantTx = `SIM_MERCHANT_${Buffer.from(
-        `${payment.buyer}_${merchantAmount}_${Date.now()}`
+      // Generate simulated transaction hash for demonstration
+      const simulatedTx = `SIM_TX_${Buffer.from(
+        `${payment.buyer}_${totalAmount}_${Date.now()}`
       ).toString('base64').substring(0, 64)}`;
       
-      const simulatedFeeTx = treasury ? `SIM_FEE_${Buffer.from(
-        `${payment.buyer}_${feeAmount}_${Date.now()}`
-      ).toString('base64').substring(0, 64)}` : null;
-      
       logger.info({ 
-        simulatedMerchantTx,
-        simulatedFeeTx,
+        simulatedTx,
         buyer: payment.buyer,
-        totalAmount: payment.amount,
-        merchantAmount: merchantAmount.toString(),
-        feeAmount: feeAmount.toString(),
-        feePercent,
+        merchant: payment.payTo,
+        amount: payment.amount,
         mode: "MVP_SIMULATION"
-      }, "Payment simulated with fee split (not settled on-chain)");
+      }, "Payment simulated - 100% to merchant (not settled on-chain)");
       
       return res.json({ 
-        merchantTx: simulatedMerchantTx,
-        feeTx: simulatedFeeTx,
+        txHash: simulatedTx,
         simulated: true,
-        feePercent,
-        merchantAmount: merchantAmount.toString(),
-        feeAmount: feeAmount.toString(),
+        amount: totalAmount.toString(),
         message: "MVP mode: payment verified but not settled on-chain. See PRODUCTION_NOTES.md for implementation patterns."
       });
     }
 
     // PRODUCTION PATH: With buyer's transaction signature
-    // Transfer to merchant
+    // Transfer 100% to merchant (0% protocol fee)
     const merchantTx = await tokenTransferTx({
       connection,
       mint,
       from: buyer,
       to: merchant,
-      amount: merchantAmount,
+      amount: totalAmount,
       feePayer
     });
     
-    // Add buyer's signature to merchant transaction
+    // Add buyer's signature to transaction
     merchantTx.addSignature(buyer, Buffer.from(bs58.decode(payment.txSignature)));
-    const merchantSig = await connection.sendTransaction(merchantTx, [feePayer], { skipPreflight: false });
-    await connection.confirmTransaction(merchantSig, "confirmed");
+    const txHash = await connection.sendTransaction(merchantTx, [feePayer], { skipPreflight: false });
+    await connection.confirmTransaction(txHash, "confirmed");
     
     logger.info({ 
-      txHash: merchantSig, 
+      txHash, 
       buyer: payment.buyer, 
       merchant: payment.payTo,
-      amount: merchantAmount.toString() 
-    }, "Merchant payment settled on-chain");
-
-    // Transfer fee to treasury if configured
-    let feeSig = null;
-    if (treasury && feeAmount > 0n) {
-      const feeTx = await tokenTransferTx({
-        connection,
-        mint,
-        from: buyer,
-        to: treasury,
-        amount: feeAmount,
-        feePayer
-      });
-      
-      feeTx.addSignature(buyer, Buffer.from(bs58.decode(payment.txSignature)));
-      feeSig = await connection.sendTransaction(feeTx, [feePayer], { skipPreflight: false });
-      await connection.confirmTransaction(feeSig, "confirmed");
-      
-      logger.info({ 
-        txHash: feeSig, 
-        treasury: treasury.toBase58(),
-        feeAmount: feeAmount.toString(),
-        feePercent
-      }, "Fee applied: wXNT → Treasury");
-    }
+      amount: totalAmount.toString() 
+    }, "Payment settled on-chain - 100% to merchant");
 
     return res.json({ 
-      merchantTx: merchantSig,
-      feeTx: feeSig,
+      txHash,
       simulated: false,
-      feePercent,
-      merchantAmount: merchantAmount.toString(),
-      feeAmount: feeAmount.toString()
+      amount: totalAmount.toString()
     });
   } catch (e: any) {
     logger.error(e, "Settlement failed");

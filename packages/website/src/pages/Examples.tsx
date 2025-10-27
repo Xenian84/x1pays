@@ -28,7 +28,7 @@ async function fetchPremiumData() {
     })
     
     console.log('Premium data:', response.data)
-    console.log('Payment TX:', response.payment?.merchantTx)
+    console.log('Payment TX:', response.payment?.txHash)
   } catch (error) {
     console.error('Request failed:', error)
   }
@@ -104,8 +104,7 @@ curl -i https://api.yourapp.com/api/premium/data
 # HTTP/1.1 402 Payment Required
 # {
 #   "recipient": "MERCHANT_WALLET_ADDRESS",
-#   "amount": "100",
-#   "feePercent": 1
+#   "amount": "100"
 # }
 
 # Step 2: Create and sign payment (use your preferred signing tool)
@@ -128,10 +127,9 @@ curl -H "X-Payment: $PAYMENT" \\
 #   "service": "x1pays-premium",
 #   "paidTx": "TRANSACTION_HASH",
 #   "payment": {
-#     "merchantTx": "TX_HASH_1",
-#     "feeTx": "TX_HASH_2",
-#     "merchantAmount": "99",
-#     "feeAmount": "1"
+#     "txHash": "TRANSACTION_HASH",
+#     "amount": "100",
+#     "simulated": true
 #   }
 # }`
     },
@@ -159,16 +157,15 @@ app.get('/api/premium/data',
   paymentMiddleware,
   (req, res) => {
     // Payment verified - user paid to access this
-    const txHash = res.locals.merchantTx
+    const txHash = res.locals.txHash
     
     res.json({
       data: 'Premium content here',
       paidTx: txHash,
       payment: {
-        merchantTx: res.locals.merchantTx,
-        feeTx: res.locals.feeTx,
-        merchantAmount: res.locals.merchantAmount,
-        feeAmount: res.locals.feeAmount
+        txHash: res.locals.txHash,
+        amount: res.locals.amount,
+        simulated: res.locals.simulated
       }
     })
   }
@@ -211,7 +208,7 @@ function PremiumContent() {
       setData(response.data)
       
       // Show payment confirmation
-      alert(\`Paid! TX: \${response.payment.merchantTx}\`)
+      alert(\`Paid! TX: \${response.payment.txHash}\`)
     } catch (error) {
       console.error('Failed to fetch:', error)
     } finally {

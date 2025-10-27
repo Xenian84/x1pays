@@ -63,10 +63,10 @@ const Troubleshooting = () => {
           ],
           solutions: [
             "Check Facilitator logs for errors",
-            "Verify MERCHANT_WALLET and TREASURY_ADDRESS are set",
+            "Verify PAYTO_ADDRESS (merchant wallet) is set in API",
             "Ensure X1_RPC_URL is reachable",
             "Check if NODE_ENV=development (enables simulation)",
-            "Verify wallet has funds for transaction fees"
+            "Verify FEE_PAYER wallet has funds for gas costs"
           ]
         },
         {
