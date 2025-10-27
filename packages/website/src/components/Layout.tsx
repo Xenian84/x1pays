@@ -10,7 +10,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { name: 'Home', href: '/' },
     { name: 'Facilitator', href: '/facilitator' },
     { name: 'Docs', href: '/docs' },
-    { name: 'Dashboard', href: '/dashboard' },
     { name: 'Pricing', href: '/pricing' },
     { name: 'FAQ', href: '/faq' },
   ]
