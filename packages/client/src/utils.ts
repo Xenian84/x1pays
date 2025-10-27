@@ -1,25 +1,5 @@
+import bs58 from 'bs58';
 import type { WalletSigner, PaymentPayload } from './types.js';
-
-// Simple base58 encode/decode (compatible with browser and node)
-const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-
-function base58Encode(buffer: Uint8Array): string {
-  let num = BigInt('0x' + Array.from(buffer).map(b => b.toString(16).padStart(2, '0')).join(''));
-  let encoded = '';
-  
-  while (num > 0n) {
-    const remainder = Number(num % 59n);
-    num = num / 59n;
-    encoded = ALPHABET[remainder] + encoded;
-  }
-  
-  // Handle leading zeros
-  for (let i = 0; i < buffer.length && buffer[i] === 0; i++) {
-    encoded = ALPHABET[0] + encoded;
-  }
-  
-  return encoded;
-}
 
 export async function signPayment(
   payment: Omit<PaymentPayload, 'signature' | 'buyer'>,
@@ -52,7 +32,7 @@ export async function signPayment(
   }
 
   // Encode signature
-  const signatureB58 = base58Encode(signature);
+  const signatureB58 = bs58.encode(signature);
 
   return {
     ...paymentWithBuyer,

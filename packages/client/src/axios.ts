@@ -77,8 +77,12 @@ export async function x402Client<T = any>(
     // Sign payment
     const signedPayment = await signPayment(unsignedPayment, wallet);
 
-    // Send payment to facilitator
-    const facilitatorUrl = error.config?.baseURL || extractFacilitatorUrl(error.config?.url || '');
+    // Get facilitator URL from payment requirement or error
+    const facilitatorUrl = accept.facilitatorUrl;
+    
+    if (!facilitatorUrl) {
+      throw new X402Error('No facilitator URL provided in payment requirement', 402);
+    }
     
     const verifyResponse = await axios.post(
       `${facilitatorUrl}/verify`,
@@ -140,16 +144,6 @@ export async function x402Client<T = any>(
       lastError.response?.status || 500,
       lastError.response?.data
     );
-  }
-}
-
-function extractFacilitatorUrl(url: string): string {
-  try {
-    const urlObj = new URL(url);
-    return `${urlObj.protocol}//${urlObj.host}`;
-  } catch {
-    // Fallback for relative URLs
-    return '';
   }
 }
 

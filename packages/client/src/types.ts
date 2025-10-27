@@ -9,6 +9,7 @@ export interface PaymentRequirement {
     maxAmountRequired?: string;
     resource: string;
     description: string;
+    facilitatorUrl?: string;
   }>;
 }
 

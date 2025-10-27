@@ -67,7 +67,8 @@ export function createPaymentRequirement(
       asset: config.tokenMint,
       maxAmountRequired: amount || config.amount || '1000',
       resource: config.resource || resource,
-      description: config.description || 'Premium API access (per-call via wXNT)'
+      description: config.description || 'Premium API access (per-call via wXNT)',
+      facilitatorUrl: config.facilitatorUrl
     }]
   };
 }

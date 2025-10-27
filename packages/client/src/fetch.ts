@@ -47,10 +47,12 @@ export async function fetchX402(
   // Sign payment
   const signedPayment = await signPayment(unsignedPayment, wallet);
 
-  // Extract facilitator URL from original URL
-  const facilitatorUrl = typeof url === 'string'
-    ? new URL(url).origin
-    : url.origin;
+  // Get facilitator URL from payment requirement
+  const facilitatorUrl = accept.facilitatorUrl;
+  
+  if (!facilitatorUrl) {
+    throw new X402Error('No facilitator URL provided in payment requirement', 402);
+  }
 
   // Verify payment
   const verifyController = new AbortController();

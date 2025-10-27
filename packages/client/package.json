@@ -26,7 +26,15 @@
     "dev": "tsc --watch",
     "clean": "rm -rf dist"
   },
-  "keywords": ["x402", "payments", "client", "x1", "blockchain", "axios", "fetch"],
+  "keywords": [
+    "x402",
+    "payments",
+    "client",
+    "x1",
+    "blockchain",
+    "axios",
+    "fetch"
+  ],
   "author": "X1Pays",
   "license": "MIT",
   "peerDependencies": {
@@ -37,7 +45,9 @@
       "optional": true
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "bs58": "^5.0.0"
+  },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "axios": "^1.7.9",
