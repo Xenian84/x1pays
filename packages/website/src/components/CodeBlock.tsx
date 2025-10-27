@@ -53,7 +53,11 @@ export default function CodeBlock({ code, language, filename }: CodeBlockProps) 
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <Box component="pre" className={className} sx={{ p: 2, overflowX: 'auto', fontSize: '0.875rem' }} style={style}>
               {tokens.map((line, i) => (
-                <Box key={i} {...getLineProps({ line })} />
+                <Box key={i} component="div" {...getLineProps({ line })}>
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({ token })} />
+                  ))}
+                </Box>
               ))}
             </Box>
           )}
