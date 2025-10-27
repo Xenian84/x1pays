@@ -23,6 +23,9 @@ importers:
 
   packages/api:
     dependencies:
+      '@x1pays/middleware':
+        specifier: workspace:^
+        version: link:../middleware
       axios:
         specifier: ^1.6.2
         version: 1.12.2

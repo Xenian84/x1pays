@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import pino from "pino";
-import { x402 } from "./middleware/x402.js";
+import { x402Middleware } from "@x1pays/middleware";
 import { x420 } from "./middleware/x420.js";
 import premium from "./routes/premium.js";
 
@@ -32,6 +32,13 @@ app.get("/stats", (_req, res) => {
   res.json(stats);
 });
 
-app.use("/premium", x420(), x402("X1Pays"), premium);
+app.use("/premium", x420(), x402Middleware({
+  facilitatorUrl: process.env.FACILITATOR_URL || "http://localhost:4000",
+  network: process.env.NETWORK || "x1-mainnet",
+  payToAddress: process.env.PAYTO_ADDRESS || "",
+  tokenMint: process.env.WXNT_MINT || "",
+  amount: "1000",
+  description: "Premium API access (per-call via wXNT)"
+}), premium);
 
 app.listen(PORT, () => logger.info(`🚀 API up on :${PORT}`));

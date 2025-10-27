@@ -111,10 +111,15 @@ export async function fetchX402JSON<T = any>(
   const response = await fetchX402(url, config);
   const data = await response.json();
 
+  const headers: Record<string, string> = {};
+  response.headers.forEach((value, key) => {
+    headers[key] = value;
+  });
+
   return {
     data,
     payment: (response as any).x402Payment,
-    headers: Object.fromEntries(response.headers.entries())
+    headers
   };
 }
 

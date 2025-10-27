@@ -26,7 +26,7 @@ export async function signPayment(
   wallet: WalletSigner
 ): Promise<PaymentPayload> {
   // Get public key as string
-  const publicKey = wallet.publicKey.toBase58
+  const publicKey = 'toBase58' in wallet.publicKey
     ? wallet.publicKey.toBase58()
     : wallet.publicKey.toString();
 
