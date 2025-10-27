@@ -1,39 +1,57 @@
+import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Stack from '@mui/material/Stack'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import AutorenewIcon from '@mui/icons-material/Autorenew'
+import CodeBlock from '../components/CodeBlock'
+
 const AxiosClient = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="mb-8">
-          <a href="/facilitator" className="text-blue-600 hover:text-blue-700 mb-4 inline-block">
-            ← Back to Facilitator
-          </a>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Axios Client Quickstart</h1>
-          <p className="text-xl text-gray-600">
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 12 } }}>
+        <Box sx={{ mb: 8 }}>
+          <Button
+            component={Link}
+            to="/facilitator"
+            startIcon={<ArrowBackIcon />}
+            sx={{
+              mb: 4,
+              color: 'primary.main',
+              '&:hover': { bgcolor: 'rgba(0, 229, 255, 0.1)' }
+            }}
+          >
+            Back to Facilitator
+          </Button>
+          <Typography variant="h1" sx={{ mb: 2, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
+            Axios Client Quickstart
+          </Typography>
+          <Typography variant="h5" color="text.secondary">
             Build x402-enabled HTTP clients with Axios for automatic payment handling.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         {/* Installation */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Installation</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Installation</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Install Axios and the x402 client package:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <code className="text-green-400">
-              npm install @x1pays/client
-            </code>
-          </div>
-        </section>
+          </Typography>
+          <CodeBlock code="npm install @x1pays/client" language="bash" />
+        </Box>
 
         {/* Basic Usage */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Basic Usage</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Basic Usage</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Make paid API calls with automatic payment handling:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { x402Client } from '@x1pays/client/axios'
+          </Typography>
+          <CodeBlock
+            code={`import { x402Client } from '@x1pays/client/axios'
 import { Keypair } from '@solana/web3.js'
 
 // Your wallet (for signing payments)
@@ -57,50 +75,66 @@ async function getPremiumData() {
     console.error('Request failed:', error)
   }
 }`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* How It Works */}
-        <section className="mb-12 p-6 bg-blue-50 border border-blue-200 rounded-lg">
-          <h3 className="text-lg font-bold text-gray-900 mb-3">🔄 How It Works</h3>
-          <ol className="space-y-2 text-gray-700">
-            <li className="flex gap-2">
-              <span className="font-bold">1.</span>
-              <span>Client makes initial request to protected endpoint</span>
-            </li>
-            <li className="flex gap-2">
-              <span className="font-bold">2.</span>
-              <span>Server responds with <code className="px-1 bg-white rounded">402 Payment Required</code> + payment details</span>
-            </li>
-            <li className="flex gap-2">
-              <span className="font-bold">3.</span>
-              <span>Client automatically signs payment and sends to facilitator</span>
-            </li>
-            <li className="flex gap-2">
-              <span className="font-bold">4.</span>
-              <span>Facilitator settles payment on X1 blockchain</span>
-            </li>
-            <li className="flex gap-2">
-              <span className="font-bold">5.</span>
-              <span>Client retries request with payment proof</span>
-            </li>
-            <li className="flex gap-2">
-              <span className="font-bold">6.</span>
-              <span>Server verifies payment and returns protected data</span>
-            </li>
-          </ol>
-        </section>
+        <Card
+          elevation={0}
+          sx={{ transition: 'all 0.3s ease',
+            mb: 8,
+            border: '1px solid',
+            borderColor: 'info.dark',
+            bgcolor: 'rgba(0, 229, 255, 0.05)',
+          }}
+        >
+          <CardContent sx={{ p: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+              <AutorenewIcon sx={{ color: 'info.main', fontSize: 28 }} />
+              <Typography variant="h3" sx={{ fontSize: '1.5rem', fontWeight: 700 }}>
+                How It Works
+              </Typography>
+            </Box>
+            <Stack spacing={2}>
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Typography sx={{ fontWeight: 700, color: 'primary.main', minWidth: 24 }}>1.</Typography>
+                <Typography color="text.secondary">Client makes initial request to protected endpoint</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Typography sx={{ fontWeight: 700, color: 'primary.main', minWidth: 24 }}>2.</Typography>
+                <Typography color="text.secondary">
+                  Server responds with <Box component="span" sx={{ fontFamily: 'monospace', bgcolor: 'background.paper', px: 1, py: 0.5, borderRadius: 1 }}>402 Payment Required</Box> + payment details
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Typography sx={{ fontWeight: 700, color: 'primary.main', minWidth: 24 }}>3.</Typography>
+                <Typography color="text.secondary">Client automatically signs payment and sends to facilitator</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Typography sx={{ fontWeight: 700, color: 'primary.main', minWidth: 24 }}>4.</Typography>
+                <Typography color="text.secondary">Facilitator settles payment on X1 blockchain</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Typography sx={{ fontWeight: 700, color: 'primary.main', minWidth: 24 }}>5.</Typography>
+                <Typography color="text.secondary">Client retries request with payment proof</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Typography sx={{ fontWeight: 700, color: 'primary.main', minWidth: 24 }}>6.</Typography>
+                <Typography color="text.secondary">Server verifies payment and returns protected data</Typography>
+              </Box>
+            </Stack>
+          </CardContent>
+        </Card>
 
         {/* POST Requests */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">POST Requests with Data</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>POST Requests with Data</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Send data along with payments:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`async function analyzeData(data: string) {
+          </Typography>
+          <CodeBlock
+            code={`async function analyzeData(data: string) {
   const response = await x402Client({
     url: 'https://api.example.com/analyze',
     method: 'POST',
@@ -116,19 +150,18 @@ async function getPremiumData() {
   
   return response.data
 }`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Custom Headers */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Custom Headers</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Custom Headers</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Add custom headers to your requests:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`const response = await x402Client({
+          </Typography>
+          <CodeBlock
+            code={`const response = await x402Client({
   url: 'https://api.example.com/premium/data',
   method: 'GET',
   wallet: wallet,
@@ -137,19 +170,18 @@ async function getPremiumData() {
     'X-Client-Version': '1.0.0'
   }
 })`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Error Handling */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Error Handling</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Error Handling</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Handle different error scenarios:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`async function robustRequest() {
+          </Typography>
+          <CodeBlock
+            code={`async function robustRequest() {
   try {
     const response = await x402Client({
       url: 'https://api.example.com/premium/data',
@@ -177,19 +209,18 @@ async function getPremiumData() {
     throw error
   }
 }`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Retry Logic */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Retry Logic</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Retry Logic</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             The client includes automatic retry logic for transient failures:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`const response = await x402Client({
+          </Typography>
+          <CodeBlock
+            code={`const response = await x402Client({
   url: 'https://api.example.com/premium/data',
   wallet: wallet,
   retry: {
@@ -198,37 +229,35 @@ async function getPremiumData() {
     retryOn: [408, 429, 500, 502, 503, 504]
   }
 })`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Timeout Configuration */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Timeout Configuration</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Timeout Configuration</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Set request timeouts:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`const response = await x402Client({
+          </Typography>
+          <CodeBlock
+            code={`const response = await x402Client({
   url: 'https://api.example.com/long-task',
   wallet: wallet,
   timeout: 30000, // 30 seconds
   paymentTimeout: 10000 // 10 seconds for payment settlement
 })`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Multiple Requests */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Multiple Requests</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Multiple Requests</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Make multiple paid requests to the same API:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { x402Client } from '@x1pays/client/axios'
+          </Typography>
+          <CodeBlock
+            code={`import { x402Client } from '@x1pays/client/axios'
 
 const baseConfig = {
   wallet: wallet,
@@ -252,19 +281,18 @@ const analytics = await x402Client({
 })
 
 // Each request automatically handles x402 payments`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* React Integration */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">React Integration</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>React Integration</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Use x402 client in React applications:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { useState, useEffect } from 'react'
+          </Typography>
+          <CodeBlock
+            code={`import { useState, useEffect } from 'react'
 import { x402Client } from '@x1pays/client/axios'
 
 function PremiumContent({ wallet }) {
@@ -297,24 +325,23 @@ function PremiumContent({ wallet }) {
         {loading ? 'Processing Payment...' : 'Get Premium Data'}
       </button>
       
-      {error && <p className="error">{error}</p>}
+      {error && <Typography color="error">{error}</Typography>}
       {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
     </div>
   )
 }`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Browser Usage */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Browser Usage</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Browser Usage</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Use in browser with wallet extensions:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`// Connect to browser wallet (e.g., Phantom, Backpack)
+          </Typography>
+          <CodeBlock
+            code={`// Connect to browser wallet (e.g., Phantom, Backpack)
 const wallet = window.solana
 
 if (!wallet) {
@@ -329,39 +356,84 @@ const response = await x402Client({
   url: 'https://api.example.com/premium/data',
   wallet: wallet
 })`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Next Steps */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Next Steps</h2>
-          <div className="space-y-3">
-            <a 
-              href="/examples" 
-              className="block p-4 bg-yellow-50 border border-yellow-200 rounded-lg hover:bg-yellow-100 transition-colors"
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 4, fontSize: '2rem' }}>Next Steps</Typography>
+          <Stack spacing={3}>
+            <Card
+              component={Link}
+              to="/examples"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'warning.dark',
+                '&:hover': {
+                  borderColor: 'warning.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">View Complete Examples</h3>
-              <p className="text-gray-700 text-sm">See full React and Node.js applications</p>
-            </a>
-            <a 
-              href="/quickstart/express" 
-              className="block p-4 bg-yellow-50 border border-yellow-200 rounded-lg hover:bg-yellow-100 transition-colors"
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>View Complete Examples</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  See full React and Node.js applications
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card
+              component={Link}
+              to="/quickstart/express"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'warning.dark',
+                '&:hover': {
+                  borderColor: 'warning.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">Build a Server</h3>
-              <p className="text-gray-700 text-sm">Create an x402-enabled API to consume</p>
-            </a>
-            <a 
-              href="/troubleshooting" 
-              className="block p-4 bg-yellow-50 border border-yellow-200 rounded-lg hover:bg-yellow-100 transition-colors"
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Build a Server</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Create an x402-enabled API to consume
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card
+              component={Link}
+              to="/troubleshooting"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'warning.dark',
+                '&:hover': {
+                  borderColor: 'warning.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">Troubleshooting</h3>
-              <p className="text-gray-700 text-sm">Common issues and solutions</p>
-            </a>
-          </div>
-        </section>
-      </div>
-    </div>
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Troubleshooting</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Common issues and solutions
+                </Typography>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

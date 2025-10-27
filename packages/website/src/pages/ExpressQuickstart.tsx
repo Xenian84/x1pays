@@ -1,39 +1,56 @@
+import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Stack from '@mui/material/Stack'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import CodeBlock from '../components/CodeBlock'
+
 const ExpressQuickstart = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="mb-8">
-          <a href="/facilitator" className="text-blue-600 hover:text-blue-700 mb-4 inline-block">
-            ← Back to Facilitator
-          </a>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Express.js Quickstart</h1>
-          <p className="text-xl text-gray-600">
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 12 } }}>
+        <Box sx={{ mb: 8 }}>
+          <Button
+            component={Link}
+            to="/facilitator"
+            startIcon={<ArrowBackIcon />}
+            sx={{
+              mb: 4,
+              color: 'primary.main',
+              '&:hover': { bgcolor: 'rgba(0, 229, 255, 0.1)' }
+            }}
+          >
+            Back to Facilitator
+          </Button>
+          <Typography variant="h1" sx={{ mb: 2, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
+            Express.js Quickstart
+          </Typography>
+          <Typography variant="h5" color="text.secondary">
             Build an x402-enabled API server with Express.js in minutes.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         {/* Installation */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Installation</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Installation</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Install Express and the x402 middleware package:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <code className="text-green-400">
-              npm install express @x1pays/middleware
-            </code>
-          </div>
-        </section>
+          </Typography>
+          <CodeBlock code="npm install express @x1pays/middleware" language="bash" />
+        </Box>
 
         {/* Basic Setup */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Basic Setup</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Basic Setup</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Create a simple Express server with x402 payment protection:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import express from 'express'
+          </Typography>
+          <CodeBlock
+            code={`import express from 'express'
 import { x402Middleware } from '@x1pays/middleware'
 
 const app = express()
@@ -75,19 +92,18 @@ app.get('/api/premium/data',
 app.listen(3000, () => {
   console.log('Server running on port 3000')
 })`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Environment Variables */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Environment Variables</h2>
-          <p className="text-gray-700 mb-4">
-            Create a <code className="px-2 py-1 bg-gray-100 rounded">.env</code> file:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`# Your merchant wallet (receives payments)
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Environment Variables</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+            Create a <Box component="span" sx={{ fontFamily: 'monospace', bgcolor: 'background.paper', px: 1, py: 0.5, borderRadius: 1 }}>.env</Box> file:
+          </Typography>
+          <CodeBlock
+            code={`# Your merchant wallet (receives payments)
 MERCHANT_WALLET=your_x1_wallet_address
 
 # wXNT token contract on X1
@@ -98,19 +114,18 @@ NETWORK=x1-mainnet
 
 # Port
 PORT=3000`}
-            </pre>
-          </div>
-        </section>
+            language="bash"
+          />
+        </Box>
 
         {/* Advanced: Dynamic Pricing */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Advanced: Dynamic Pricing</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Advanced: Dynamic Pricing</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Set different prices for different endpoints:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`// Shared configuration
+          </Typography>
+          <CodeBlock
+            code={`// Shared configuration
 const baseConfig = {
   facilitatorUrl: 'https://facilitator.x1pays.network',
   network: 'x1-mainnet',
@@ -159,19 +174,18 @@ app.post('/api/analyze',
     res.json({ analyzed: true })
   }
 )`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Error Handling */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Error Handling</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Error Handling</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Handle payment errors gracefully:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`app.get('/api/premium/data',
+          </Typography>
+          <CodeBlock
+            code={`app.get('/api/premium/data',
   paymentMiddleware,
   (req, res) => {
     res.json({ data: 'Premium content' })
@@ -196,19 +210,18 @@ app.use((err, req, res, next) => {
   
   res.status(500).json({ error: 'Server error' })
 })`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* CORS Configuration */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">CORS Configuration</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>CORS Configuration</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Enable CORS for payment headers:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import cors from 'cors'
+          </Typography>
+          <CodeBlock
+            code={`import cors from 'cors'
 
 app.use(cors({
   origin: true, // Allow all origins
@@ -218,31 +231,29 @@ app.use(cors({
     'X-Payment-Response'
   ]
 }))`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Testing */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Testing Your Server</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Testing Your Server</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Test with cURL or any HTTP client:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto mb-4">
-            <pre className="text-sm text-gray-300">
-{`# First request - receive payment challenge
+          </Typography>
+          <CodeBlock
+            code={`# First request - receive payment challenge
 curl -v http://localhost:3000/api/premium/data
 
 # Response: 402 Payment Required
 # Headers include: X-Payment-Required with payment details`}
-            </pre>
-          </div>
-          <p className="text-gray-700 mb-4">
+            language="bash"
+          />
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3, mt: 3 }}>
             Use the x402 client to make automatic payments:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { x402Client } from '@x1pays/client/axios'
+          </Typography>
+          <CodeBlock
+            code={`import { x402Client } from '@x1pays/client/axios'
 
 const response = await x402Client({
   url: 'http://localhost:3000/api/premium/data',
@@ -252,39 +263,84 @@ const response = await x402Client({
 
 console.log('Data:', response.data)
 console.log('Payment TX:', response.payment.txHash)`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Next Steps */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Next Steps</h2>
-          <div className="space-y-3">
-            <a 
-              href="/examples" 
-              className="block p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors"
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 4, fontSize: '2rem' }}>Next Steps</Typography>
+          <Stack spacing={3}>
+            <Card
+              component={Link}
+              to="/examples"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'primary.dark',
+                '&:hover': {
+                  borderColor: 'primary.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">View Complete Examples</h3>
-              <p className="text-gray-700 text-sm">See full working examples with frontend integration</p>
-            </a>
-            <a 
-              href="/quickstart/axios" 
-              className="block p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors"
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>View Complete Examples</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  See full working examples with frontend integration
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card
+              component={Link}
+              to="/quickstart/axios"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'primary.dark',
+                '&:hover': {
+                  borderColor: 'primary.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">Build a Client</h3>
-              <p className="text-gray-700 text-sm">Learn how to consume your x402 API from the client side</p>
-            </a>
-            <a 
-              href="/troubleshooting" 
-              className="block p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors"
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Build a Client</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Learn how to consume your x402 API from the client side
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card
+              component={Link}
+              to="/troubleshooting"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'primary.dark',
+                '&:hover': {
+                  borderColor: 'primary.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">Troubleshooting</h3>
-              <p className="text-gray-700 text-sm">Common issues and solutions</p>
-            </a>
-          </div>
-        </section>
-      </div>
-    </div>
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Troubleshooting</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Common issues and solutions
+                </Typography>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

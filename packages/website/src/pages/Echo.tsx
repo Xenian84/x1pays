@@ -1,4 +1,15 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Chip from '@mui/material/Chip'
+import Stack from '@mui/material/Stack'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -45,229 +56,412 @@ console.log(data); // Echo response + refund confirmed`
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16">
-      {/* Hero */}
-      <div className="text-center mb-16">
-        <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-semibold mb-6">
-          <BoltIcon sx={{ fontSize: 16, mr: 1 }} />
-          Live on X1 Mainnet
-        </div>
-        <h1 className="text-5xl sm:text-6xl font-bold mb-6">
-          <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+    <Container maxWidth="lg" sx={{ py: { xs: 8, md: 16 } }}>
+      <Stack spacing={2} alignItems="center" textAlign="center" sx={{ mb: 8 }}>
+        <Chip
+          icon={<BoltIcon />}
+          label="Live on X1 Mainnet"
+          sx={{
+            bgcolor: 'rgba(118, 255, 3, 0.1)',
+            color: 'secondary.main',
+            borderColor: 'secondary.main',
+            border: '1px solid',
+            fontWeight: 600,
+          }}
+        />
+        <Typography
+          variant="h1"
+          sx={{
+            fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4rem' },
+            fontWeight: 800,
+          }}
+        >
+          <Box
+            component="span"
+            sx={{
+              background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
             x402 Echo Merchant
-          </span>
-        </h1>
-        <p className="text-2xl text-gray-600 max-w-4xl mx-auto mb-4">
-          Test X402 Payments, <span className="font-bold text-green-600">Zero Cost</span>
-        </p>
-        <p className="text-lg text-gray-500 max-w-3xl mx-auto">
+          </Box>
+        </Typography>
+        <Typography variant="h4" color="text.secondary" sx={{ maxWidth: '800px', fontWeight: 400 }}>
+          Test X402 Payments, <Box component="span" sx={{ color: 'secondary.main', fontWeight: 700 }}>Zero Cost</Box>
+        </Typography>
+        <Typography variant="h6" color="text.secondary" sx={{ maxWidth: '700px', lineHeight: 1.7 }}>
           Run real X402 transactions against a live merchant—for free. 
-          Get <span className="font-bold">100% of your payment refunded</span>, with X1Pays covering the network fees.
-        </p>
-      </div>
+          Get <Box component="span" sx={{ fontWeight: 700 }}>100% of your payment refunded</Box>, with X1Pays covering the network fees.
+        </Typography>
+      </Stack>
 
-      {/* Live Demo Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-        {/* Test Interface */}
-        <div className="bg-white border-2 border-gray-200 rounded-2xl p-8 shadow-xl">
-          <h2 className="text-2xl font-bold mb-6">Try It Now</h2>
-          <p className="text-gray-600 mb-6">
-            Click below to simulate a real x402 payment. In production, you'll use our SDK or curl.
-          </p>
+      <Grid container spacing={3} sx={{ mb: 10 }}>
+        <Grid size={{ xs: 12, lg: 6 }}>
+          <Card
+            elevation={0}
+            sx={{
+              border: '1px solid',
+              borderColor: 'primary.dark',
+              height: '100%',
+            }}
+          >
+            <CardContent sx={{ p: 4 }}>
+              <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>Try It Now</Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+                Click below to simulate a real x402 payment. In production, you'll use our SDK or curl.
+              </Typography>
 
-          {testStatus === 'idle' && (
-            <button
-              onClick={simulateTest}
-              className="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+              {testStatus === 'idle' && (
+                <Button
+                  onClick={simulateTest}
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  sx={{
+                    background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
+                    color: 'background.default',
+                    fontWeight: 700,
+                    py: 2,
+                  }}
+                >
+                  Simulate x402 Payment
+                </Button>
+              )}
+
+              {testStatus === 'testing' && (
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
+                  <CircularProgress sx={{ mr: 2, color: 'primary.main' }} />
+                  <Typography color="text.primary" sx={{ fontWeight: 600 }}>Processing payment on X1...</Typography>
+                </Box>
+              )}
+
+              {testStatus === 'success' && (
+                <Stack spacing={2}>
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      bgcolor: 'rgba(118, 255, 3, 0.1)',
+                      border: '1px solid',
+                      borderColor: 'secondary.dark',
+                      p: 3,
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <CheckCircleIcon sx={{ fontSize: 24, color: 'secondary.main', mr: 1 }} />
+                      <Typography variant="h6" sx={{ fontWeight: 700, color: 'secondary.main' }}>Payment Successful!</Typography>
+                    </Box>
+                    <Stack spacing={1}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2" color="text.secondary">Amount Paid:</Typography>
+                        <Typography variant="body2" sx={{ fontFamily: 'monospace', fontWeight: 600 }}>1000 wXNT (0.001)</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2" color="text.secondary">Settlement:</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 600, color: 'secondary.main' }}>&lt;1 second</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2" color="text.secondary">Protocol Fee:</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 700, color: 'secondary.main' }}>0% (FREE)</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2" color="text.secondary">Gas Fees:</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 600, color: 'secondary.main' }}>Covered by X1Pays</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 1, borderTop: '1px solid', borderColor: 'secondary.dark' }}>
+                        <Typography variant="body2" color="text.secondary">TX Hash:</Typography>
+                        <Typography variant="caption" sx={{ fontFamily: 'monospace', maxWidth: '200px', wordBreak: 'break-all', textAlign: 'right' }}>{txHash}</Typography>
+                      </Box>
+                    </Stack>
+                  </Paper>
+
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      bgcolor: 'rgba(0, 229, 255, 0.1)',
+                      border: '1px solid',
+                      borderColor: 'primary.dark',
+                      p: 3,
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                      <AttachMoneyIcon sx={{ fontSize: 20, color: 'primary.main', mr: 1 }} />
+                      <Typography variant="body1" sx={{ fontWeight: 700, color: 'primary.main' }}>Refund Initiated</Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Your <Box component="span" sx={{ fontWeight: 700 }}>1000 wXNT</Box> will be refunded within 1 minute. 
+                      X1Pays covers all costs for Echo testing.
+                    </Typography>
+                  </Paper>
+
+                  <Button
+                    onClick={() => setTestStatus('idle')}
+                    variant="outlined"
+                    fullWidth
+                    sx={{
+                      borderColor: 'text.secondary',
+                      color: 'text.primary',
+                      '&:hover': {
+                        borderColor: 'text.primary',
+                        bgcolor: 'rgba(255, 255, 255, 0.05)',
+                      },
+                    }}
+                  >
+                    Test Again
+                  </Button>
+                </Stack>
+              )}
+
+              {testStatus === 'error' && (
+                <Paper
+                  elevation={0}
+                  sx={{
+                    bgcolor: 'rgba(255, 82, 82, 0.1)',
+                    border: '1px solid',
+                    borderColor: 'error.dark',
+                    p: 3,
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <CancelIcon sx={{ fontSize: 24, color: 'error.main', mr: 1 }} />
+                    <Typography variant="h6" sx={{ fontWeight: 700, color: 'error.main' }}>Payment Failed</Typography>
+                  </Box>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                    Something went wrong. In production, check your payment signature and wallet balance.
+                  </Typography>
+                  <Button
+                    onClick={() => setTestStatus('idle')}
+                    variant="outlined"
+                    fullWidth
+                    sx={{
+                      borderColor: 'text.secondary',
+                      color: 'text.primary',
+                      '&:hover': {
+                        borderColor: 'text.primary',
+                        bgcolor: 'rgba(255, 255, 255, 0.05)',
+                      },
+                    }}
+                  >
+                    Try Again
+                  </Button>
+                </Paper>
+              )}
+
+              <Box sx={{ mt: 4, pt: 4, borderTop: '1px solid', borderColor: 'divider' }}>
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>How Echo Works</Typography>
+                <Stack component="ol" spacing={1.5} sx={{ pl: 0, listStyle: 'none' }}>
+                  <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                    <Typography sx={{ fontWeight: 700, color: 'primary.main', mr: 1 }}>1.</Typography>
+                    <Typography variant="body2" color="text.secondary">You send a real x402 payment on X1 mainnet</Typography>
+                  </Box>
+                  <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                    <Typography sx={{ fontWeight: 700, color: 'primary.main', mr: 1 }}>2.</Typography>
+                    <Typography variant="body2" color="text.secondary">Echo merchant verifies and settles instantly</Typography>
+                  </Box>
+                  <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                    <Typography sx={{ fontWeight: 700, color: 'primary.main', mr: 1 }}>3.</Typography>
+                    <Typography variant="body2" color="text.secondary">You receive 100% refund automatically (gas covered)</Typography>
+                  </Box>
+                </Stack>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12, lg: 6 }}>
+          <Stack spacing={3}>
+            <Card
+              elevation={0}
+              sx={{
+                border: '1px solid',
+                borderColor: 'secondary.dark',
+              }}
             >
-              Simulate x402 Payment
-            </button>
-          )}
+              <CardContent sx={{ p: 4 }}>
+                <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>What You Get</Typography>
+                <Stack spacing={2}>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                    <CheckCircleIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                    <Typography variant="body2" color="text.secondary">
+                      <Box component="span" sx={{ fontWeight: 600 }}>Real blockchain transactions</Box> on X1 mainnet
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                    <CheckCircleIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                    <Typography variant="body2" color="text.secondary">
+                      <Box component="span" sx={{ fontWeight: 600 }}>100% refund</Box> of all test payments
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                    <CheckCircleIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                    <Typography variant="body2" color="text.secondary">
+                      <Box component="span" sx={{ fontWeight: 600 }}>Gas fees covered</Box> by X1Pays treasury
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                    <CheckCircleIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                    <Typography variant="body2" color="text.secondary">
+                      <Box component="span" sx={{ fontWeight: 600 }}>Full x402 flow</Box> including verification & settlement
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                    <CheckCircleIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                    <Typography variant="body2" color="text.secondary">
+                      <Box component="span" sx={{ fontWeight: 600 }}>Real transaction receipts</Box> with on-chain proof
+                    </Typography>
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
 
-          {testStatus === 'testing' && (
-            <div className="flex items-center justify-center py-8">
-              <CircularProgress sx={{ fontSize: 32, mr: 1.5 }} className="text-indigo-600" />
-              <span className="text-gray-700 font-medium">Processing payment on X1...</span>
-            </div>
-          )}
+            <Card
+              elevation={0}
+              sx={{
+                border: '1px solid',
+                borderColor: 'primary.dark',
+              }}
+            >
+              <CardContent sx={{ p: 4 }}>
+                <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>Stats</Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 6 }}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        textAlign: 'center',
+                        p: 2,
+                        bgcolor: 'rgba(0, 229, 255, 0.1)',
+                        border: '1px solid',
+                        borderColor: 'primary.dark',
+                      }}
+                    >
+                      <Typography variant="h3" sx={{ fontWeight: 800, color: 'primary.main' }}>0%</Typography>
+                      <Typography variant="caption" color="text.secondary">Protocol Fee</Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid size={{ xs: 6 }}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        textAlign: 'center',
+                        p: 2,
+                        bgcolor: 'rgba(118, 255, 3, 0.1)',
+                        border: '1px solid',
+                        borderColor: 'secondary.dark',
+                      }}
+                    >
+                      <Typography variant="h3" sx={{ fontWeight: 800, color: 'secondary.main' }}>100%</Typography>
+                      <Typography variant="caption" color="text.secondary">Refund Rate</Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid size={{ xs: 6 }}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        textAlign: 'center',
+                        p: 2,
+                        bgcolor: 'rgba(255, 183, 77, 0.1)',
+                        border: '1px solid',
+                        borderColor: 'warning.dark',
+                      }}
+                    >
+                      <Typography variant="h3" sx={{ fontWeight: 800, color: 'warning.main' }}>&lt;1s</Typography>
+                      <Typography variant="caption" color="text.secondary">Settlement</Typography>
+                    </Paper>
+                  </Grid>
+                  <Grid size={{ xs: 6 }}>
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        textAlign: 'center',
+                        p: 2,
+                        bgcolor: 'rgba(0, 229, 255, 0.1)',
+                        border: '1px solid',
+                        borderColor: 'primary.dark',
+                      }}
+                    >
+                      <Typography variant="h3" sx={{ fontWeight: 800, color: 'primary.main' }}>$0</Typography>
+                      <Typography variant="caption" color="text.secondary">Gas Cost</Typography>
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Grid>
+      </Grid>
 
-          {testStatus === 'success' && (
-            <div className="space-y-4">
-              <div className="bg-green-50 border-2 border-green-200 rounded-lg p-6">
-                <div className="flex items-center mb-3">
-                  <CheckCircleIcon sx={{ fontSize: 24 }} className="text-green-600 mr-2" />
-                  <span className="font-bold text-green-700 text-lg">Payment Successful!</span>
-                </div>
-                <div className="space-y-2 text-sm text-gray-700">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Amount Paid:</span>
-                    <span className="font-mono font-semibold">1000 wXNT (0.001)</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Settlement:</span>
-                    <span className="font-semibold text-green-600">&lt;1 second</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Protocol Fee:</span>
-                    <span className="font-bold text-green-600">0% (FREE)</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Gas Fees:</span>
-                    <span className="font-semibold text-green-600">Covered by X1Pays</span>
-                  </div>
-                  <div className="flex justify-between items-start pt-2 border-t border-green-200 mt-2">
-                    <span className="text-gray-600">TX Hash:</span>
-                    <span className="font-mono text-xs break-all max-w-[200px] text-right">{txHash}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
-                <div className="flex items-center mb-2">
-                  <AttachMoneyIcon sx={{ fontSize: 20 }} className="text-blue-600 mr-2" />
-                  <span className="font-bold text-blue-700">Refund Initiated</span>
-                </div>
-                <p className="text-sm text-gray-700">
-                  Your <span className="font-bold">1000 wXNT</span> will be refunded within 1 minute. 
-                  X1Pays covers all costs for Echo testing.
-                </p>
-              </div>
-
-              <button
-                onClick={() => setTestStatus('idle')}
-                className="w-full py-3 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-all duration-200"
-              >
-                Test Again
-              </button>
-            </div>
-          )}
-
-          {testStatus === 'error' && (
-            <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6">
-              <div className="flex items-center mb-3">
-                <CancelIcon sx={{ fontSize: 24 }} className="text-red-600 mr-2" />
-                <span className="font-bold text-red-700">Payment Failed</span>
-              </div>
-              <p className="text-sm text-gray-700 mb-4">
-                Something went wrong. In production, check your payment signature and wallet balance.
-              </p>
-              <button
-                onClick={() => setTestStatus('idle')}
-                className="w-full py-3 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-all duration-200"
-              >
-                Try Again
-              </button>
-            </div>
-          )}
-
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <h3 className="font-semibold text-gray-900 mb-3">How Echo Works</h3>
-            <ol className="space-y-2 text-sm text-gray-600">
-              <li className="flex items-start">
-                <span className="font-bold text-indigo-600 mr-2">1.</span>
-                <span>You send a real x402 payment on X1 mainnet</span>
-              </li>
-              <li className="flex items-start">
-                <span className="font-bold text-indigo-600 mr-2">2.</span>
-                <span>Echo merchant verifies and settles instantly</span>
-              </li>
-              <li className="flex items-start">
-                <span className="font-bold text-indigo-600 mr-2">3.</span>
-                <span>You receive 100% refund automatically (gas covered)</span>
-              </li>
-            </ol>
-          </div>
-        </div>
-
-        {/* Info Panel */}
-        <div className="space-y-6">
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-8 border-2 border-indigo-200">
-            <h3 className="text-xl font-bold mb-4 text-gray-900">What You Get</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <CheckCircleIcon sx={{ fontSize: 20 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700"><span className="font-semibold">Real blockchain transactions</span> on X1 mainnet</span>
-              </li>
-              <li className="flex items-start">
-                <CheckCircleIcon sx={{ fontSize: 20 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700"><span className="font-semibold">100% refund</span> of all test payments</span>
-              </li>
-              <li className="flex items-start">
-                <CheckCircleIcon sx={{ fontSize: 20 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700"><span className="font-semibold">Gas fees covered</span> by X1Pays treasury</span>
-              </li>
-              <li className="flex items-start">
-                <CheckCircleIcon sx={{ fontSize: 20 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700"><span className="font-semibold">Full x402 flow</span> including verification & settlement</span>
-              </li>
-              <li className="flex items-start">
-                <CheckCircleIcon sx={{ fontSize: 20 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-700"><span className="font-semibold">Real transaction receipts</span> with on-chain proof</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-white rounded-2xl p-8 border-2 border-gray-200 shadow-lg">
-            <h3 className="text-xl font-bold mb-4 text-gray-900">Stats</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center p-4 bg-indigo-50 rounded-lg">
-                <div className="text-3xl font-bold text-indigo-600">0%</div>
-                <div className="text-sm text-gray-600 mt-1">Protocol Fee</div>
-              </div>
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <div className="text-3xl font-bold text-green-600">100%</div>
-                <div className="text-sm text-gray-600 mt-1">Refund Rate</div>
-              </div>
-              <div className="text-center p-4 bg-purple-50 rounded-lg">
-                <div className="text-3xl font-bold text-purple-600">&lt;1s</div>
-                <div className="text-sm text-gray-600 mt-1">Settlement</div>
-              </div>
-              <div className="text-center p-4 bg-blue-50 rounded-lg">
-                <div className="text-3xl font-bold text-blue-600">$0</div>
-                <div className="text-sm text-gray-600 mt-1">Gas Cost</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Code Examples */}
-      <div className="mb-20">
-        <h2 className="text-3xl font-bold mb-8 text-center">Integration Examples</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Using cURL</h3>
+      <Box sx={{ mb: 10 }}>
+        <Typography variant="h3" sx={{ fontWeight: 700, mb: 4, textAlign: 'center' }}>Integration Examples</Typography>
+        <Grid container spacing={4}>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>Using cURL</Typography>
             <CodeBlock code={curlExample} language="bash" filename="test-echo.sh" />
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Using X1Pays SDK</h3>
+          </Grid>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>Using X1Pays SDK</Typography>
             <CodeBlock code={sdkExample} language="typescript" filename="test-echo.ts" />
-          </div>
-        </div>
-      </div>
+          </Grid>
+        </Grid>
+      </Box>
 
-      {/* CTA */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-12 text-center text-white shadow-2xl">
-        <h2 className="text-3xl font-bold mb-4">Ready to Build with x402?</h2>
-        <p className="text-xl text-indigo-100 mb-8 max-w-2xl mx-auto">
+      <Box
+        sx={{
+          background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
+          borderRadius: 4,
+          p: { xs: 6, md: 8 },
+          textAlign: 'center',
+        }}
+      >
+        <Typography variant="h3" sx={{ fontWeight: 800, color: 'background.default', mb: 2 }}>
+          Ready to Build with x402?
+        </Typography>
+        <Typography variant="h5" sx={{ color: 'rgba(10, 25, 41, 0.8)', mb: 4, maxWidth: '700px', mx: 'auto' }}>
           Start accepting instant payments on your API with zero fees and sub-second settlement.
-        </p>
-        <div className="flex gap-4 justify-center flex-wrap">
-          <a
-            href="/docs/getting-started"
-            className="inline-flex items-center px-8 py-4 bg-white text-indigo-600 rounded-lg font-bold hover:bg-gray-50 transition-all duration-200 shadow-lg"
+        </Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
+          <Button
+            component={Link}
+            to="/docs/getting-started"
+            variant="contained"
+            size="large"
+            endIcon={<ArrowForwardIcon />}
+            sx={{
+              bgcolor: 'background.default',
+              color: 'primary.main',
+              fontWeight: 700,
+              px: 4,
+              py: 2,
+              '&:hover': {
+                bgcolor: 'rgba(10, 25, 41, 0.9)',
+              },
+            }}
           >
             Get Started
-            <ArrowForwardIcon sx={{ fontSize: 20, ml: 1 }} />
-          </a>
-          <a
-            href="/docs/examples"
-            className="inline-flex items-center px-8 py-4 bg-white/10 backdrop-blur-sm border-2 border-white text-white rounded-lg font-bold hover:bg-white/20 transition-all duration-200"
+          </Button>
+          <Button
+            component={Link}
+            to="/docs/examples"
+            variant="outlined"
+            size="large"
+            sx={{
+              borderColor: 'background.default',
+              color: 'background.default',
+              fontWeight: 700,
+              px: 4,
+              py: 2,
+              borderWidth: 2,
+              '&:hover': {
+                borderWidth: 2,
+                borderColor: 'background.default',
+                bgcolor: 'rgba(10, 25, 41, 0.2)',
+              },
+            }}
           >
             View Examples
-          </a>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Stack>
+      </Box>
+    </Container>
   )
 }

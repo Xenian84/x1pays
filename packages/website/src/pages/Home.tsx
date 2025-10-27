@@ -35,13 +35,16 @@ console.log(response.payment);     // Payment proof`
 
   return (
     <Box>
-      <Box className="relative overflow-hidden" sx={{ bgcolor: 'background.default', py: { xs: 8, md: 16 } }}>
-        <Box className="absolute inset-0 opacity-20" sx={{
+      <Box sx={{ position: 'relative', overflow: 'hidden', bgcolor: 'background.default', py: { xs: 8, md: 16 } }}>
+        <Box sx={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0.2,
           backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(0, 229, 255, 0.15) 1px, transparent 0)',
           backgroundSize: '40px 40px',
         }} />
         
-        <Container maxWidth="lg" className="relative">
+        <Container maxWidth="lg" sx={{ position: 'relative' }}>
           <Stack spacing={4} alignItems="center" textAlign="center">
             <Chip
               icon={<AutoAwesomeIcon />}
@@ -159,13 +162,15 @@ console.log(response.payment);     // Payment proof`
           <Grid size={{ xs: 12, md: 6 }}>
             <Card
               elevation={0}
-              className="h-full transition-all hover:shadow-xl"
               sx={{
+                height: '100%',
+                transition: 'all 0.3s ease',
                 border: '1px solid',
                 borderColor: 'secondary.dark',
                 '&:hover': {
                   borderColor: 'secondary.main',
                   transform: 'translateY(-4px)',
+                  boxShadow: 12,
                 },
               }}
             >
@@ -197,7 +202,7 @@ console.log(response.payment);     // Payment proof`
                     'Gas fees covered by X1Pays',
                     "Lower than Stripe's 2.9%",
                   ].map((feature) => (
-                    <Box key={feature} className="flex items-center gap-3">
+                    <Box key={feature} sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                       <CheckCircleIcon sx={{ color: 'secondary.main', fontSize: 20 }} />
                       <Typography variant="body2" color="text.secondary">{feature}</Typography>
                     </Box>
@@ -210,13 +215,15 @@ console.log(response.payment);     // Payment proof`
           <Grid size={{ xs: 12, md: 6 }}>
             <Card
               elevation={0}
-              className="h-full transition-all hover:shadow-xl"
               sx={{
+                height: '100%',
+                transition: 'all 0.3s ease',
                 border: '1px solid',
                 borderColor: 'primary.dark',
                 '&:hover': {
                   borderColor: 'primary.main',
                   transform: 'translateY(-4px)',
+                  boxShadow: 12,
                 },
               }}
             >
@@ -248,7 +255,7 @@ console.log(response.payment);     // Payment proof`
                     'No chargebacks ever',
                     'Perfect for AI agents',
                   ].map((feature) => (
-                    <Box key={feature} className="flex items-center gap-3">
+                    <Box key={feature} sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                       <CheckCircleIcon sx={{ color: 'primary.main', fontSize: 20 }} />
                       <Typography variant="body2" color="text.secondary">{feature}</Typography>
                     </Box>
@@ -261,13 +268,15 @@ console.log(response.payment);     // Payment proof`
           <Grid size={{ xs: 12, md: 6 }}>
             <Card
               elevation={0}
-              className="h-full transition-all hover:shadow-xl"
               sx={{
+                height: '100%',
+                transition: 'all 0.3s ease',
                 border: '1px solid',
                 borderColor: 'info.dark',
                 '&:hover': {
                   borderColor: 'info.main',
                   transform: 'translateY(-4px)',
+                  boxShadow: 12,
                 },
               }}
             >
@@ -299,7 +308,7 @@ console.log(response.payment);     // Payment proof`
                     'Works with any HTTP client',
                     '5 minute setup time',
                   ].map((feature) => (
-                    <Box key={feature} className="flex items-center gap-3">
+                    <Box key={feature} sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                       <CheckCircleIcon sx={{ color: 'info.main', fontSize: 20 }} />
                       <Typography variant="body2" color="text.secondary">{feature}</Typography>
                     </Box>
@@ -312,13 +321,15 @@ console.log(response.payment);     // Payment proof`
           <Grid size={{ xs: 12, md: 6 }}>
             <Card
               elevation={0}
-              className="h-full transition-all hover:shadow-xl"
               sx={{
+                height: '100%',
+                transition: 'all 0.3s ease',
                 border: '1px solid',
                 borderColor: 'warning.dark',
                 '&:hover': {
                   borderColor: 'warning.main',
                   transform: 'translateY(-4px)',
+                  boxShadow: 12,
                 },
               }}
             >
@@ -350,7 +361,7 @@ console.log(response.payment);     // Payment proof`
                     'On-chain settlement proof',
                     'No intermediary custody',
                   ].map((feature) => (
-                    <Box key={feature} className="flex items-center gap-3">
+                    <Box key={feature} sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                       <CheckCircleIcon sx={{ color: 'warning.main', fontSize: 20 }} />
                       <Typography variant="body2" color="text.secondary">{feature}</Typography>
                     </Box>
@@ -373,7 +384,7 @@ console.log(response.payment);     // Payment proof`
             </Typography>
           </Stack>
           <CodeBlock code={exampleCode} language="typescript" filename="client.ts" />
-          <Box className="flex justify-center mt-6">
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
             <Button
               component={Link}
               to="/docs/api-reference"
@@ -429,14 +440,16 @@ console.log(response.payment);     // Payment proof`
             <Grid size={{ xs: 12, md: 4 }} key={item.step}>
               <Paper
                 elevation={0}
-                className="h-full transition-all hover:shadow-xl"
                 sx={{
+                  height: '100%',
+                  transition: 'all 0.3s ease',
                   p: 4,
                   border: '1px solid',
                   borderColor: `${item.color}.dark`,
                   '&:hover': {
                     borderColor: `${item.color}.main`,
                     transform: 'translateY(-4px)',
+                    boxShadow: 12,
                   },
                 }}
               >
@@ -468,13 +481,16 @@ console.log(response.payment);     // Payment proof`
         </Grid>
       </Container>
 
-      <Box className="relative overflow-hidden" sx={{ bgcolor: 'background.paper', py: { xs: 8, md: 12 } }}>
-        <Box className="absolute inset-0 opacity-10" sx={{
+      <Box sx={{ position: 'relative', overflow: 'hidden', bgcolor: 'background.paper', py: { xs: 8, md: 12 } }}>
+        <Box sx={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0.1,
           backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(118, 255, 3, 0.3) 1px, transparent 0)',
           backgroundSize: '40px 40px',
         }} />
         
-        <Container maxWidth="lg" className="relative">
+        <Container maxWidth="lg" sx={{ position: 'relative' }}>
           <Stack spacing={4} alignItems="center" textAlign="center">
             <Typography variant="h2" sx={{ fontWeight: 700, maxWidth: '700px' }}>
               Ready to accept instant payments?

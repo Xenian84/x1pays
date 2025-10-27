@@ -1,9 +1,39 @@
+import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Stack from '@mui/material/Stack'
+import Paper from '@mui/material/Paper'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import BoltIcon from '@mui/icons-material/Bolt'
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
+import SettingsIcon from '@mui/icons-material/Settings'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import WarningIcon from '@mui/icons-material/Warning'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import StarIcon from '@mui/icons-material/Star'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
+import CancelIcon from '@mui/icons-material/Cancel'
+import TrackChangesIcon from '@mui/icons-material/TrackChanges'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import CodeBlock from '../components/CodeBlock'
+
 const AllServerOptions = () => {
   const frameworks = [
     {
       name: "Express.js",
-      icon: "🚂",
-      color: "green",
+      icon: BoltIcon,
+      color: "success",
       description: "The most popular Node.js web framework",
       pros: [
         "Massive ecosystem and community",
@@ -35,8 +65,8 @@ app.get('/premium', x402Middleware({
     },
     {
       name: "Hono",
-      icon: "🔥",
-      color: "purple",
+      icon: LocalFireDepartmentIcon,
+      color: "error",
       description: "Ultra-fast, lightweight, edge-ready framework",
       pros: [
         "4x faster than Express",
@@ -69,8 +99,8 @@ app.get('/premium', x402({
     },
     {
       name: "Fastify",
-      icon: "⚡",
-      color: "blue",
+      icon: SettingsIcon,
+      color: "info",
       description: "High-performance framework with schema validation",
       pros: [
         "Very fast (2x+ faster than Express)",
@@ -107,8 +137,8 @@ fastify.get('/premium', {
     },
     {
       name: "Next.js API Routes",
-      icon: "▲",
-      color: "gray",
+      icon: ArrowUpwardIcon,
+      color: "secondary",
       description: "API routes within Next.js applications",
       pros: [
         "Integrated with Next.js frontend",
@@ -140,190 +170,362 @@ export default x402Handler({
     }
   ];
 
-  const getColorClasses = (color: string) => {
-    const colors: Record<string, {bg: string, border: string, hover: string}> = {
-      green: { bg: 'bg-green-50', border: 'border-green-200', hover: 'hover:bg-green-100' },
-      purple: { bg: 'bg-purple-50', border: 'border-purple-200', hover: 'hover:bg-purple-100' },
-      blue: { bg: 'bg-blue-50', border: 'border-blue-200', hover: 'hover:bg-blue-100' },
-      gray: { bg: 'bg-gray-50', border: 'border-gray-200', hover: 'hover:bg-gray-100' }
-    };
-    return colors[color] || colors.gray;
-  };
-
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        <div className="mb-12">
-          <a href="/facilitator" className="text-blue-600 hover:text-blue-700 mb-4 inline-block">
-            ← Back to Facilitator
-          </a>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">All Server Options</h1>
-          <p className="text-xl text-gray-600">
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 12 } }}>
+        <Box sx={{ mb: 8 }}>
+          <Button
+            component={Link}
+            to="/facilitator"
+            startIcon={<ArrowBackIcon />}
+            sx={{
+              mb: 4,
+              color: 'primary.main',
+              '&:hover': { bgcolor: 'rgba(0, 229, 255, 0.1)' }
+            }}
+          >
+            Back to Facilitator
+          </Button>
+          <Typography variant="h1" sx={{ mb: 2, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
+            All Server Options
+          </Typography>
+          <Typography variant="h5" color="text.secondary">
             Choose the right framework for your x402-enabled API server.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
-        {/* Comparison Table */}
-        <div className="mb-12 overflow-x-auto">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Comparison</h2>
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 px-4 py-3 text-left">Framework</th>
-                <th className="border border-gray-300 px-4 py-3 text-left">Performance</th>
-                <th className="border border-gray-300 px-4 py-3 text-left">Learning Curve</th>
-                <th className="border border-gray-300 px-4 py-3 text-left">TypeScript</th>
-                <th className="border border-gray-300 px-4 py-3 text-left">Edge Support</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border border-gray-300 px-4 py-3 font-medium">Express.js</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐⭐⭐ Easy</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐ Manual</td>
-                <td className="border border-gray-300 px-4 py-3">❌ No</td>
-              </tr>
-              <tr className="bg-gray-50">
-                <td className="border border-gray-300 px-4 py-3 font-medium">Hono</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐⭐⭐ Fastest</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐⭐ Easy</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐⭐⭐ Built-in</td>
-                <td className="border border-gray-300 px-4 py-3">✅ Yes</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-3 font-medium">Fastify</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐⭐⭐ Very Fast</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐ Moderate</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐⭐⭐ Excellent</td>
-                <td className="border border-gray-300 px-4 py-3">⚠️ Partial</td>
-              </tr>
-              <tr className="bg-gray-50">
-                <td className="border border-gray-300 px-4 py-3 font-medium">Next.js API</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐⭐ Easy</td>
-                <td className="border border-gray-300 px-4 py-3">⭐⭐⭐⭐⭐ Built-in</td>
-                <td className="border border-gray-300 px-4 py-3">✅ Vercel</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 4, fontSize: '2rem' }}>Quick Comparison</Typography>
+          <TableContainer component={Paper} elevation={0} sx={{ transition: 'all 0.3s ease', border: '1px solid', borderColor: 'primary.dark' }}>
+            <Table>
+              <TableHead>
+                <TableRow sx={{ transition: 'all 0.3s ease', bgcolor: 'background.paper' }}>
+                  <TableCell><Typography fontWeight={600}>Framework</Typography></TableCell>
+                  <TableCell><Typography fontWeight={600}>Performance</Typography></TableCell>
+                  <TableCell><Typography fontWeight={600}>Learning Curve</Typography></TableCell>
+                  <TableCell><Typography fontWeight={600}>TypeScript</Typography></TableCell>
+                  <TableCell><Typography fontWeight={600}>Edge Support</Typography></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell><Typography fontWeight={600}>Express.js</Typography></TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5 }}>
+                      {[1, 2, 3].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                      {[1, 2, 3, 4, 5].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                      <Typography sx={{ ml: 1 }}>Easy</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                      {[1, 2, 3].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                      <Typography sx={{ ml: 1 }}>Manual</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                      <CancelIcon sx={{ fontSize: 18, color: 'error.main' }} />
+                      <Typography>No</Typography>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+                <TableRow sx={{ bgcolor: 'rgba(0, 229, 255, 0.02)' }}>
+                  <TableCell><Typography fontWeight={600}>Hono</Typography></TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                      {[1, 2, 3, 4, 5].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                      <Typography sx={{ ml: 1 }}>Fastest</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                      {[1, 2, 3, 4].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                      <Typography sx={{ ml: 1 }}>Easy</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                      {[1, 2, 3, 4, 5].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                      <Typography sx={{ ml: 1 }}>Built-in</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                      <CheckCircleIcon sx={{ fontSize: 18, color: 'success.main' }} />
+                      <Typography>Yes</Typography>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell><Typography fontWeight={600}>Fastify</Typography></TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                      {[1, 2, 3, 4, 5].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                      <Typography sx={{ ml: 1 }}>Very Fast</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                      {[1, 2, 3].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                      <Typography sx={{ ml: 1 }}>Moderate</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                      {[1, 2, 3, 4, 5].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                      <Typography sx={{ ml: 1 }}>Excellent</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                      <WarningIcon sx={{ fontSize: 18, color: 'warning.main' }} />
+                      <Typography>Partial</Typography>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+                <TableRow sx={{ bgcolor: 'rgba(0, 229, 255, 0.02)' }}>
+                  <TableCell><Typography fontWeight={600}>Next.js API</Typography></TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5 }}>
+                      {[1, 2, 3].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                      {[1, 2, 3, 4].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                      <Typography sx={{ ml: 1 }}>Easy</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                      {[1, 2, 3, 4, 5].map((i) => <StarIcon key={i} sx={{ fontSize: 18, color: 'warning.main' }} />)}
+                      <Typography sx={{ ml: 1 }}>Built-in</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                      <CheckCircleIcon sx={{ fontSize: 18, color: 'success.main' }} />
+                      <Typography>Vercel</Typography>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
 
-        {/* Detailed Framework Cards */}
-        <div className="space-y-8">
+        <Stack spacing={6}>
           {frameworks.map((framework) => {
-            const colors = getColorClasses(framework.color);
+            const IconComponent = framework.icon;
             return (
-              <div 
+              <Card
                 key={framework.name}
-                className={`${colors.bg} border-2 ${colors.border} rounded-lg p-6`}
+                elevation={0}
+                
+                sx={{ transition: 'all 0.3s ease',
+                  border: '1px solid',
+                  borderColor: `${framework.color}.dark`,
+                  '&:hover': {
+                    borderColor: `${framework.color}.main`,
+                    transform: 'translateY(-4px)',
+                  },
+                }}
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      <span className="mr-2">{framework.icon}</span>
-                      {framework.name}
-                    </h3>
-                    <p className="text-gray-700">{framework.description}</p>
-                  </div>
-                  {(framework as any).comingSoon && (
-                    <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full">
-                      Coming Soon
-                    </span>
-                  )}
-                </div>
+                <CardContent sx={{ p: 4 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 3 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <Box
+                        sx={{
+                          width: 56,
+                          height: 56,
+                          borderRadius: 2,
+                          bgcolor: `rgba(${framework.color === 'success' ? '118, 255, 3' : framework.color === 'error' ? '255, 82, 82' : framework.color === 'info' ? '0, 229, 255' : '118, 255, 3'}, 0.1)`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <IconComponent sx={{ fontSize: 32, color: `${framework.color}.main` }} />
+                      </Box>
+                      <Box>
+                        <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                          {framework.name}
+                        </Typography>
+                        <Typography color="text.secondary">{framework.description}</Typography>
+                      </Box>
+                    </Box>
+                  </Box>
 
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                  <div>
-                    <h4 className="font-bold text-gray-900 mb-2">✅ Pros</h4>
-                    <ul className="space-y-1 text-gray-700 text-sm">
-                      {framework.pros.map((pro, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <span className="text-green-600 mt-0.5">•</span>
-                          <span>{pro}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900 mb-2">⚠️ Cons</h4>
-                    <ul className="space-y-1 text-gray-700 text-sm">
-                      {framework.cons.map((con, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <span className="text-orange-600 mt-0.5">•</span>
-                          <span>{con}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                  <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 4, mb: 4 }}>
+                    <Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                        <CheckCircleIcon sx={{ color: 'success.main', fontSize: 20 }} />
+                        <Typography variant="h6" sx={{ fontWeight: 700 }}>Pros</Typography>
+                      </Box>
+                      <Stack spacing={1.5}>
+                        {framework.pros.map((pro, i) => (
+                          <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                            <Box sx={{ color: 'success.main', mt: 0.5 }}>•</Box>
+                            <Typography variant="body2" color="text.secondary">{pro}</Typography>
+                          </Box>
+                        ))}
+                      </Stack>
+                    </Box>
+                    <Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                        <WarningIcon sx={{ color: 'warning.main', fontSize: 20 }} />
+                        <Typography variant="h6" sx={{ fontWeight: 700 }}>Cons</Typography>
+                      </Box>
+                      <Stack spacing={1.5}>
+                        {framework.cons.map((con, i) => (
+                          <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                            <Box sx={{ color: 'warning.main', mt: 0.5 }}>•</Box>
+                            <Typography variant="body2" color="text.secondary">{con}</Typography>
+                          </Box>
+                        ))}
+                      </Stack>
+                    </Box>
+                  </Box>
 
-                <div className="mb-6">
-                  <h4 className="font-bold text-gray-900 mb-2">🎯 Best For</h4>
-                  <p className="text-gray-700 text-sm">{framework.bestFor}</p>
-                </div>
+                  <Box sx={{ mb: 4 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                      <TrackChangesIcon sx={{ color: 'primary.main', fontSize: 20 }} />
+                      <Typography variant="h6" sx={{ fontWeight: 700 }}>Best For</Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary">{framework.bestFor}</Typography>
+                  </Box>
 
-                <div className="mb-6">
-                  <h4 className="font-bold text-gray-900 mb-2">Code Example</h4>
-                  <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                    <pre className="text-sm text-gray-300">{framework.example}</pre>
-                  </div>
-                </div>
+                  <Box sx={{ mb: 4 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>Code Example</Typography>
+                    <CodeBlock code={framework.example} language="typescript" />
+                  </Box>
 
-                {!(framework as any).comingSoon && (
-                  <a 
-                    href={framework.quickstartLink}
-                    className={`inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors`}
+                  <Button
+                    component={Link}
+                    to={framework.quickstartLink}
+                    variant="contained"
+                    endIcon={<ArrowForwardIcon />}
+                    sx={{
+                      bgcolor: 'primary.main',
+                      color: 'primary.contrastText',
+                      '&:hover': { bgcolor: 'primary.light' }
+                    }}
                   >
-                    View {framework.name} Quickstart →
-                  </a>
-                )}
-              </div>
+                    View {framework.name} Quickstart
+                  </Button>
+                </CardContent>
+              </Card>
             );
           })}
-        </div>
+        </Stack>
 
-        {/* Decision Guide */}
-        <div className="mt-12 p-6 bg-blue-50 border-2 border-blue-200 rounded-lg">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">🤔 Decision Guide</h2>
-          <div className="space-y-4 text-gray-700">
-            <div>
-              <strong>Choose Express if:</strong> You want maximum compatibility, have a team familiar with it, or need access to the largest middleware ecosystem.
-            </div>
-            <div>
-              <strong>Choose Hono if:</strong> You need edge deployment, want the best performance, or are building a new TypeScript project from scratch.
-            </div>
-            <div>
-              <strong>Choose Fastify if:</strong> You need high throughput, want built-in schema validation, or are building microservices.
-            </div>
-            <div>
-              <strong>Choose Next.js API Routes if:</strong> You're already using Next.js for your frontend and want a unified full-stack application.
-            </div>
-          </div>
-        </div>
+        <Card
+          elevation={0}
+          sx={{ transition: 'all 0.3s ease',
+            mt: 8,
+            border: '1px solid',
+            borderColor: 'info.dark',
+            bgcolor: 'rgba(0, 229, 255, 0.05)',
+          }}
+        >
+          <CardContent sx={{ p: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
+              <HelpOutlineIcon sx={{ color: 'info.main', fontSize: 28 }} />
+              <Typography variant="h2" sx={{ fontSize: '2rem' }}>Decision Guide</Typography>
+            </Box>
+            <Stack spacing={3}>
+              <Box>
+                <Typography variant="body1" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
+                  Choose Express if:
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  You want maximum compatibility, have a team familiar with it, or need access to the largest middleware ecosystem.
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant="body1" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
+                  Choose Hono if:
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  You need edge deployment, want the best performance, or are building a new TypeScript project from scratch.
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant="body1" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
+                  Choose Fastify if:
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  You need high throughput, want built-in schema validation, or are building microservices.
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant="body1" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
+                  Choose Next.js API Routes if:
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  You're already using Next.js for your frontend and want a unified full-stack application.
+                </Typography>
+              </Box>
+            </Stack>
+          </CardContent>
+        </Card>
 
-        {/* Next Steps */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Next Steps</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <a 
-              href="/examples" 
-              className="block p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors"
+        <Box sx={{ mt: 8 }}>
+          <Typography variant="h2" sx={{ mb: 4, fontSize: '2rem' }}>Next Steps</Typography>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+            <Card
+              component={Link}
+              to="/examples"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'primary.dark',
+                '&:hover': {
+                  borderColor: 'primary.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">View Complete Examples</h3>
-              <p className="text-gray-700 text-sm">See full working examples across frameworks</p>
-            </a>
-            <a 
-              href="/quickstart/clients" 
-              className="block p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors"
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>View Complete Examples</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  See full working examples across frameworks
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card
+              component={Link}
+              to="/quickstart/clients"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'primary.dark',
+                '&:hover': {
+                  borderColor: 'primary.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">Build a Client</h3>
-              <p className="text-gray-700 text-sm">Learn how to consume your x402 API</p>
-            </a>
-          </div>
-        </section>
-      </div>
-    </div>
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Build a Client</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Learn how to consume your x402 API
+                </Typography>
+              </CardContent>
+            </Card>
+          </Box>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

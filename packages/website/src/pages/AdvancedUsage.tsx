@@ -1,20 +1,66 @@
+import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Stack from '@mui/material/Stack'
+import Paper from '@mui/material/Paper'
+import Alert from '@mui/material/Alert'
+import SettingsIcon from '@mui/icons-material/Settings'
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
+import ErrorIcon from '@mui/icons-material/Error'
+import SecurityIcon from '@mui/icons-material/Security'
+import CodeIcon from '@mui/icons-material/Code'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CancelIcon from '@mui/icons-material/Cancel'
+import SchemaIcon from '@mui/icons-material/Schema'
+import CodeBlock from '../components/CodeBlock'
+
 const AdvancedUsage = () => {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-gray-900 mb-6">Advanced Usage</h1>
-      
-      <p className="text-lg text-gray-700 mb-8">
-        Learn how to use constants, validation helpers, error handling, and type guards for production-ready x402 implementations.
-      </p>
+    <Box>
+      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+        <Stack spacing={2} sx={{ mb: 8 }}>
+          <Typography variant="h1" sx={{ fontSize: { xs: '2.5rem', md: '3.5rem' }, fontWeight: 800 }}>
+            Advanced Usage
+          </Typography>
+          <Typography variant="h5" color="text.secondary">
+            Learn how to use constants, validation helpers, error handling, and type guards for production-ready x402 implementations.
+          </Typography>
+        </Stack>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Constants</h2>
-        <p className="text-gray-700 mb-4">
-          Import and use type-safe constants instead of hardcoding values:
-        </p>
-        <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto mb-6">
-          <pre className="text-sm text-gray-300">
-{`import { 
+        <Stack spacing={8}>
+          {/* Constants Section */}
+          <Box>
+            <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 4 }}>
+              <Box
+                sx={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 2,
+                  bgcolor: 'rgba(0, 229, 255, 0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <SettingsIcon sx={{ fontSize: 32, color: 'primary.main' }} />
+              </Box>
+              <Box>
+                <Typography variant="h3" sx={{ fontWeight: 700 }}>
+                  Constants
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Import and use type-safe constants instead of hardcoding values
+                </Typography>
+              </Box>
+            </Stack>
+
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'primary.dark', mb: 4 }}>
+              <CardContent sx={{ p: 4 }}>
+                <CodeBlock 
+                  code={`import { 
   NETWORKS, 
   FACILITATOR_URLS, 
   X402_VERSION,
@@ -41,14 +87,19 @@ const headers = {
   [X402_HEADERS.PAYMENT]: paymentData,
   [X402_HEADERS.PAYMENT_REQUIRED]: requirementData,
   [X402_HEADERS.PAYMENT_RESPONSE]: responseData
-}`}
-          </pre>
-        </div>
+}`} 
+                  language="typescript" 
+                />
+              </CardContent>
+            </Card>
 
-        <h3 className="text-xl font-semibold text-gray-900 mb-3">Server Configuration with Constants</h3>
-        <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-          <pre className="text-sm text-gray-300">
-{`import { x402Middleware } from '@x1pays/middleware'
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'secondary.dark' }}>
+              <CardContent sx={{ p: 4 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 3 }}>
+                  Server Configuration with Constants
+                </Typography>
+                <CodeBlock 
+                  code={`import { x402Middleware } from '@x1pays/middleware'
 import { NETWORKS, FACILITATOR_URLS } from '@x1pays/client'
 
 app.get('/premium/data',
@@ -62,19 +113,43 @@ app.get('/premium/data',
   (req, res) => {
     res.json({ data: 'Premium content' })
   }
-)`}
-          </pre>
-        </div>
-      </section>
+)`} 
+                  language="typescript" 
+                />
+              </CardContent>
+            </Card>
+          </Box>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Validation Helpers</h2>
-        <p className="text-gray-700 mb-4">
-          Use built-in validation helpers for runtime validation with clear error messages:
-        </p>
-        <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-          <pre className="text-sm text-gray-300">
-{`import { 
+          {/* Validation Helpers Section */}
+          <Box>
+            <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 4 }}>
+              <Box
+                sx={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 2,
+                  bgcolor: 'rgba(118, 255, 3, 0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <VerifiedUserIcon sx={{ fontSize: 32, color: 'secondary.main' }} />
+              </Box>
+              <Box>
+                <Typography variant="h3" sx={{ fontWeight: 700 }}>
+                  Validation Helpers
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Use built-in validation helpers for runtime validation with clear error messages
+                </Typography>
+              </Box>
+            </Stack>
+
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'secondary.dark' }}>
+              <CardContent sx={{ p: 4 }}>
+                <CodeBlock 
+                  code={`import { 
   validatePaymentPayload,
   validatePaymentRequirement,
   validatePaymentResponse,
@@ -120,19 +195,43 @@ try {
 const isValid = await verifyPaymentSignature(payment)
 if (!isValid) {
   throw new Error('Payment signature verification failed')
-}`}
-          </pre>
-        </div>
-      </section>
+}`} 
+                  language="typescript" 
+                />
+              </CardContent>
+            </Card>
+          </Box>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Error Handling</h2>
-        <p className="text-gray-700 mb-4">
-          Handle specific error types for better debugging and user experience:
-        </p>
-        <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto mb-6">
-          <pre className="text-sm text-gray-300">
-{`import { 
+          {/* Error Handling Section */}
+          <Box>
+            <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 4 }}>
+              <Box
+                sx={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 2,
+                  bgcolor: 'rgba(244, 67, 54, 0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <ErrorIcon sx={{ fontSize: 32, color: 'error.main' }} />
+              </Box>
+              <Box>
+                <Typography variant="h3" sx={{ fontWeight: 700 }}>
+                  Error Handling
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Handle specific error types for better debugging and user experience
+                </Typography>
+              </Box>
+            </Stack>
+
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'error.dark', mb: 4 }}>
+              <CardContent sx={{ p: 4 }}>
+                <CodeBlock 
+                  code={`import { 
   InvalidSignatureError,
   InsufficientFundsError,
   NetworkError,
@@ -179,14 +278,19 @@ async function makePayment() {
       // Handle: Generic error fallback
     }
   }
-}`}
-          </pre>
-        </div>
+}`} 
+                  language="typescript" 
+                />
+              </CardContent>
+            </Card>
 
-        <h3 className="text-xl font-semibold text-gray-900 mb-3">Server-Side Error Handling</h3>
-        <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-          <pre className="text-sm text-gray-300">
-{`import { InvalidSignatureError, NetworkError } from '@x1pays/client'
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'warning.dark' }}>
+              <CardContent sx={{ p: 4 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 3 }}>
+                  Server-Side Error Handling
+                </Typography>
+                <CodeBlock 
+                  code={`import { InvalidSignatureError, NetworkError } from '@x1pays/client'
 
 app.post('/verify-payment', async (req, res) => {
   try {
@@ -212,19 +316,43 @@ app.post('/verify-payment', async (req, res) => {
     }
     return res.status(500).json({ error: 'Internal server error' })
   }
-})`}
-          </pre>
-        </div>
-      </section>
+})`} 
+                  language="typescript" 
+                />
+              </CardContent>
+            </Card>
+          </Box>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Type Guards</h2>
-        <p className="text-gray-700 mb-4">
-          Use type guards for runtime type checking in TypeScript:
-        </p>
-        <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-          <pre className="text-sm text-gray-300">
-{`import { 
+          {/* Type Guards Section */}
+          <Box>
+            <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 4 }}>
+              <Box
+                sx={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 2,
+                  bgcolor: 'rgba(255, 183, 77, 0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <SecurityIcon sx={{ fontSize: 32, color: 'warning.main' }} />
+              </Box>
+              <Box>
+                <Typography variant="h3" sx={{ fontWeight: 700 }}>
+                  Type Guards
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Use type guards for runtime type checking in TypeScript
+                </Typography>
+              </Box>
+            </Stack>
+
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'warning.dark' }}>
+              <CardContent sx={{ p: 4 }}>
+                <CodeBlock 
+                  code={`import { 
   isWalletSigner,
   isValidPaymentPayload,
   isValidPaymentRequirement,
@@ -276,19 +404,43 @@ try {
   const signature = await wallet.signMessage(message)
 } catch (error) {
   console.error('Validation failed:', error.message)
-}`}
-          </pre>
-        </div>
-      </section>
+}`} 
+                  language="typescript" 
+                />
+              </CardContent>
+            </Card>
+          </Box>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Zod Schemas</h2>
-        <p className="text-gray-700 mb-4">
-          Import Zod schemas for runtime validation in your own code:
-        </p>
-        <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-          <pre className="text-sm text-gray-300">
-{`import { 
+          {/* Zod Schemas Section */}
+          <Box>
+            <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 4 }}>
+              <Box
+                sx={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 2,
+                  bgcolor: 'rgba(0, 229, 255, 0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <SchemaIcon sx={{ fontSize: 32, color: 'info.main' }} />
+              </Box>
+              <Box>
+                <Typography variant="h3" sx={{ fontWeight: 700 }}>
+                  Zod Schemas
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Import Zod schemas for runtime validation in your own code
+                </Typography>
+              </Box>
+            </Stack>
+
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'info.dark' }}>
+              <CardContent sx={{ p: 4 }}>
+                <CodeBlock 
+                  code={`import { 
   PaymentPayloadSchema,
   PaymentRequirementSchema,
   PaymentResponseSchema,
@@ -329,46 +481,112 @@ const clientConfig = ClientConfigSchema.parse({
   network: 'x1-mainnet',
   maxRetries: 3,
   paymentTimeout: 10000
-})`}
-          </pre>
-        </div>
-      </section>
+})`} 
+                  language="typescript" 
+                />
+              </CardContent>
+            </Card>
+          </Box>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Best Practices</h2>
-        <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-4">
-          <h3 className="text-lg font-semibold text-blue-900 mb-2">✓ DO</h3>
-          <ul className="list-disc list-inside space-y-2 text-blue-800">
-            <li>Use constants like <code className="bg-blue-100 px-2 py-1 rounded">NETWORKS</code> and <code className="bg-blue-100 px-2 py-1 rounded">FACILITATOR_URLS</code> instead of hardcoded strings</li>
-            <li>Use validation helpers to catch errors early</li>
-            <li>Handle specific error types for better user experience</li>
-            <li>Use type guards for runtime type safety</li>
-            <li>Validate configuration with Zod schemas before starting</li>
-            <li>Verify payment signatures cryptographically with <code className="bg-blue-100 px-2 py-1 rounded">verifyPaymentSignature()</code></li>
-          </ul>
-        </div>
-        
-        <div className="bg-red-50 border-l-4 border-red-500 p-6">
-          <h3 className="text-lg font-semibold text-red-900 mb-2">✗ DON'T</h3>
-          <ul className="list-disc list-inside space-y-2 text-red-800">
-            <li>Don't hardcode network names like <code className="bg-red-100 px-2 py-1 rounded">'x1-mainnet'</code> - use <code className="bg-red-100 px-2 py-1 rounded">NETWORKS.X1_MAINNET</code></li>
-            <li>Don't skip validation - it catches errors before they reach production</li>
-            <li>Don't use generic error handling - catch specific error types</li>
-            <li>Don't accept unverified payments - always verify signatures</li>
-            <li>Don't use floating-point arithmetic for amounts - use string-based atomic units</li>
-            <li>Don't ignore error details - they contain debugging information</li>
-          </ul>
-        </div>
-      </section>
+          {/* Best Practices Section */}
+          <Box>
+            <Typography variant="h3" sx={{ fontWeight: 700, mb: 4 }}>
+              Best Practices
+            </Typography>
+            
+            <Stack spacing={3}>
+              <Alert 
+                severity="success" 
+                icon={<CheckCircleIcon />}
+                sx={{ 
+                  bgcolor: 'rgba(118, 255, 3, 0.1)',
+                  border: '1px solid',
+                  borderColor: 'secondary.dark',
+                  '& .MuiAlert-icon': { color: 'secondary.main' },
+                }}
+              >
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1, color: 'secondary.main' }}>
+                  ✓ DO
+                </Typography>
+                <Stack spacing={1}>
+                  {[
+                    'Use constants like NETWORKS and FACILITATOR_URLS instead of hardcoded strings',
+                    'Use validation helpers to catch errors early',
+                    'Handle specific error types for better user experience',
+                    'Use type guards for runtime type safety',
+                    'Validate configuration with Zod schemas before starting',
+                    'Verify payment signatures cryptographically with verifyPaymentSignature()',
+                  ].map((item, idx) => (
+                    <Typography key={idx} variant="body2" color="text.secondary" sx={{ display: 'flex', gap: 1 }}>
+                      <Box component="span" sx={{ color: 'secondary.main' }}>•</Box>
+                      {item}
+                    </Typography>
+                  ))}
+                </Stack>
+              </Alert>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Complete Example</h2>
-        <p className="text-gray-700 mb-4">
-          Production-ready implementation using all advanced features:
-        </p>
-        <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-          <pre className="text-sm text-gray-300">
-{`import express from 'express'
+              <Alert 
+                severity="error" 
+                icon={<CancelIcon />}
+                sx={{ 
+                  bgcolor: 'rgba(244, 67, 54, 0.1)',
+                  border: '1px solid',
+                  borderColor: 'error.dark',
+                  '& .MuiAlert-icon': { color: 'error.main' },
+                }}
+              >
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1, color: 'error.main' }}>
+                  ✗ DON'T
+                </Typography>
+                <Stack spacing={1}>
+                  {[
+                    "Don't hardcode network names like 'x1-mainnet' - use NETWORKS.X1_MAINNET",
+                    "Don't skip validation - it catches errors before they reach production",
+                    "Don't use generic error handling - catch specific error types",
+                    "Don't accept unverified payments - always verify signatures",
+                    "Don't use floating-point arithmetic for amounts - use string-based atomic units",
+                    "Don't ignore error details - they contain debugging information",
+                  ].map((item, idx) => (
+                    <Typography key={idx} variant="body2" color="text.secondary" sx={{ display: 'flex', gap: 1 }}>
+                      <Box component="span" sx={{ color: 'error.main' }}>•</Box>
+                      {item}
+                    </Typography>
+                  ))}
+                </Stack>
+              </Alert>
+            </Stack>
+          </Box>
+
+          {/* Complete Example Section */}
+          <Box>
+            <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 4 }}>
+              <Box
+                sx={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 2,
+                  bgcolor: 'rgba(0, 229, 255, 0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <CodeIcon sx={{ fontSize: 32, color: 'primary.main' }} />
+              </Box>
+              <Box>
+                <Typography variant="h3" sx={{ fontWeight: 700 }}>
+                  Complete Example
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Production-ready implementation using all advanced features
+                </Typography>
+              </Box>
+            </Stack>
+
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'primary.dark' }}>
+              <CardContent sx={{ p: 4 }}>
+                <CodeBlock 
+                  code={`import express from 'express'
 import { x402Middleware } from '@x1pays/middleware'
 import { 
   NETWORKS,
@@ -449,11 +667,16 @@ app.listen(3000, () => {
   console.log('✓ Server running on port 3000')
   console.log('✓ Using network:', NETWORKS.X1_MAINNET)
   console.log('✓ Facilitator URL:', FACILITATOR_URLS.MAINNET)
-})`}
-          </pre>
-        </div>
-      </section>
-    </div>
+})`} 
+                  language="typescript"
+                  filename="server.ts"
+                />
+              </CardContent>
+            </Card>
+          </Box>
+        </Stack>
+      </Container>
+    </Box>
   )
 }
 

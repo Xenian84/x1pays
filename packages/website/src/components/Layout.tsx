@@ -12,11 +12,12 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import Container from '@mui/material/Container'
+import Stack from '@mui/material/Stack'
 import MenuIcon from '@mui/icons-material/Menu'
 import CodeIcon from '@mui/icons-material/Code'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import TwitterIcon from '@mui/icons-material/Twitter'
-import { SiDiscord } from '@icons-pack/react-simple-icons'
+import ForumIcon from '@mui/icons-material/Forum'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation()
@@ -33,8 +34,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', flexDirection: 'column' }}>
       <AppBar position="sticky" elevation={0}>
-        <Toolbar className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-          <Link to="/" className="flex items-center gap-2 no-underline">
+        <Toolbar sx={{ 
+          maxWidth: '1280px', 
+          mx: 'auto', 
+          width: '100%', 
+          px: { xs: 2, sm: 3, lg: 4 }
+        }}>
+          <Box
+            component={Link}
+            to="/"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              textDecoration: 'none',
+            }}
+          >
             <CodeIcon sx={{ fontSize: 32, color: 'primary.main' }} />
             <Typography
               variant="h6"
@@ -49,7 +64,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               X1Pays
             </Typography>
-          </Link>
+          </Box>
 
           <Box sx={{ flexGrow: 1 }} />
 
@@ -130,11 +145,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </Box>
 
-      <Box component="footer" className="border-t border-primary/10 mt-20" sx={{ bgcolor: 'background.paper' }}>
-        <Container maxWidth="lg" className="py-12 px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
+      <Box 
+        component="footer" 
+        sx={{ 
+          borderTop: 1, 
+          borderColor: 'primary.dark',
+          mt: 10,
+          bgcolor: 'background.paper' 
+        }}
+      >
+        <Container 
+          maxWidth="lg" 
+          sx={{ 
+            py: 6, 
+            px: { xs: 2, sm: 3, lg: 4 }
+          }}
+        >
+          <Box 
+            sx={{ 
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+              gap: 4
+            }}
+          >
+            <Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
                 <CodeIcon sx={{ fontSize: 24, color: 'primary.main' }} />
                 <Typography
                   variant="h6"
@@ -147,64 +182,215 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 >
                   X1Pays
                 </Typography>
-              </div>
+              </Box>
               <Typography variant="body2" color="text.secondary">
                 HTTP 402 micropayments on X1 blockchain using wXNT tokens.
               </Typography>
-            </div>
+            </Box>
             
-            <div>
-              <Typography variant="subtitle2" className="mb-4 uppercase tracking-wider" sx={{ fontWeight: 600 }}>
+            <Box>
+              <Typography 
+                variant="subtitle2" 
+                sx={{ 
+                  mb: 2, 
+                  textTransform: 'uppercase', 
+                  letterSpacing: '0.1em',
+                  fontWeight: 600 
+                }}
+              >
                 Resources
               </Typography>
-              <div className="flex flex-col gap-2">
-                <Link to="/docs" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+              <Stack spacing={1}>
+                <Box
+                  component={Link}
+                  to="/docs"
+                  sx={{
+                    fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    color: 'text.secondary',
+                    transition: 'color 0.2s',
+                    '&:hover': {
+                      color: 'primary.main',
+                    },
+                  }}
+                >
                   Documentation
-                </Link>
-                <Link to="/docs/getting-started" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                </Box>
+                <Box
+                  component={Link}
+                  to="/docs/getting-started"
+                  sx={{
+                    fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    color: 'text.secondary',
+                    transition: 'color 0.2s',
+                    '&:hover': {
+                      color: 'primary.main',
+                    },
+                  }}
+                >
                   Getting Started
-                </Link>
-                <Link to="/docs/api-reference" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                </Box>
+                <Box
+                  component={Link}
+                  to="/docs/api-reference"
+                  sx={{
+                    fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    color: 'text.secondary',
+                    transition: 'color 0.2s',
+                    '&:hover': {
+                      color: 'primary.main',
+                    },
+                  }}
+                >
                   API Reference
-                </Link>
-                <Link to="/docs/examples" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                </Box>
+                <Box
+                  component={Link}
+                  to="/docs/examples"
+                  sx={{
+                    fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    color: 'text.secondary',
+                    transition: 'color 0.2s',
+                    '&:hover': {
+                      color: 'primary.main',
+                    },
+                  }}
+                >
                   Integration Examples
-                </Link>
-                <Link to="/docs/troubleshooting" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                </Box>
+                <Box
+                  component={Link}
+                  to="/docs/troubleshooting"
+                  sx={{
+                    fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    color: 'text.secondary',
+                    transition: 'color 0.2s',
+                    '&:hover': {
+                      color: 'primary.main',
+                    },
+                  }}
+                >
                   Troubleshooting
-                </Link>
-                <Link to="/pricing" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                </Box>
+                <Box
+                  component={Link}
+                  to="/pricing"
+                  sx={{
+                    fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    color: 'text.secondary',
+                    transition: 'color 0.2s',
+                    '&:hover': {
+                      color: 'primary.main',
+                    },
+                  }}
+                >
                   Pricing
-                </Link>
-                <Link to="/faq" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                </Box>
+                <Box
+                  component={Link}
+                  to="/faq"
+                  sx={{
+                    fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    color: 'text.secondary',
+                    transition: 'color 0.2s',
+                    '&:hover': {
+                      color: 'primary.main',
+                    },
+                  }}
+                >
                   FAQ
-                </Link>
-              </div>
-            </div>
+                </Box>
+              </Stack>
+            </Box>
             
-            <div>
-              <Typography variant="subtitle2" className="mb-4 uppercase tracking-wider" sx={{ fontWeight: 600 }}>
+            <Box>
+              <Typography 
+                variant="subtitle2" 
+                sx={{ 
+                  mb: 2, 
+                  textTransform: 'uppercase', 
+                  letterSpacing: '0.1em',
+                  fontWeight: 600 
+                }}
+              >
                 Community
               </Typography>
-              <div className="flex flex-col gap-2">
-                <a href="https://github.com/x1pays/x1pays" target="_blank" rel="noopener noreferrer" className="text-sm no-underline hover:text-primary transition-colors flex items-center gap-2" style={{ color: 'inherit' }}>
+              <Stack spacing={1}>
+                <Box
+                  component="a"
+                  href="https://github.com/x1pays/x1pays"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{
+                    fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    color: 'text.secondary',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    transition: 'color 0.2s',
+                    '&:hover': {
+                      color: 'primary.main',
+                    },
+                  }}
+                >
                   <GitHubIcon fontSize="small" /> GitHub
-                </a>
-                <a href="https://twitter.com/x1pays" target="_blank" rel="noopener noreferrer" className="text-sm no-underline hover:text-primary transition-colors flex items-center gap-2" style={{ color: 'inherit' }}>
+                </Box>
+                <Box
+                  component="a"
+                  href="https://twitter.com/x1pays"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{
+                    fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    color: 'text.secondary',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    transition: 'color 0.2s',
+                    '&:hover': {
+                      color: 'primary.main',
+                    },
+                  }}
+                >
                   <TwitterIcon fontSize="small" /> Twitter
-                </a>
-                <a href="https://discord.gg/x1pays" target="_blank" rel="noopener noreferrer" className="text-sm no-underline hover:text-primary transition-colors flex items-center gap-2" style={{ color: 'inherit' }}>
-                  <SiDiscord size={16} /> Discord
-                </a>
-              </div>
-            </div>
-          </div>
+                </Box>
+                <Box
+                  component="a"
+                  href="https://discord.gg/x1pays"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{
+                    fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    color: 'text.secondary',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    transition: 'color 0.2s',
+                    '&:hover': {
+                      color: 'primary.main',
+                    },
+                  }}
+                >
+                  <ForumIcon sx={{ fontSize: 16 }} /> Discord
+                </Box>
+              </Stack>
+            </Box>
+          </Box>
           
-          <div className="mt-8 pt-8 border-t border-primary/10">
+          <Box sx={{ mt: 4, pt: 4, borderTop: 1, borderColor: 'primary.dark' }}>
             <Typography variant="body2" align="center" color="text.secondary">
               © 2025 X1Pays. Open source under MIT License.
             </Typography>
-          </div>
+          </Box>
         </Container>
       </Box>
     </Box>

@@ -1,7 +1,18 @@
+import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Paper from '@mui/material/Paper'
+import Stack from '@mui/material/Stack'
 import CodeBlock from '../components/CodeBlock'
 import TerminalIcon from '@mui/icons-material/Terminal'
 import SettingsIcon from '@mui/icons-material/Settings'
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
+import LightbulbIcon from '@mui/icons-material/Lightbulb'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import WarningIcon from '@mui/icons-material/Warning'
 
 export default function GettingStarted() {
   const installCode = `# Clone the repository
@@ -64,129 +75,267 @@ app.use("/premium", x420(), x402Middleware({
 }), premiumRoutes);`
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Getting Started</h1>
-        <p className="text-xl text-gray-600">
-          Quick start guide to set up and run X1Pays locally
-        </p>
-      </div>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 12 } }}>
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h1" sx={{ fontSize: { xs: '2.5rem', md: '3.5rem' }, fontWeight: 800, mb: 2 }}>
+            Getting Started
+          </Typography>
+          <Typography variant="h5" color="text.secondary" sx={{ fontWeight: 400 }}>
+            Quick start guide to set up and run X1Pays locally
+          </Typography>
+        </Box>
 
-      {/* Prerequisites */}
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-          <TerminalIcon sx={{ fontSize: 24, mr: 1 }} className="text-primary" />
-          Prerequisites
-        </h2>
-        <ul className="list-disc list-inside space-y-2 text-gray-700">
-          <li>Node.js 18 or higher</li>
-          <li>pnpm 9.0 or higher</li>
-          <li>X1 wallet with wXNT tokens (for testing actual settlements)</li>
-        </ul>
-      </div>
+        <Stack spacing={8}>
+          <Box>
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <TerminalIcon sx={{ fontSize: 32, color: 'primary.main' }} />
+              Prerequisites
+            </Typography>
+            <Box component="ul" sx={{ pl: 3, '& li': { mb: 1.5 } }}>
+              <Typography component="li" variant="body1" color="text.secondary">
+                Node.js 18 or higher
+              </Typography>
+              <Typography component="li" variant="body1" color="text.secondary">
+                pnpm 9.0 or higher
+              </Typography>
+              <Typography component="li" variant="body1" color="text.secondary">
+                X1 wallet with wXNT tokens (for testing actual settlements)
+              </Typography>
+            </Box>
+          </Box>
 
-      {/* Installation */}
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-          <SettingsIcon sx={{ fontSize: 24, mr: 1 }} className="text-primary" />
-          Installation
-        </h2>
-        <CodeBlock code={installCode} language="bash" />
-      </div>
+          <Box>
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <SettingsIcon sx={{ fontSize: 32, color: 'primary.main' }} />
+              Installation
+            </Typography>
+            <CodeBlock code={installCode} language="bash" />
+          </Box>
 
-      {/* Configuration */}
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Configuration</h2>
-        
-        <h3 className="text-xl font-semibold text-gray-900 mb-3">1. Facilitator Service</h3>
-        <p className="text-gray-700 mb-3">
-          Create <code className="bg-gray-100 px-2 py-1 rounded">packages/facilitator/.env</code>:
-        </p>
-        <CodeBlock code={envFacilitatorCode} language="bash" filename="packages/facilitator/.env" />
+          <Box>
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 4 }}>
+              Configuration
+            </Typography>
+            
+            <Stack spacing={4}>
+              <Box>
+                <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
+                  1. Facilitator Service
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+                  Create{' '}
+                  <Box
+                    component="code"
+                    sx={{
+                      bgcolor: 'rgba(0, 229, 255, 0.1)',
+                      color: 'primary.main',
+                      px: 1,
+                      py: 0.5,
+                      borderRadius: 1,
+                      fontFamily: 'monospace',
+                    }}
+                  >
+                    packages/facilitator/.env
+                  </Box>
+                  :
+                </Typography>
+                <CodeBlock code={envFacilitatorCode} language="bash" filename="packages/facilitator/.env" />
+              </Box>
 
-        <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-8">2. API Service</h3>
-        <p className="text-gray-700 mb-3">
-          Create <code className="bg-gray-100 px-2 py-1 rounded">packages/api/.env</code>:
-        </p>
-        <CodeBlock code={envApiCode} language="bash" filename="packages/api/.env" />
+              <Box>
+                <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
+                  2. API Service
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+                  Create{' '}
+                  <Box
+                    component="code"
+                    sx={{
+                      bgcolor: 'rgba(0, 229, 255, 0.1)',
+                      color: 'primary.main',
+                      px: 1,
+                      py: 0.5,
+                      borderRadius: 1,
+                      fontFamily: 'monospace',
+                    }}
+                  >
+                    packages/api/.env
+                  </Box>
+                  :
+                </Typography>
+                <CodeBlock code={envApiCode} language="bash" filename="packages/api/.env" />
+              </Box>
 
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="text-blue-900 text-sm space-y-2">
-            <p>
-              <strong>💡 Configuration Tips:</strong>
-            </p>
-            <ul className="list-disc list-inside space-y-1 ml-4">
-              <li><strong>PAYTO_ADDRESS (API):</strong> The merchant wallet that receives 100% of payments</li>
-              <li><strong>FEE_PAYER_SECRET:</strong> Wallet that covers gas costs for all transactions (X1Pays provides this)</li>
-              <li><strong>Zero Fees:</strong> X1Pays charges 0% protocol fees - merchants keep 100% of revenue</li>
-              <li><strong>Note:</strong> The facilitator is multi-tenant and processes payments for any merchant</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+              <Card
+                elevation={0}
+                sx={{
+                  bgcolor: 'rgba(0, 229, 255, 0.05)',
+                  border: '1px solid',
+                  borderColor: 'primary.dark',
+                }}
+              >
+                <CardContent sx={{ p: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
+                    <LightbulbIcon sx={{ fontSize: 24, color: 'primary.main', mt: 0.5 }} />
+                    <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                      Configuration Tips:
+                    </Typography>
+                  </Box>
+                  <Box component="ul" sx={{ pl: 3, '& li': { mb: 1.5 } }}>
+                    <Typography component="li" variant="body2" color="text.secondary">
+                      <Box component="strong" sx={{ color: 'text.primary' }}>PAYTO_ADDRESS (API):</Box> The merchant wallet that receives 100% of payments
+                    </Typography>
+                    <Typography component="li" variant="body2" color="text.secondary">
+                      <Box component="strong" sx={{ color: 'text.primary' }}>FEE_PAYER_SECRET:</Box> Wallet that covers gas costs for all transactions (X1Pays provides this)
+                    </Typography>
+                    <Typography component="li" variant="body2" color="text.secondary">
+                      <Box component="strong" sx={{ color: 'text.primary' }}>Zero Fees:</Box> X1Pays charges 0% protocol fees - merchants keep 100% of revenue
+                    </Typography>
+                    <Typography component="li" variant="body2" color="text.secondary">
+                      <Box component="strong" sx={{ color: 'text.primary' }}>Note:</Box> The facilitator is multi-tenant and processes payments for any merchant
+                    </Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Stack>
+          </Box>
 
-      {/* Running */}
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-          <RocketLaunchIcon sx={{ fontSize: 24, mr: 1 }} className="text-primary" />
-          Running the Services
-        </h2>
-        <CodeBlock code={runCode} language="bash" />
-        
-        <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
-          <p className="text-green-900">
-            <strong>✅ Success!</strong> Your services should now be running:
-          </p>
-          <ul className="mt-2 space-y-1 text-green-800 list-disc list-inside">
-            <li>Facilitator: <code className="bg-green-100 px-2 py-1 rounded">http://localhost:4000</code></li>
-            <li>API: <code className="bg-green-100 px-2 py-1 rounded">http://localhost:3000</code></li>
-          </ul>
-        </div>
-      </div>
+          <Box>
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <RocketLaunchIcon sx={{ fontSize: 32, color: 'primary.main' }} />
+              Running the Services
+            </Typography>
+            <CodeBlock code={runCode} language="bash" />
+            
+            <Card
+              elevation={0}
+              sx={{
+                mt: 3,
+                bgcolor: 'rgba(118, 255, 3, 0.05)',
+                border: '1px solid',
+                borderColor: 'secondary.dark',
+              }}
+            >
+              <CardContent sx={{ p: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                  <CheckCircleIcon sx={{ fontSize: 24, color: 'secondary.main' }} />
+                  <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                    Success! Your services should now be running:
+                  </Typography>
+                </Box>
+                <Box component="ul" sx={{ pl: 3, '& li': { mb: 1 } }}>
+                  <Typography component="li" variant="body2" color="text.secondary">
+                    Facilitator:{' '}
+                    <Box
+                      component="code"
+                      sx={{
+                        bgcolor: 'rgba(118, 255, 3, 0.1)',
+                        color: 'secondary.main',
+                        px: 1,
+                        py: 0.5,
+                        borderRadius: 1,
+                        fontFamily: 'monospace',
+                      }}
+                    >
+                      http://localhost:4000
+                    </Box>
+                  </Typography>
+                  <Typography component="li" variant="body2" color="text.secondary">
+                    API:{' '}
+                    <Box
+                      component="code"
+                      sx={{
+                        bgcolor: 'rgba(118, 255, 3, 0.1)',
+                        color: 'secondary.main',
+                        px: 1,
+                        py: 0.5,
+                        borderRadius: 1,
+                        fontFamily: 'monospace',
+                      }}
+                    >
+                      http://localhost:3000
+                    </Box>
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          </Box>
 
-      {/* Testing */}
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Testing the Flow</h2>
-        
-        <h3 className="text-xl font-semibold text-gray-900 mb-3">1. Unpaid Request (Returns 402)</h3>
-        <CodeBlock code={`curl -i http://localhost:3000/premium/data`} language="bash" />
-        <p className="text-gray-700 mt-2 mb-4">
-          You should receive a <code className="bg-gray-100 px-2 py-1 rounded">402 Payment Required</code> response with payment details including the merchant address and required amount.
-        </p>
+          <Box>
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 4 }}>
+              Testing the Flow
+            </Typography>
+            
+            <Stack spacing={4}>
+              <Box>
+                <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
+                  1. Unpaid Request (Returns 402)
+                </Typography>
+                <CodeBlock code={`curl -i http://localhost:3000/premium/data`} language="bash" />
+                <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
+                  You should receive a{' '}
+                  <Box
+                    component="code"
+                    sx={{
+                      bgcolor: 'rgba(0, 229, 255, 0.1)',
+                      color: 'primary.main',
+                      px: 1,
+                      py: 0.5,
+                      borderRadius: 1,
+                      fontFamily: 'monospace',
+                    }}
+                  >
+                    402 Payment Required
+                  </Box>{' '}
+                  response with payment details including the merchant address and required amount.
+                </Typography>
+              </Box>
 
-        <h3 className="text-xl font-semibold text-gray-900 mb-3">2. Using the Client SDK</h3>
-        <CodeBlock code={clientCode} language="typescript" filename="example.ts" />
-        
-        <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-6">3. Verify Payment Response</h3>
-        <p className="text-gray-700 mb-3">
-          Check the X-Payment-Response header to see the settlement details:
-        </p>
-        <CodeBlock 
-          code={`{
+              <Box>
+                <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
+                  2. Using the Client SDK
+                </Typography>
+                <CodeBlock code={clientCode} language="typescript" filename="example.ts" />
+              </Box>
+
+              <Box>
+                <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
+                  3. Verify Payment Response
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+                  Check the X-Payment-Response header to see the settlement details:
+                </Typography>
+                <CodeBlock 
+                  code={`{
   "txHash": "SIM_TX_...",
   "amount": "1000",
   "simulated": true
 }`} 
-          language="json" 
-        />
-      </div>
+                  language="json" 
+                />
+              </Box>
+            </Stack>
+          </Box>
 
-      {/* Integration */}
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Integrating into Your API</h2>
-        <p className="text-gray-700 mb-4">
-          Add the x402 middleware to any Express route to require payment:
-        </p>
-        <CodeBlock code={middlewareCode} language="typescript" filename="server.ts" />
-      </div>
+          <Box>
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
+              Integrating into Your API
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+              Add the x402 middleware to any Express route to require payment:
+            </Typography>
+            <CodeBlock code={middlewareCode} language="typescript" filename="server.ts" />
+          </Box>
 
-      {/* Utility Functions */}
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Helper Utilities</h2>
-        <p className="text-gray-700 mb-4">
-          X1Pays provides utility functions for working with wXNT amounts (6 decimal precision):
-        </p>
-        <CodeBlock code={`import { 
+          <Box>
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
+              Helper Utilities
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+              X1Pays provides utility functions for working with wXNT amounts (6 decimal precision):
+            </Typography>
+            <CodeBlock code={`import { 
   wXNTToAtomicUnits, 
   atomicUnitsToWXNT, 
   formatWXNT 
@@ -201,53 +350,240 @@ const wXNT = atomicUnitsToWXNT("1000");       // 0.001
 
 // Format for display
 const display = formatWXNT("1000");           // "0.001 wXNT"`} language="typescript" filename="utilities.ts" />
-        
-        <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <p className="text-blue-900 text-sm">
-            <strong>💡 Tip:</strong> Use these helpers to avoid floating-point precision issues when working with payment amounts. They ensure exact conversions and reject invalid inputs.
-          </p>
-        </div>
-      </div>
+            
+            <Card
+              elevation={0}
+              sx={{
+                mt: 3,
+                bgcolor: 'rgba(0, 229, 255, 0.05)',
+                border: '1px solid',
+                borderColor: 'primary.dark',
+              }}
+            >
+              <CardContent sx={{ p: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                  <LightbulbIcon sx={{ fontSize: 24, color: 'primary.main', mt: 0.5 }} />
+                  <Typography variant="body2" color="text.secondary">
+                    <Box component="strong" sx={{ color: 'text.primary' }}>Tip:</Box> Use these helpers to avoid floating-point precision issues when working with payment amounts. They ensure exact conversions and reject invalid inputs.
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          </Box>
 
-      {/* MVP Notice */}
-      <div className="mb-12 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-yellow-900 mb-2">⚠️ Important: MVP Mode</h3>
-        <p className="text-yellow-800 mb-3">
-          The current implementation runs in <strong>MVP simulation mode</strong>. Settlement
-          returns a simulated transaction hash without actual on-chain transfers.
-        </p>
-        <p className="text-yellow-800">
-          For production, you must implement delegate approval or client-signed transaction patterns.
-          See <code className="bg-yellow-100 px-2 py-1 rounded">PRODUCTION_NOTES.md</code> for details.
-        </p>
-      </div>
+          <Card
+            elevation={0}
+            sx={{
+              bgcolor: 'rgba(255, 183, 77, 0.05)',
+              border: '1px solid',
+              borderColor: 'warning.dark',
+            }}
+          >
+            <CardContent sx={{ p: 4 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                <WarningIcon sx={{ fontSize: 28, color: 'warning.main' }} />
+                <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                  Important: MVP Mode
+                </Typography>
+              </Box>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 2, lineHeight: 1.7 }}>
+                The current implementation runs in <Box component="strong" sx={{ color: 'text.primary' }}>MVP simulation mode</Box>. Settlement
+                returns a simulated transaction hash without actual on-chain transfers.
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+                For production, you must implement delegate approval or client-signed transaction patterns.
+                See{' '}
+                <Box
+                  component="code"
+                  sx={{
+                    bgcolor: 'rgba(255, 183, 77, 0.1)',
+                    color: 'warning.main',
+                    px: 1,
+                    py: 0.5,
+                    borderRadius: 1,
+                    fontFamily: 'monospace',
+                  }}
+                >
+                  PRODUCTION_NOTES.md
+                </Box>{' '}
+                for details.
+              </Typography>
+            </CardContent>
+          </Card>
 
-      {/* Next Steps */}
-      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-8 border border-indigo-200">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Next Steps</h2>
-        <ul className="space-y-3 text-gray-700">
-          <li className="flex items-start">
-            <span className="inline-block w-6 h-6 bg-primary rounded-full text-white text-center text-sm mr-3 flex-shrink-0 mt-0.5">1</span>
-            <span>Explore the <a href="/docs/api-reference" className="text-primary hover:underline">API Reference</a> for complete documentation</span>
-          </li>
-          <li className="flex items-start">
-            <span className="inline-block w-6 h-6 bg-primary rounded-full text-white text-center text-sm mr-3 flex-shrink-0 mt-0.5">2</span>
-            <span>Learn about the <a href="/docs/token-economy" className="text-primary hover:underline">dual-token model</a> (wXNT + $XPY)</span>
-          </li>
-          <li className="flex items-start">
-            <span className="inline-block w-6 h-6 bg-primary rounded-full text-white text-center text-sm mr-3 flex-shrink-0 mt-0.5">3</span>
-            <span>Check out <a href="/docs/examples" className="text-primary hover:underline">integration examples</a> in multiple languages</span>
-          </li>
-          <li className="flex items-start">
-            <span className="inline-block w-6 h-6 bg-primary rounded-full text-white text-center text-sm mr-3 flex-shrink-0 mt-0.5">4</span>
-            <span>Review <code className="bg-gray-100 px-2 py-1 rounded">PRODUCTION_NOTES.md</code> for security best practices</span>
-          </li>
-          <li className="flex items-start">
-            <span className="inline-block w-6 h-6 bg-primary rounded-full text-white text-center text-sm mr-3 flex-shrink-0 mt-0.5">5</span>
-            <span>Visit the <a href="/faq" className="text-primary hover:underline">FAQ</a> and <a href="/docs/troubleshooting" className="text-primary hover:underline">Troubleshooting</a> pages</span>
-          </li>
-        </ul>
-      </div>
-    </div>
+          <Paper
+            elevation={0}
+            sx={{
+              p: 5,
+              background: 'linear-gradient(135deg, rgba(0, 229, 255, 0.1) 0%, rgba(118, 255, 3, 0.1) 100%)',
+              border: '1px solid',
+              borderColor: 'primary.dark',
+              borderRadius: 3,
+            }}
+          >
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
+              Next Steps
+            </Typography>
+            <Stack spacing={2.5}>
+              {[
+                {
+                  number: '1',
+                  text: (
+                    <>
+                      Explore the{' '}
+                      <Box
+                        component={Link}
+                        to="/docs/api-reference"
+                        sx={{
+                          color: 'primary.main',
+                          textDecoration: 'none',
+                          fontWeight: 600,
+                          '&:hover': {
+                            textDecoration: 'underline',
+                          },
+                        }}
+                      >
+                        API Reference
+                      </Box>{' '}
+                      for complete documentation
+                    </>
+                  ),
+                },
+                {
+                  number: '2',
+                  text: (
+                    <>
+                      Learn about the{' '}
+                      <Box
+                        component={Link}
+                        to="/docs/token-economy"
+                        sx={{
+                          color: 'primary.main',
+                          textDecoration: 'none',
+                          fontWeight: 600,
+                          '&:hover': {
+                            textDecoration: 'underline',
+                          },
+                        }}
+                      >
+                        dual-token model
+                      </Box>{' '}
+                      (wXNT + $XPY)
+                    </>
+                  ),
+                },
+                {
+                  number: '3',
+                  text: (
+                    <>
+                      Check out{' '}
+                      <Box
+                        component={Link}
+                        to="/docs/examples"
+                        sx={{
+                          color: 'primary.main',
+                          textDecoration: 'none',
+                          fontWeight: 600,
+                          '&:hover': {
+                            textDecoration: 'underline',
+                          },
+                        }}
+                      >
+                        integration examples
+                      </Box>{' '}
+                      in multiple languages
+                    </>
+                  ),
+                },
+                {
+                  number: '4',
+                  text: (
+                    <>
+                      Review{' '}
+                      <Box
+                        component="code"
+                        sx={{
+                          bgcolor: 'rgba(0, 229, 255, 0.1)',
+                          color: 'primary.main',
+                          px: 1,
+                          py: 0.5,
+                          borderRadius: 1,
+                          fontFamily: 'monospace',
+                        }}
+                      >
+                        PRODUCTION_NOTES.md
+                      </Box>{' '}
+                      for security best practices
+                    </>
+                  ),
+                },
+                {
+                  number: '5',
+                  text: (
+                    <>
+                      Visit the{' '}
+                      <Box
+                        component={Link}
+                        to="/faq"
+                        sx={{
+                          color: 'primary.main',
+                          textDecoration: 'none',
+                          fontWeight: 600,
+                          '&:hover': {
+                            textDecoration: 'underline',
+                          },
+                        }}
+                      >
+                        FAQ
+                      </Box>{' '}
+                      and{' '}
+                      <Box
+                        component={Link}
+                        to="/docs/troubleshooting"
+                        sx={{
+                          color: 'primary.main',
+                          textDecoration: 'none',
+                          fontWeight: 600,
+                          '&:hover': {
+                            textDecoration: 'underline',
+                          },
+                        }}
+                      >
+                        Troubleshooting
+                      </Box>{' '}
+                      pages
+                    </>
+                  ),
+                },
+              ].map((item) => (
+                <Box key={item.number} sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                  <Box
+                    sx={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: '50%',
+                      bgcolor: 'primary.main',
+                      color: 'primary.contrastText',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 700,
+                      fontSize: '0.875rem',
+                      flexShrink: 0,
+                      mt: 0.5,
+                    }}
+                  >
+                    {item.number}
+                  </Box>
+                  <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7, mt: 0.5 }}>
+                    {item.text}
+                  </Typography>
+                </Box>
+              ))}
+            </Stack>
+          </Paper>
+        </Stack>
+      </Container>
+    </Box>
   )
 }

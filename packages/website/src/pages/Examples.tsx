@@ -1,12 +1,38 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Stack from '@mui/material/Stack'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import IconButton from '@mui/material/IconButton'
+import JavascriptIcon from '@mui/icons-material/Javascript'
+import LanguageIcon from '@mui/icons-material/Language'
+import CodeIcon from '@mui/icons-material/Code'
+import TerminalIcon from '@mui/icons-material/Terminal'
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import CheckIcon from '@mui/icons-material/Check'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
+import SecurityIcon from '@mui/icons-material/Security'
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
+import WarningIcon from '@mui/icons-material/Warning'
+import LightbulbIcon from '@mui/icons-material/Lightbulb'
+import CodeBlock from '../components/CodeBlock'
 
 const Examples = () => {
-  const [selectedTab, setSelectedTab] = useState('nodejs')
+  const [selectedTab, setSelectedTab] = useState(0)
 
-  const examples = {
-    nodejs: {
+  const examples = [
+    {
       title: 'Node.js / TypeScript',
-      icon: '🟢',
+      icon: <JavascriptIcon />,
       code: `import { x402Client } from '@x1pays/client/axios'
 import { Keypair } from '@solana/web3.js'
 import fs from 'fs'
@@ -41,9 +67,9 @@ async function fetchPremiumData() {
 
 fetchPremiumData()`
     },
-    fetch: {
+    {
       title: 'Native Fetch API',
-      icon: '🌐',
+      icon: <LanguageIcon />,
       code: `import { fetchX402JSON } from '@x1pays/client/fetch'
 import { Keypair } from '@solana/web3.js'
 
@@ -80,9 +106,9 @@ async function getPremiumDataRaw() {
 
 getPremiumData()`
     },
-    python: {
+    {
       title: 'Python',
-      icon: '🐍',
+      icon: <CodeIcon />,
       code: `import requests
 import json
 from nacl.signing import SigningKey
@@ -158,9 +184,9 @@ client = X402Client(wallet_secret_key_hex='your_64_byte_hex_key')
 data = client.make_request('https://api.yourapp.com/premium/data')
 print(data)`
     },
-    curl: {
+    {
       title: 'cURL (Manual)',
-      icon: '📡',
+      icon: <TerminalIcon />,
       code: `# Step 1: Try to access endpoint (will get 402)
 curl -i https://api.yourapp.com/premium/data
 
@@ -208,9 +234,9 @@ curl -H "X-Payment: $PAYMENT" \\
 
 # Success! You get the data`
     },
-    express: {
+    {
       title: 'Express.js Server',
-      icon: '🚂',
+      icon: <RocketLaunchIcon />,
       code: `import express from 'express'
 import { x402Middleware } from '@x1pays/middleware'
 
@@ -268,240 +294,324 @@ app.listen(3000, () => {
   console.log('x402-enabled server running on port 3000')
 })`
     },
-    hono: {
-      title: 'Hono (Edge)',
-      icon: '🔥',
-      code: `import { Hono } from 'hono'
-import { x402 } from '@x1pays/middleware/hono'
+  ]
 
-const app = new Hono()
-
-// Public route
-app.get('/public', (c) => {
-  return c.json({ message: 'Free content' })
-})
-
-// Paid route with x402 middleware
-app.get('/premium', 
-  x402({
-    facilitatorUrl: process.env.FACILITATOR_URL!,
-    network: 'x1-mainnet',
-    payToAddress: process.env.MERCHANT_WALLET!,
-    tokenMint: process.env.WXNT_MINT!,
-    amount: '1000'
-  }),
-  (c) => {
-    // Payment verified!
-    const payment = c.get('x402Payment')
-    
-    return c.json({ 
-      data: 'Premium content',
-      payment: payment
-    })
+  const handleCopy = (code: string) => {
+    navigator.clipboard.writeText(code)
   }
-)
-
-export default app`
-    },
-    nextjs: {
-      title: 'Next.js API Route',
-      icon: '▲',
-      code: `// pages/api/premium/data.ts
-import { x402Handler } from '@x1pays/middleware/nextjs'
-
-export default x402Handler({
-  facilitatorUrl: process.env.FACILITATOR_URL!,
-  network: 'x1-mainnet',
-  payToAddress: process.env.MERCHANT_WALLET!,
-  tokenMint: process.env.WXNT_MINT!,
-  amount: '1000',
-  handler: async (req, res) => {
-    // Payment verified! Access payment info
-    const payment = req.x402Payment
-    
-    res.status(200).json({
-      data: 'Premium content from Next.js',
-      payment: {
-        txHash: payment?.txHash,
-        amount: payment?.amount,
-        simulated: payment?.simulated
-      }
-    })
-  }
-})
-
-// With dynamic pricing
-export const dynamicPricing = x402Handler({
-  facilitatorUrl: process.env.FACILITATOR_URL!,
-  network: 'x1-mainnet',
-  payToAddress: process.env.MERCHANT_WALLET!,
-  tokenMint: process.env.WXNT_MINT!,
-  amount: '1000',
-  getDynamicAmount: async (req) => {
-    const premium = req.query.premium === 'true'
-    return premium ? '5000' : '1000'
-  },
-  handler: async (req, res) => {
-    res.status(200).json({ data: 'content' })
-  }
-})`
-    }
-  }
-
-  const tabs = Object.keys(examples) as Array<keyof typeof examples>
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold mb-4">Integration Examples</h1>
-        <p className="text-xl text-gray-600">
-          Real-world code examples using our actual @x1pays packages
-        </p>
-      </div>
+    <Box>
+      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+        <Stack spacing={2} sx={{ mb: 8 }}>
+          <Typography variant="h1" sx={{ fontSize: { xs: '2.5rem', md: '3.5rem' }, fontWeight: 800 }}>
+            Integration Examples
+          </Typography>
+          <Typography variant="h5" color="text.secondary">
+            Real-world code examples using our actual @x1pays packages
+          </Typography>
+        </Stack>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-        <h3 className="font-semibold text-blue-900 mb-2">💡 All Examples Use Real APIs</h3>
-        <p className="text-blue-800 text-sm">
-          These examples use the actual <code className="bg-blue-100 px-1 rounded">@x1pays/client</code> and <code className="bg-blue-100 px-1 rounded">@x1pays/middleware</code> packages.
-          Copy and paste directly into your project!
-        </p>
-      </div>
+        <Paper
+          elevation={0}
+          sx={{
+            bgcolor: 'rgba(0, 229, 255, 0.1)',
+            border: '1px solid',
+            borderColor: 'primary.dark',
+            borderRadius: 2,
+            p: 4,
+            mb: 6,
+          }}
+        >
+          <Stack direction="row" spacing={2} alignItems="flex-start">
+            <LightbulbIcon sx={{ color: 'primary.main', fontSize: 28, mt: 0.5 }} />
+            <Box>
+              <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, color: 'primary.main' }}>
+                All Examples Use Real APIs
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                These examples use the actual <Box component="code" sx={{ px: 1, py: 0.5, bgcolor: 'rgba(0, 229, 255, 0.1)', borderRadius: 1, fontFamily: 'monospace' }}>@x1pays/client</Box> and <Box component="code" sx={{ px: 1, py: 0.5, bgcolor: 'rgba(0, 229, 255, 0.1)', borderRadius: 1, fontFamily: 'monospace' }}>@x1pays/middleware</Box> packages.
+                Copy and paste directly into your project!
+              </Typography>
+            </Box>
+          </Stack>
+        </Paper>
 
-      <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
-        <div className="flex border-b border-gray-200 overflow-x-auto">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setSelectedTab(tab)}
-              className={`px-6 py-4 font-medium whitespace-nowrap transition-colors ${
-                selectedTab === tab
-                  ? 'bg-indigo-600 text-white border-b-2 border-indigo-600'
-                  : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
-              }`}
-            >
-              <span className="mr-2">{examples[tab].icon}</span>
-              {examples[tab].title}
-            </button>
+        <Card elevation={0} sx={{ border: '1px solid', borderColor: 'primary.dark', mb: 8 }}>
+          <Tabs
+            value={selectedTab}
+            onChange={(_, newValue) => setSelectedTab(newValue)}
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{
+              borderBottom: '1px solid',
+              borderColor: 'divider',
+              '& .MuiTab-root': {
+                textTransform: 'none',
+                fontWeight: 600,
+                fontSize: '1rem',
+              },
+            }}
+          >
+            {examples.map((example, idx) => (
+              <Tab
+                key={idx}
+                icon={example.icon}
+                iconPosition="start"
+                label={example.title}
+              />
+            ))}
+          </Tabs>
+
+          <Box sx={{ p: 4 }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
+              <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                {examples[selectedTab].title} Example
+              </Typography>
+              <Button
+                variant="outlined"
+                size="small"
+                startIcon={<ContentCopyIcon />}
+                onClick={() => handleCopy(examples[selectedTab].code)}
+                sx={{
+                  borderColor: 'primary.main',
+                  color: 'primary.main',
+                  '&:hover': {
+                    borderColor: 'primary.light',
+                    bgcolor: 'rgba(0, 229, 255, 0.1)',
+                  },
+                }}
+              >
+                Copy Code
+              </Button>
+            </Stack>
+            
+            <CodeBlock code={examples[selectedTab].code} language="typescript" />
+          </Box>
+        </Card>
+
+        <Grid container spacing={3} sx={{ mb: 8 }}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'primary.dark', height: '100%' }}>
+              <CardContent sx={{ p: 4 }}>
+                <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+                  <Box
+                    sx={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 2,
+                      bgcolor: 'rgba(0, 229, 255, 0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <CodeIcon sx={{ fontSize: 28, color: 'primary.main' }} />
+                  </Box>
+                  <Box>
+                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>
+                      Client-Side (Making Paid Requests)
+                    </Typography>
+                  </Box>
+                </Stack>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                  Use <Box component="code" sx={{ px: 1, py: 0.5, bgcolor: 'rgba(0, 229, 255, 0.1)', borderRadius: 1, fontFamily: 'monospace' }}>@x1pays/client</Box> to make requests:
+                </Typography>
+                <Stack spacing={1.5}>
+                  {[
+                    'Install: pnpm add @x1pays/client',
+                    'Import x402Client (Axios) or fetchX402 (Fetch)',
+                    'Provide your Solana wallet/keypair',
+                    'Make requests - payment happens automatically!',
+                    'Access response.data and response.payment',
+                  ].map((item, idx) => (
+                    <Typography key={idx} variant="body2" color="text.secondary" sx={{ display: 'flex', gap: 1 }}>
+                      <Box component="span" sx={{ color: 'primary.main', fontWeight: 700 }}>{idx + 1}.</Box>
+                      {item}
+                    </Typography>
+                  ))}
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'secondary.dark', height: '100%' }}>
+              <CardContent sx={{ p: 4 }}>
+                <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+                  <Box
+                    sx={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 2,
+                      bgcolor: 'rgba(118, 255, 3, 0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <RocketLaunchIcon sx={{ fontSize: 28, color: 'secondary.main' }} />
+                  </Box>
+                  <Box>
+                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>
+                      Server-Side (Accepting Payments)
+                    </Typography>
+                  </Box>
+                </Stack>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                  Use <Box component="code" sx={{ px: 1, py: 0.5, bgcolor: 'rgba(118, 255, 3, 0.1)', borderRadius: 1, fontFamily: 'monospace' }}>@x1pays/middleware</Box> on your API:
+                </Typography>
+                <Stack spacing={1.5}>
+                  {[
+                    'Install: pnpm add @x1pays/middleware',
+                    'Choose: Express, Hono, Fastify, or Next.js',
+                    'Configure facilitator URL and merchant wallet',
+                    'Set amount per endpoint (in atomic units)',
+                    'Middleware handles verify + settle automatically',
+                  ].map((item, idx) => (
+                    <Typography key={idx} variant="body2" color="text.secondary" sx={{ display: 'flex', gap: 1 }}>
+                      <Box component="span" sx={{ color: 'secondary.main', fontWeight: 700 }}>{idx + 1}.</Box>
+                      {item}
+                    </Typography>
+                  ))}
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3} sx={{ mb: 8 }}>
+          {[
+            {
+              icon: <VerifiedUserIcon sx={{ fontSize: 32, color: 'secondary.main' }} />,
+              title: 'Best Practices',
+              color: 'secondary',
+              items: [
+                'Use MVP/simulated mode for testing',
+                'Store wallet keys in environment variables',
+                'Set reasonable payment amounts',
+                'Log transaction hashes for records',
+                'Test with small amounts first',
+              ],
+            },
+            {
+              icon: <WarningIcon sx={{ fontSize: 32, color: 'warning.main' }} />,
+              title: 'Common Mistakes',
+              color: 'warning',
+              items: [
+                'Missing facilitatorUrl in config',
+                'Wrong package names (@x1pays not @x402)',
+                'Using bs58.encode() instead of base58',
+                'Forgetting to await signPayment()',
+                'Not checking environment variables',
+              ],
+            },
+            {
+              icon: <SecurityIcon sx={{ fontSize: 32, color: 'error.main' }} />,
+              title: 'Security',
+              color: 'error',
+              items: [
+                'Never commit private keys to git',
+                'Use .env files for secrets',
+                'Verify signatures on server-side',
+                'Use HTTPS in production',
+                'Validate payment amounts match',
+              ],
+            },
+          ].map((section, idx) => (
+            <Grid size={{ xs: 12, md: 4 }} key={idx}>
+              <Card
+                elevation={0}
+                sx={{
+                  border: '1px solid',
+                  borderColor: `${section.color}.dark`,
+                  height: '100%',
+                }}
+              >
+                <CardContent sx={{ p: 4 }}>
+                  <Box
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: 2,
+                      bgcolor: `rgba(${section.color === 'secondary' ? '118, 255, 3' : section.color === 'warning' ? '255, 183, 77' : '244, 67, 54'}, 0.1)`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mb: 3,
+                    }}
+                  >
+                    {section.icon}
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 3 }}>
+                    {section.title}
+                  </Typography>
+                  <Stack spacing={1.5}>
+                    {section.items.map((item, i) => (
+                      <Typography key={i} variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                        <Box component="span" sx={{ color: `${section.color}.main`, mt: 0.5 }}>•</Box>
+                        {item}
+                      </Typography>
+                    ))}
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </div>
+        </Grid>
 
-        <div className="p-6">
-          <div className="mb-4 flex justify-between items-center">
-            <h3 className="text-xl font-semibold">
-              {examples[selectedTab as keyof typeof examples].title} Example
-            </h3>
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(examples[selectedTab as keyof typeof examples].code)
-                alert('Code copied to clipboard!')
-              }}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors"
-            >
-              📋 Copy Code
-            </button>
-          </div>
+        <Box sx={{ position: 'relative', overflow: 'hidden', bgcolor: 'background.paper', borderRadius: 3, p: { xs: 4, md: 6 } }}>
+          <Box sx={{
+            position: 'absolute',
+            inset: 0,
+            opacity: 0.1,
+            backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(118, 255, 3, 0.3) 1px, transparent 0)',
+            backgroundSize: '40px 40px',
+          }} />
           
-          <pre className="bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto">
-            <code>{examples[selectedTab as keyof typeof examples].code}</code>
-          </pre>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-3">📚 Client-Side (Making Paid Requests)</h3>
-          <p className="text-gray-600 mb-4">
-            Use <code className="bg-gray-100 px-1 rounded">@x1pays/client</code> to make requests:
-          </p>
-          <ol className="list-decimal list-inside space-y-2 text-gray-700 text-sm">
-            <li>Install: <code className="bg-gray-100 px-1 rounded text-xs">pnpm add @x1pays/client</code></li>
-            <li>Import x402Client (Axios) or fetchX402 (Fetch)</li>
-            <li>Provide your Solana wallet/keypair</li>
-            <li>Make requests - payment happens automatically!</li>
-            <li>Access response.data and response.payment</li>
-          </ol>
-        </div>
-
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-3">🔧 Server-Side (Accepting Payments)</h3>
-          <p className="text-gray-600 mb-4">
-            Use <code className="bg-gray-100 px-1 rounded">@x1pays/middleware</code> on your API:
-          </p>
-          <ol className="list-decimal list-inside space-y-2 text-gray-700 text-sm">
-            <li>Install: <code className="bg-gray-100 px-1 rounded text-xs">pnpm add @x1pays/middleware</code></li>
-            <li>Choose: Express, Hono, Fastify, or Next.js</li>
-            <li>Configure facilitator URL and merchant wallet</li>
-            <li>Set amount per endpoint (in atomic units)</li>
-            <li>Middleware handles verify + settle automatically</li>
-          </ol>
-        </div>
-      </div>
-
-      <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg p-6">
-          <div className="text-3xl mb-3">✅</div>
-          <h4 className="font-semibold mb-2">Best Practices</h4>
-          <ul className="text-sm text-gray-700 space-y-1">
-            <li>• Use MVP/simulated mode for testing</li>
-            <li>• Store wallet keys in environment variables</li>
-            <li>• Set reasonable payment amounts</li>
-            <li>• Log transaction hashes for records</li>
-            <li>• Test with small amounts first</li>
-          </ul>
-        </div>
-
-        <div className="bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-6">
-          <div className="text-3xl mb-3">⚠️</div>
-          <h4 className="font-semibold mb-2">Common Mistakes</h4>
-          <ul className="text-sm text-gray-700 space-y-1">
-            <li>• Missing facilitatorUrl in config</li>
-            <li>• Wrong package names (@x1pays not @x402)</li>
-            <li>• Using bs58.encode() instead of base58</li>
-            <li>• Forgetting to await signPayment()</li>
-            <li>• Not checking environment variables</li>
-          </ul>
-        </div>
-
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg p-6">
-          <div className="text-3xl mb-3">🔒</div>
-          <h4 className="font-semibold mb-2">Security</h4>
-          <ul className="text-sm text-gray-700 space-y-1">
-            <li>• Never commit private keys to git</li>
-            <li>• Use .env files for secrets</li>
-            <li>• Verify signatures on server-side</li>
-            <li>• Use HTTPS in production</li>
-            <li>• Validate payment amounts match</li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="mt-12 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg p-8 text-center">
-        <h3 className="text-2xl font-bold mb-3">Ready to Integrate?</h3>
-        <p className="mb-6 text-indigo-100">
-          Check out our complete API reference and quickstart guides.
-        </p>
-        <div className="flex gap-4 justify-center flex-wrap">
-          <a
-            href="/docs/api-reference"
-            className="px-6 py-3 bg-white text-indigo-600 rounded-lg font-medium hover:bg-indigo-50 transition-colors"
-          >
-            Complete API Reference
-          </a>
-          <a
-            href="/docs/getting-started"
-            className="px-6 py-3 bg-indigo-700 text-white border-2 border-white rounded-lg font-medium hover:bg-indigo-800 transition-colors"
-          >
-            Getting Started
-          </a>
-          <a
-            href="/facilitator"
-            className="px-6 py-3 bg-purple-700 text-white rounded-lg font-medium hover:bg-purple-800 transition-colors"
-          >
-            Server Setup Guide
-          </a>
-        </div>
-      </div>
-    </div>
+          <Box sx={{ position: 'relative' }}>
+            <Stack spacing={3} alignItems="center" textAlign="center">
+              <Typography variant="h3" sx={{ fontWeight: 700 }}>
+                Ready to Integrate?
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ maxWidth: '600px' }}>
+                Check out our complete API reference and quickstart guides.
+              </Typography>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                <Button
+                  component={Link}
+                  to="/docs/api-reference"
+                  variant="contained"
+                  size="large"
+                  endIcon={<MenuBookIcon />}
+                  sx={{ px: 4, py: 1.5 }}
+                >
+                  Complete API Reference
+                </Button>
+                <Button
+                  component={Link}
+                  to="/docs/getting-started"
+                  variant="outlined"
+                  size="large"
+                  sx={{
+                    px: 4,
+                    py: 1.5,
+                    borderColor: 'primary.main',
+                    color: 'primary.main',
+                    '&:hover': {
+                      borderColor: 'primary.light',
+                      bgcolor: 'rgba(0, 229, 255, 0.1)',
+                    },
+                  }}
+                >
+                  Getting Started
+                </Button>
+              </Stack>
+            </Stack>
+          </Box>
+        </Box>
+      </Container>
+    </Box>
   )
 }
 

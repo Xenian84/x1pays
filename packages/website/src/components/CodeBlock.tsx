@@ -1,4 +1,5 @@
 import { Highlight, themes } from 'prism-react-renderer'
+import Box from '@mui/material/Box'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import CheckIcon from '@mui/icons-material/Check'
 import { useState } from 'react'
@@ -19,34 +20,45 @@ export default function CodeBlock({ code, language, filename }: CodeBlockProps) 
   }
 
   return (
-    <div className="relative my-6 rounded-lg overflow-hidden border border-gray-200 bg-gray-900">
+    <Box sx={{ position: 'relative', my: 6, borderRadius: 2, overflow: 'hidden', border: '1px solid', borderColor: '#3d3d3d', bgcolor: '#1e1e1e' }}>
       {filename && (
-        <div className="bg-gray-800 px-4 py-2 text-sm text-gray-300 border-b border-gray-700 font-mono">
+        <Box sx={{ bgcolor: '#2d2d2d', px: 2, py: 1, fontSize: '0.875rem', color: '#d4d4d4', borderBottom: '1px solid', borderColor: '#3d3d3d', fontFamily: 'monospace' }}>
           {filename}
-        </div>
+        </Box>
       )}
-      <div className="relative">
-        <button
+      <Box sx={{ position: 'relative' }}>
+        <Box
+          component="button"
           onClick={handleCopy}
-          className="absolute right-2 top-2 p-2 rounded-md bg-gray-800 hover:bg-gray-700 text-gray-300 transition-colors duration-200"
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            p: 1,
+            borderRadius: 1,
+            bgcolor: '#2d2d2d',
+            color: '#d4d4d4',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s',
+            '&:hover': {
+              bgcolor: '#3d3d3d'
+            }
+          }}
           title="Copy code"
         >
           {copied ? <CheckIcon sx={{ fontSize: 16 }} /> : <ContentCopyIcon sx={{ fontSize: 16 }} />}
-        </button>
+        </Box>
         <Highlight theme={themes.nightOwl} code={code.trim()} language={language}>
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <pre className={`${className} p-4 overflow-x-auto text-sm`} style={style}>
+            <Box component="pre" className={className} sx={{ p: 2, overflowX: 'auto', fontSize: '0.875rem' }} style={style}>
               {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({ line })}>
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({ token })} />
-                  ))}
-                </div>
+                <Box key={i} {...getLineProps({ line })} />
               ))}
-            </pre>
+            </Box>
           )}
         </Highlight>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }

@@ -1,42 +1,61 @@
+import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Stack from '@mui/material/Stack'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import BoltIcon from '@mui/icons-material/Bolt'
+import CodeBlock from '../components/CodeBlock'
+
 const FetchClient = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="mb-8">
-          <a href="/facilitator" className="text-blue-600 hover:text-blue-700 mb-4 inline-block">
-            ← Back to Facilitator
-          </a>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Fetch API Client Quickstart</h1>
-          <p className="text-xl text-gray-600">
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 12 } }}>
+        <Box sx={{ mb: 8 }}>
+          <Button
+            component={Link}
+            to="/facilitator"
+            startIcon={<ArrowBackIcon />}
+            sx={{
+              mb: 4,
+              color: 'primary.main',
+              '&:hover': { bgcolor: 'rgba(0, 229, 255, 0.1)' }
+            }}
+          >
+            Back to Facilitator
+          </Button>
+          <Typography variant="h1" sx={{ mb: 2, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
+            Fetch API Client Quickstart
+          </Typography>
+          <Typography variant="h5" color="text.secondary">
             Use native Fetch API with x402 payment protocol - zero dependencies.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         {/* Installation */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Installation</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Installation</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Install the lightweight x402 fetch wrapper:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <code className="text-green-400">
-              npm install @x1pays/client
-            </code>
-          </div>
-          <p className="text-gray-600 text-sm mt-2">
+          </Typography>
+          <CodeBlock code="npm install @x1pays/client" language="bash" />
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
             Uses native Fetch API with automatic x402 payment handling.
-          </p>
-        </section>
+          </Typography>
+        </Box>
 
         {/* Basic Usage */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Basic Usage</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Basic Usage</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Simple paid requests with fetch:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { fetchX402JSON } from '@x1pays/client/fetch'
+          </Typography>
+          <CodeBlock
+            code={`import { fetchX402JSON } from '@x1pays/client/fetch'
 import { Keypair } from '@solana/web3.js'
 
 const wallet = Keypair.fromSecretKey(
@@ -54,19 +73,18 @@ const response = await fetchX402JSON(
 
 console.log('Data:', response.data)
 console.log('Payment:', response.payment)`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Manual Implementation */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Manual Implementation</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Manual Implementation</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Understand how x402 works by implementing it manually with native fetch:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import * as nacl from 'tweetnacl'
+          </Typography>
+          <CodeBlock
+            code={`import * as nacl from 'tweetnacl'
 import bs58 from 'bs58'
 
 async function fetchWithPayment(url, wallet) {
@@ -129,19 +147,18 @@ const res = await fetchWithPayment(
   wallet
 )
 const data = await res.json()`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* POST Requests */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">POST Requests</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>POST Requests</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Send data with paid requests:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`const response = await fetchX402(
+          </Typography>
+          <CodeBlock
+            code={`const response = await fetchX402(
   'https://api.example.com/analyze',
   {
     method: 'POST',
@@ -159,19 +176,18 @@ const data = await res.json()`}
 )
 
 const result = await response.json()`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Error Handling */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Error Handling</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Error Handling</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Handle errors gracefully:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`async function safeFetch(url, wallet) {
+          </Typography>
+          <CodeBlock
+            code={`async function safeFetch(url, wallet) {
   try {
     const response = await fetchX402(url, { wallet })
     
@@ -194,19 +210,18 @@ const result = await response.json()`}
     throw error
   }
 }`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Browser Integration */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Browser Integration</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Browser Integration</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Use in browser with wallet extensions:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { fetchX402JSON } from '@x1pays/client/fetch'
+          </Typography>
+          <CodeBlock
+            code={`import { fetchX402JSON } from '@x1pays/client/fetch'
 
 async function fetchPremiumData() {
   // Connect wallet
@@ -225,19 +240,18 @@ async function fetchPremiumData() {
   document.getElementById('result').textContent = 
     JSON.stringify(response.data, null, 2)
 }`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* React Hooks */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">React Hooks</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>React Hooks</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Create reusable hooks for paid API calls:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { useState, useCallback } from 'react'
+          </Typography>
+          <CodeBlock
+            code={`import { useState, useCallback } from 'react'
 import { fetchX402JSON } from '@x1pays/client/fetch'
 
 function usePaidFetch() {
@@ -285,24 +299,23 @@ function PremiumContent({ wallet }) {
       <button onClick={loadData} disabled={loading}>
         {loading ? 'Loading...' : 'Get Data'}
       </button>
-      {error && <p className="error">{error}</p>}
+      {error && <Typography color="error">{error}</Typography>}
       {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
     </div>
   )
 }`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Streaming Responses */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Streaming Responses</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Streaming Responses</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Handle streaming responses with payments:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`async function streamPaidData(url, wallet) {
+          </Typography>
+          <CodeBlock
+            code={`async function streamPaidData(url, wallet) {
   const response = await fetchX402(url, { wallet })
   
   const reader = response.body.getReader()
@@ -325,64 +338,151 @@ await streamPaidData(
   'https://api.example.com/ai/stream',
   wallet
 )`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Comparison with Axios */}
-        <section className="mb-12 p-6 bg-gray-50 border border-gray-200 rounded-lg">
-          <h3 className="text-lg font-bold text-gray-900 mb-3">Fetch vs Axios</h3>
-          <div className="grid md:grid-cols-2 gap-6 text-sm">
-            <div>
-              <h4 className="font-bold text-gray-900 mb-2">✅ Fetch Advantages</h4>
-              <ul className="space-y-1 text-gray-700">
-                <li>• Zero dependencies (native browser API)</li>
-                <li>• Smaller bundle size</li>
-                <li>• Modern Promise-based API</li>
-                <li>• Better streaming support</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-gray-900 mb-2">⚡ Axios Advantages</h4>
-              <ul className="space-y-1 text-gray-700">
-                <li>• Automatic JSON transformation</li>
-                <li>• Built-in timeout support</li>
-                <li>• Better error handling</li>
-                <li>• Request/response interceptors</li>
-              </ul>
-            </div>
-          </div>
-        </section>
+        <Card
+          elevation={0}
+          sx={{ transition: 'all 0.3s ease',
+            mb: 8,
+            border: '1px solid',
+            borderColor: 'primary.dark',
+            bgcolor: 'rgba(0, 229, 255, 0.03)',
+          }}
+        >
+          <CardContent sx={{ p: 4 }}>
+            <Typography variant="h3" sx={{ fontSize: '1.5rem', fontWeight: 700, mb: 4 }}>
+              Fetch vs Axios
+            </Typography>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 4 }}>
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                  <CheckCircleIcon sx={{ color: 'success.main', fontSize: 20 }} />
+                  <Typography variant="h6" sx={{ fontWeight: 700 }}>Fetch Advantages</Typography>
+                </Box>
+                <Stack spacing={1.5}>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <Box sx={{ color: 'success.main', mt: 0.5 }}>•</Box>
+                    <Typography variant="body2" color="text.secondary">Zero dependencies (native browser API)</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <Box sx={{ color: 'success.main', mt: 0.5 }}>•</Box>
+                    <Typography variant="body2" color="text.secondary">Smaller bundle size</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <Box sx={{ color: 'success.main', mt: 0.5 }}>•</Box>
+                    <Typography variant="body2" color="text.secondary">Modern Promise-based API</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <Box sx={{ color: 'success.main', mt: 0.5 }}>•</Box>
+                    <Typography variant="body2" color="text.secondary">Better streaming support</Typography>
+                  </Box>
+                </Stack>
+              </Box>
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                  <BoltIcon sx={{ color: 'warning.main', fontSize: 20 }} />
+                  <Typography variant="h6" sx={{ fontWeight: 700 }}>Axios Advantages</Typography>
+                </Box>
+                <Stack spacing={1.5}>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <Box sx={{ color: 'warning.main', mt: 0.5 }}>•</Box>
+                    <Typography variant="body2" color="text.secondary">Automatic JSON transformation</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <Box sx={{ color: 'warning.main', mt: 0.5 }}>•</Box>
+                    <Typography variant="body2" color="text.secondary">Built-in timeout support</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <Box sx={{ color: 'warning.main', mt: 0.5 }}>•</Box>
+                    <Typography variant="body2" color="text.secondary">Better error handling</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <Box sx={{ color: 'warning.main', mt: 0.5 }}>•</Box>
+                    <Typography variant="body2" color="text.secondary">Request/response interceptors</Typography>
+                  </Box>
+                </Stack>
+              </Box>
+            </Box>
+          </CardContent>
+        </Card>
 
         {/* Next Steps */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Next Steps</h2>
-          <div className="space-y-3">
-            <a 
-              href="/examples" 
-              className="block p-4 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 4, fontSize: '2rem' }}>Next Steps</Typography>
+          <Stack spacing={3}>
+            <Card
+              component={Link}
+              to="/examples"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'error.dark',
+                '&:hover': {
+                  borderColor: 'error.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">View Complete Examples</h3>
-              <p className="text-gray-700 text-sm">See full fetch-based applications</p>
-            </a>
-            <a 
-              href="/quickstart/axios" 
-              className="block p-4 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>View Complete Examples</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  See full fetch-based applications
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card
+              component={Link}
+              to="/quickstart/axios"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'error.dark',
+                '&:hover': {
+                  borderColor: 'error.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">Compare with Axios</h3>
-              <p className="text-gray-700 text-sm">See the Axios client implementation</p>
-            </a>
-            <a 
-              href="/quickstart/servers" 
-              className="block p-4 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Compare with Axios</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  See the Axios client implementation
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card
+              component={Link}
+              to="/quickstart/servers"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'error.dark',
+                '&:hover': {
+                  borderColor: 'error.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">Build a Server</h3>
-              <p className="text-gray-700 text-sm">Create an x402-enabled API</p>
-            </a>
-          </div>
-        </section>
-      </div>
-    </div>
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Build a Server</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Create an x402-enabled API
+                </Typography>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

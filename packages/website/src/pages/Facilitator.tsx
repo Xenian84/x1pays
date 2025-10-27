@@ -1,391 +1,500 @@
+import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Stack from '@mui/material/Stack'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+import Chip from '@mui/material/Chip'
+import IconButton from '@mui/material/IconButton'
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
+import CodeIcon from '@mui/icons-material/Code'
+import SpeedIcon from '@mui/icons-material/Speed'
+import SecurityIcon from '@mui/icons-material/Security'
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
+import ApiIcon from '@mui/icons-material/Api'
+import ScaleIcon from '@mui/icons-material/Scale'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
+import { useState } from 'react'
+
 const Facilitator = () => {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText('https://facilitator.x1pays.network')
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <Box>
       {/* Hero Section */}
-      <div className="max-w-6xl mx-auto px-6 pt-20 pb-16 text-center">
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-          X1‑first payment facilitator.
-        </h1>
-        <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
-          Process x402 payments on X1 blockchain with one drop‑in endpoint. 
-          No API keys, no blockchain headaches—just plug and play.
-        </p>
+      <Box sx={{ position: 'relative', overflow: 'hidden', bgcolor: 'background.default', py: { xs: 8, md: 12 } }}>
+        <Box sx={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0.2,
+          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(0, 229, 255, 0.15) 1px, transparent 0)',
+          backgroundSize: '40px 40px',
+        }} />
         
-        <div className="bg-gray-900 rounded-lg p-4 max-w-2xl mx-auto mb-8 text-left">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm">Facilitator URL</span>
-            <button 
-              onClick={() => navigator.clipboard.writeText('https://facilitator.x1pays.network')}
-              className="text-blue-400 hover:text-blue-300 text-sm"
+        <Container maxWidth="lg" sx={{ position: 'relative' }}>
+          <Stack spacing={4} alignItems="center" textAlign="center">
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4rem' },
+                fontWeight: 800,
+              }}
             >
-              Copy
-            </button>
-          </div>
-          <code className="text-green-400 text-sm md:text-base">
-            https://facilitator.x1pays.network
-          </code>
-        </div>
+              X1‑first payment{' '}
+              <Box
+                component="span"
+                sx={{
+                  background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                facilitator
+              </Box>
+            </Typography>
+            
+            <Typography
+              variant="h5"
+              color="text.secondary"
+              sx={{
+                maxWidth: '800px',
+                fontWeight: 400,
+                lineHeight: 1.7,
+              }}
+            >
+              Process x402 payments on X1 blockchain with one drop‑in endpoint. 
+              No API keys, no blockchain headaches—just plug and play.
+            </Typography>
+            
+            <Paper
+              elevation={0}
+              sx={{ transition: 'all 0.3s ease',
+                bgcolor: 'background.paper',
+                border: '1px solid',
+                borderColor: 'primary.dark',
+                borderRadius: 2,
+                p: 3,
+                maxWidth: '600px',
+                width: '100%',
+              }}
+            >
+              <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+                <Box sx={{ flex: 1, overflow: 'hidden' }}>
+                  <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
+                    Facilitator URL
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontFamily: 'monospace',
+                      color: 'secondary.main',
+                      fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                      wordBreak: 'break-all',
+                    }}
+                  >
+                    https://facilitator.x1pays.network
+                  </Typography>
+                </Box>
+                <IconButton
+                  onClick={handleCopy}
+                  size="small"
+                  sx={{
+                    color: copied ? 'secondary.main' : 'primary.main',
+                    '&:hover': { bgcolor: 'rgba(0, 229, 255, 0.1)' },
+                  }}
+                >
+                  {copied ? <CheckCircleIcon fontSize="small" /> : <ContentCopyIcon fontSize="small" />}
+                </IconButton>
+              </Stack>
+            </Paper>
 
-        <div className="flex flex-wrap gap-4 justify-center">
-          <a 
-            href="#get-started" 
-            className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-          >
-            Start in 2m
-          </a>
-          <a 
-            href="/getting-started" 
-            className="px-8 py-3 bg-white border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-gray-400 transition-colors"
-          >
-            Docs
-          </a>
-        </div>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <Button
+                href="#get-started"
+                variant="contained"
+                size="large"
+                startIcon={<RocketLaunchIcon />}
+                sx={{ px: 4, py: 1.5 }}
+              >
+                Start in 2m
+              </Button>
+              <Button
+                component={Link}
+                to="/docs/getting-started"
+                variant="outlined"
+                size="large"
+                endIcon={<MenuBookIcon />}
+                sx={{
+                  px: 4,
+                  py: 1.5,
+                  borderColor: 'primary.main',
+                  color: 'primary.main',
+                  '&:hover': {
+                    borderColor: 'primary.light',
+                    bgcolor: 'rgba(0, 229, 255, 0.1)',
+                  },
+                }}
+              >
+                Docs
+              </Button>
+            </Stack>
 
-        <div className="mt-8 flex flex-wrap gap-6 justify-center text-sm text-gray-600">
-          <div className="flex items-center gap-2">
-            <span className="text-green-500">✓</span>
-            <span>0% protocol fees</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-green-500">✓</span>
-            <span>Gas fees covered</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-green-500">✓</span>
-            <span>No API keys required</span>
-          </div>
-        </div>
-      </div>
+            <Grid container spacing={3} sx={{ mt: 2, maxWidth: '700px' }}>
+              {[
+                { icon: <AttachMoneyIcon sx={{ color: 'secondary.main', fontSize: 20 }} />, text: '0% protocol fees' },
+                { icon: <SpeedIcon sx={{ color: 'primary.main', fontSize: 20 }} />, text: 'Gas fees covered' },
+                { icon: <SecurityIcon sx={{ color: 'info.main', fontSize: 20 }} />, text: 'No API keys required' },
+              ].map((item, idx) => (
+                <Grid size={{ xs: 12, sm: 4 }} key={idx}>
+                  <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+                    {item.icon}
+                    <Typography variant="body2" color="text.secondary">
+                      {item.text}
+                    </Typography>
+                  </Stack>
+                </Grid>
+              ))}
+            </Grid>
+          </Stack>
+        </Container>
+      </Box>
 
       {/* Quick Setup Section */}
-      <div id="get-started" className="bg-white py-16 border-y border-gray-200">
-        <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-            Drop‑in setup.
-          </h2>
-          <p className="text-lg text-gray-600 mb-8 text-center">
-            Point your merchant at the facilitator and you're done.
-          </p>
+      <Box sx={{ bgcolor: 'background.paper', py: { xs: 8, md: 12 } }} id="get-started">
+        <Container maxWidth="md">
+          <Stack spacing={2} alignItems="center" textAlign="center" sx={{ mb: 6 }}>
+            <Typography variant="h2" sx={{ fontWeight: 700 }}>
+              Drop‑in setup
+            </Typography>
+            <Typography variant="h6" color="text.secondary">
+              Point your merchant at the facilitator and you're done.
+            </Typography>
+          </Stack>
 
-          <div className="space-y-6">
-            <div className="flex gap-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-                1
-              </div>
-              <div className="flex-1">
-                <p className="text-gray-700 mb-2">Set <code className="px-2 py-1 bg-gray-100 rounded text-sm">FACILITATOR_URL=https://facilitator.x1pays.network</code> in your server.</p>
-              </div>
-            </div>
+          <Stack spacing={4}>
+            {[
+              {
+                step: '1',
+                title: (
+                  <Typography variant="body1" color="text.secondary">
+                    Set <Box component="code" sx={{ px: 1.5, py: 0.5, bgcolor: 'rgba(0, 229, 255, 0.1)', borderRadius: 1, fontFamily: 'monospace', fontSize: '0.875rem', color: 'primary.main' }}>FACILITATOR_URL=https://facilitator.x1pays.network</Box> in your server.
+                  </Typography>
+                ),
+                color: 'primary',
+              },
+              {
+                step: '2',
+                title: 'Choose a network:',
+                content: (
+                  <Paper
+                    elevation={0}
+                    sx={{ transition: 'all 0.3s ease',
+                      bgcolor: 'rgba(0, 229, 255, 0.05)',
+                      border: '1px solid',
+                      borderColor: 'primary.dark',
+                      borderRadius: 2,
+                      p: 2,
+                      mt: 2,
+                    }}
+                  >
+                    <Typography variant="body2" sx={{ fontFamily: 'monospace', color: 'text.secondary' }}>
+                      x1-mainnet, x1-devnet
+                    </Typography>
+                  </Paper>
+                ),
+                color: 'warning',
+              },
+              {
+                step: '3',
+                title: 'Ship. The facilitator verifies & settles payments on your behalf.',
+                color: 'secondary',
+              },
+            ].map((item) => (
+              <Stack key={item.step} direction="row" spacing={3}>
+                <Box
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: '50%',
+                    bgcolor: `rgba(${item.color === 'primary' ? '0, 229, 255' : item.color === 'warning' ? '255, 183, 77' : '118, 255, 3'}, 0.2)`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Typography variant="h6" sx={{ fontWeight: 800, color: `${item.color}.main` }}>
+                    {item.step}
+                  </Typography>
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  {typeof item.title === 'string' ? (
+                    <Typography variant="body1" color="text.secondary">
+                      {item.title}
+                    </Typography>
+                  ) : (
+                    item.title
+                  )}
+                  {item.content}
+                </Box>
+              </Stack>
+            ))}
+          </Stack>
 
-            <div className="flex gap-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-                2
-              </div>
-              <div className="flex-1">
-                <p className="text-gray-700 mb-2">Choose a <strong>network</strong>:</p>
-                <div className="bg-gray-100 rounded-lg p-4">
-                  <code className="text-sm text-gray-800">
-                    x1-mainnet, x1-devnet
-                  </code>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-                3
-              </div>
-              <div className="flex-1">
-                <p className="text-gray-700">Ship. The facilitator verifies & settles payments on your behalf.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 flex justify-center">
-            <div className="inline-block px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg">
-              <span className="text-2xl">🚀</span>
-              <span className="ml-2 text-blue-900 font-medium">X1 Blockchain</span>
-            </div>
-          </div>
-        </div>
-      </div>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
+            <Chip
+              icon={<AccountBalanceIcon />}
+              label="X1 Blockchain"
+              sx={{
+                bgcolor: 'rgba(0, 229, 255, 0.1)',
+                color: 'primary.main',
+                borderColor: 'primary.main',
+                border: '1px solid',
+                fontWeight: 600,
+                px: 2,
+                py: 3,
+              }}
+            />
+          </Box>
+        </Container>
+      </Box>
 
       {/* Features Grid */}
-      <div className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Features</h2>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">X1‑native</h3>
-              <p className="text-gray-600">
-                Built specifically for X1 blockchain with wXNT token support. Optimized for the fastest settlement times and lowest gas costs.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Any token</h3>
-              <p className="text-gray-600">
-                Use wXNT stablecoin or your own tokens. Configure per‑endpoint pricing in fiat or atomic units.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">0% fees</h3>
-              <p className="text-gray-600">
-                100% of payments go to merchants. No protocol fees, no hidden costs. We cover blockchain gas fees for both buyers and merchants.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">1‑second start</h3>
-              <p className="text-gray-600">
-                No API keys. Just plug & play. Start with a single env var and standard endpoints (<code>/verify</code>, <code>/settle</code>).
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Consistent API</h3>
-              <p className="text-gray-600">
-                One simple interface. You get reliability, observability, and reuse across multiple merchants and apps.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Built for scale</h3>
-              <p className="text-gray-600">
-                Designed for human & agentic use‑cases. From pay‑per‑call APIs to AI agents, settle payments in under a second.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+        <Stack spacing={2} alignItems="center" textAlign="center" sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ fontWeight: 700 }}>
+            Features
+          </Typography>
+        </Stack>
+        
+        <Grid container spacing={3}>
+          {[
+            {
+              icon: <AccountBalanceIcon sx={{ fontSize: 32, color: 'primary.main' }} />,
+              title: 'X1‑native',
+              description: 'Built specifically for X1 blockchain with wXNT token support. Optimized for the fastest settlement times and lowest gas costs.',
+              color: 'primary',
+            },
+            {
+              icon: <AttachMoneyIcon sx={{ fontSize: 32, color: 'secondary.main' }} />,
+              title: 'Any token',
+              description: 'Use wXNT stablecoin or your own tokens. Configure per‑endpoint pricing in fiat or atomic units.',
+              color: 'secondary',
+            },
+            {
+              icon: <AttachMoneyIcon sx={{ fontSize: 32, color: 'secondary.main' }} />,
+              title: '0% fees',
+              description: '100% of payments go to merchants. No protocol fees, no hidden costs. We cover blockchain gas fees for both buyers and merchants.',
+              color: 'secondary',
+            },
+            {
+              icon: <SpeedIcon sx={{ fontSize: 32, color: 'primary.main' }} />,
+              title: '1‑second start',
+              description: 'No API keys. Just plug & play. Start with a single env var and standard endpoints (/verify, /settle).',
+              color: 'primary',
+            },
+            {
+              icon: <ApiIcon sx={{ fontSize: 32, color: 'info.main' }} />,
+              title: 'Consistent API',
+              description: 'One simple interface. You get reliability, observability, and reuse across multiple merchants and apps.',
+              color: 'info',
+            },
+            {
+              icon: <ScaleIcon sx={{ fontSize: 32, color: 'warning.main' }} />,
+              title: 'Built for scale',
+              description: 'Designed for human & agentic use‑cases. From pay‑per‑call APIs to AI agents, settle payments in under a second.',
+              color: 'warning',
+            },
+          ].map((feature, idx) => (
+            <Grid size={{ xs: 12, md: 6, lg: 4 }} key={idx}>
+              <Card
+                elevation={0}
+                
+                sx={{ transition: 'all 0.3s ease',
+                  border: '1px solid',
+                  borderColor: `${feature.color}.dark`,
+                  '&:hover': {
+                    borderColor: `${feature.color}.main`,
+                    transform: 'translateY(-4px)',
+                  },
+                }}
+              >
+                <CardContent sx={{ p: 4 }}>
+                  <Box
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: 2,
+                      bgcolor: `rgba(${feature.color === 'primary' ? '0, 229, 255' : feature.color === 'secondary' ? '118, 255, 3' : feature.color === 'info' ? '0, 229, 255' : '255, 183, 77'}, 0.1)`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mb: 3,
+                    }}
+                  >
+                    {feature.icon}
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
+                    {feature.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+                    {feature.description}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
 
       {/* Merchants Section */}
-      <div className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Merchants</h2>
-          <p className="text-lg text-gray-600 mb-12 text-center">Set up your resource server.</p>
+      <Box sx={{ bgcolor: 'background.paper', py: { xs: 8, md: 12 } }}>
+        <Container maxWidth="lg">
+          <Stack spacing={2} alignItems="center" textAlign="center" sx={{ mb: 8 }}>
+            <Typography variant="h2" sx={{ fontWeight: 700 }}>
+              Merchants
+            </Typography>
+            <Typography variant="h6" color="text.secondary">
+              Set up your resource server
+            </Typography>
+          </Stack>
           
-          <div className="grid md:grid-cols-3 gap-6">
-            <a 
-              href="/quickstart/express" 
-              className="block bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg border-2 border-blue-200 hover:border-blue-400 transition-colors"
-            >
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Express Quickstart</h3>
-              <p className="text-gray-700">Get started with Express.js in minutes.</p>
-            </a>
+          <Grid container spacing={3}>
+            {[
+              {
+                title: 'Express Quickstart',
+                description: 'Get started with Express.js in minutes.',
+                link: '/quickstart/express',
+                icon: <CodeIcon sx={{ fontSize: 32, color: 'primary.main' }} />,
+                color: 'primary',
+              },
+              {
+                title: 'Hono Quickstart',
+                description: 'Build edge-ready APIs with Hono.',
+                link: '/quickstart/hono',
+                icon: <RocketLaunchIcon sx={{ fontSize: 32, color: 'warning.main' }} />,
+                color: 'warning',
+              },
+              {
+                title: 'Full Integration Guide',
+                description: 'Complete setup for production apps.',
+                link: '/docs/getting-started',
+                icon: <MenuBookIcon sx={{ fontSize: 32, color: 'secondary.main' }} />,
+                color: 'secondary',
+              },
+            ].map((item, idx) => (
+              <Grid size={{ xs: 12, md: 4 }} key={idx}>
+                <Card
+                  component={Link}
+                  to={item.link}
+                  elevation={0}
+                  
+                  sx={{ transition: 'all 0.3s ease',
+                    textDecoration: 'none',
+                    border: '1px solid',
+                    borderColor: `${item.color}.dark`,
+                    '&:hover': {
+                      borderColor: `${item.color}.main`,
+                      transform: 'translateY(-4px)',
+                    },
+                  }}
+                >
+                  <CardContent sx={{ p: 4 }}>
+                    <Box
+                      sx={{
+                        width: 56,
+                        height: 56,
+                        borderRadius: 2,
+                        bgcolor: `rgba(${item.color === 'primary' ? '0, 229, 255' : item.color === 'warning' ? '255, 183, 77' : '118, 255, 3'}, 0.1)`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        mb: 3,
+                      }}
+                    >
+                      {item.icon}
+                    </Box>
+                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
+                      {item.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {item.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
 
-            <a 
-              href="/quickstart/hono" 
-              className="block bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg border-2 border-purple-200 hover:border-purple-400 transition-colors"
-            >
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Hono</h3>
-              <p className="text-gray-700">Quickstart for building an x402-enabled server with Hono.</p>
-            </a>
-
-            <a 
-              href="/quickstart/servers" 
-              className="block bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border-2 border-green-200 hover:border-green-400 transition-colors"
-            >
-              <h3 className="text-xl font-bold text-gray-900 mb-2">All Server Options</h3>
-              <p className="text-gray-700">Explore all available server frameworks.</p>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Clients Section */}
-      <div className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Clients</h2>
-          <p className="text-lg text-gray-600 mb-12 text-center">Buyers: make paid calls automatically.</p>
-          
-          <div className="grid md:grid-cols-3 gap-6">
-            <a 
-              href="/quickstart/axios" 
-              className="block bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-lg border-2 border-yellow-200 hover:border-yellow-400 transition-colors"
-            >
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Axios Client</h3>
-              <p className="text-gray-700">TypeScript client with Axios for HTTP requests.</p>
-            </a>
-
-            <a 
-              href="/quickstart/fetch" 
-              className="block bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-lg border-2 border-red-200 hover:border-red-400 transition-colors"
-            >
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Fetch Client</h3>
-              <p className="text-gray-700">TypeScript client using native Fetch API.</p>
-            </a>
-
-            <a 
-              href="/quickstart/clients" 
-              className="block bg-gradient-to-br from-indigo-50 to-indigo-100 p-6 rounded-lg border-2 border-indigo-200 hover:border-indigo-400 transition-colors"
-            >
-              <h3 className="text-xl font-bold text-gray-900 mb-2">All Client Options</h3>
-              <p className="text-gray-700">Explore all available client frameworks.</p>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Try It Free */}
-      <div className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Try it free</h2>
-          <p className="text-lg text-gray-600 mb-12 text-center">Run real payments—instantly refunded.</p>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            <a 
-              href="/echo" 
-              className="block bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg border-2 border-blue-200 hover:border-blue-400 transition-colors"
-            >
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Echo Merchant</h3>
-              <p className="text-gray-700">Test the complete payment flow with our demo merchant.</p>
-            </a>
-
-            <a 
-              href="/getting-started#echo" 
-              className="block bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors"
-            >
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Echo Merchant Docs</h3>
-              <p className="text-gray-700">Learn how the demo merchant works under the hood.</p>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Pricing Section */}
-      <div className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Pricing</h2>
-          <p className="text-lg text-gray-600 mb-12 text-center">Choose a plan that fits your volume.</p>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg shadow-lg p-8 relative">
-              <div className="absolute top-0 right-0 bg-blue-600 text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm font-medium">
-                Most popular
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2 mt-4">FREE</h3>
-              <ul className="space-y-3 mb-8 text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>100,000 settlements per month</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>4 requests per second</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>480 burst requests per minute</span>
-                </li>
-              </ul>
-              <div className="text-3xl font-bold text-gray-900 mb-4">0 $XPY</div>
-              <p className="text-sm text-gray-600">Default plan</p>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-lg p-8 border-2 border-blue-500">
-              <div className="absolute top-0 right-0 bg-purple-600 text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm font-medium">
-                Coming soon
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2 mt-4">BASIC</h3>
-              <ul className="space-y-3 mb-8 text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>500,000 settlements per month</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>10 requests per second</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>1200 burst requests per minute</span>
-                </li>
-              </ul>
-              <div className="text-3xl font-bold text-gray-900 mb-4">$1500 worth of $XPY</div>
-              <button className="w-full py-3 bg-gray-300 text-gray-600 rounded-lg font-medium cursor-not-allowed">
-                Coming soon
-              </button>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-lg p-8">
-              <div className="absolute top-0 right-0 bg-purple-600 text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm font-medium">
-                Coming soon
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2 mt-4">PRO</h3>
-              <ul className="space-y-3 mb-8 text-gray-700">
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>1M settlements per month</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>25 requests per second</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-500 mt-1">✓</span>
-                  <span>3000 burst requests per minute</span>
-                </li>
-              </ul>
-              <div className="text-3xl font-bold text-gray-900 mb-4">$2800 worth of $XPY</div>
-              <button className="w-full py-3 bg-gray-300 text-gray-600 rounded-lg font-medium cursor-not-allowed">
-                Coming soon
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Documentation & Support */}
-      <div className="py-16 bg-white border-t border-gray-200">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Documentation</h2>
-              <p className="text-gray-600 mb-6">Everything you need to integrate x402 with X1Pays.</p>
-              <ul className="space-y-3">
-                <li>
-                  <a href="/getting-started" className="text-blue-600 hover:text-blue-700 hover:underline">
-                    Facilitator Overview
-                  </a>
-                </li>
-                <li>
-                  <a href="/getting-started" className="text-blue-600 hover:text-blue-700 hover:underline">
-                    Quickstart
-                  </a>
-                </li>
-                <li>
-                  <a href="/faq" className="text-blue-600 hover:text-blue-700 hover:underline">
-                    FAQ
-                  </a>
-                </li>
-                <li>
-                  <a href="/examples" className="text-blue-600 hover:text-blue-700 hover:underline">
-                    Code Examples
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Support</h2>
-              <p className="text-gray-600 mb-6">We're here to help.</p>
-              <a 
-                href="https://discord.gg/x1pays" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+      {/* CTA Section */}
+      <Box sx={{ position: 'relative', overflow: 'hidden', bgcolor: 'background.default', py: { xs: 8, md: 12 } }}>
+        <Box sx={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0.1,
+          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(118, 255, 3, 0.3) 1px, transparent 0)',
+          backgroundSize: '40px 40px',
+        }} />
+        
+        <Container maxWidth="md" sx={{ position: 'relative' }}>
+          <Stack spacing={4} alignItems="center" textAlign="center">
+            <Typography variant="h2" sx={{ fontWeight: 700 }}>
+              Ready to integrate?
+            </Typography>
+            <Typography variant="h6" color="text.secondary" sx={{ maxWidth: '600px' }}>
+              Start accepting x402 payments in minutes with our simple, drop-in facilitator.
+            </Typography>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <Button
+                component={Link}
+                to="/docs/getting-started"
+                variant="contained"
+                size="large"
+                endIcon={<ArrowForwardIcon />}
+                sx={{ px: 5, py: 2 }}
               >
-                Join Discord
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+                Get Started
+              </Button>
+              <Button
+                component={Link}
+                to="/docs/api-reference"
+                variant="outlined"
+                size="large"
+                sx={{
+                  px: 5,
+                  py: 2,
+                  borderColor: 'primary.main',
+                  color: 'primary.main',
+                  '&:hover': {
+                    borderColor: 'primary.light',
+                    bgcolor: 'rgba(0, 229, 255, 0.1)',
+                  },
+                }}
+              >
+                View API Docs
+              </Button>
+            </Stack>
+          </Stack>
+        </Container>
+      </Box>
+    </Box>
+  )
+}
 
-export default Facilitator;
+export default Facilitator

@@ -1,4 +1,20 @@
 import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Chip from '@mui/material/Chip'
+import Stack from '@mui/material/Stack'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import BoltIcon from '@mui/icons-material/Bolt'
@@ -6,329 +22,546 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 
 const Pricing = () => {
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16">
-      {/* Hero */}
-      <div className="text-center mb-16">
-        <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-semibold mb-6">
-          <BoltIcon sx={{ fontSize: 16, mr: 1 }} />
-          Zero Protocol Fees Forever
-        </div>
-        <h1 className="text-5xl sm:text-6xl font-bold mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-          Pay Nothing.
-          <br />
-          Keep Everything.
-        </h1>
-        <p className="text-2xl text-gray-600 max-w-3xl mx-auto">
-          X1Pays charges <span className="font-bold text-green-600">0% fees</span> and covers all gas costs.
-          We monetize via <span className="font-bold text-purple-600">$XPY token</span> appreciation, not your revenue.
-        </p>
-      </div>
+    <Container maxWidth="lg" sx={{ py: { xs: 8, md: 16 } }}>
+      <Stack spacing={2} alignItems="center" textAlign="center" sx={{ mb: 8 }}>
+        <Chip
+          icon={<BoltIcon />}
+          label="Zero Protocol Fees Forever"
+          sx={{
+            bgcolor: 'rgba(118, 255, 3, 0.1)',
+            color: 'secondary.main',
+            borderColor: 'secondary.main',
+            border: '1px solid',
+            fontWeight: 600,
+          }}
+        />
+        <Typography
+          variant="h1"
+          sx={{
+            fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4rem' },
+            fontWeight: 800,
+          }}
+        >
+          <Box
+            component="span"
+            sx={{
+              background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            Pay Nothing.
+            <br />
+            Keep Everything.
+          </Box>
+        </Typography>
+        <Typography variant="h5" color="text.secondary" sx={{ maxWidth: '800px', lineHeight: 1.7 }}>
+          X1Pays charges <Box component="span" sx={{ color: 'secondary.main', fontWeight: 700 }}>0% fees</Box> and covers all gas costs.
+          We monetize via <Box component="span" sx={{ color: 'warning.main', fontWeight: 700 }}>$XPY token</Box> appreciation, not your revenue.
+        </Typography>
+      </Stack>
 
-      {/* Pricing Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
-        {/* For Users */}
-        <div className="bg-white border-2 border-gray-200 rounded-2xl p-8 hover:shadow-2xl hover:border-indigo-300 transition-all duration-300">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold mb-2">For Users</h3>
-            <div className="text-5xl font-bold text-indigo-600 my-6">
-              Pay Per Use
-            </div>
-            <p className="text-gray-600 text-lg">
-              Only pay for API calls you make. Zero monthly fees, zero hidden costs.
-            </p>
-          </div>
-          <ul className="space-y-4">
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">Pay only for what you use</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">Instant payment verification</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">No API keys to manage</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">Blockchain-verified receipts</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700"><span className="font-bold">Gas fees covered</span> by X1Pays</span>
-            </li>
-          </ul>
-        </div>
-
-        {/* For Merchants - Highlighted */}
-        <div className="relative bg-gradient-to-br from-indigo-600 to-purple-600 text-white rounded-2xl p-8 transform lg:scale-105 shadow-2xl border-2 border-indigo-400">
-          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-            <div className="bg-gradient-to-r from-green-400 to-emerald-400 text-gray-900 px-6 py-2 rounded-full text-sm font-bold shadow-lg">
-              MOST POPULAR
-            </div>
-          </div>
-          <div className="text-center mb-8 mt-2">
-            <h3 className="text-2xl font-bold mb-2">For Merchants</h3>
-            <div className="text-6xl font-bold my-6">
-              0%
-            </div>
-            <p className="text-indigo-100 text-lg">
-              Keep <span className="font-bold text-white">100%</span> of every payment. 
-              We charge absolutely nothing. Ever.
-            </p>
-          </div>
-          <ul className="space-y-4">
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="font-semibold">Receive 100% of payments</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
-              <span>Instant settlement (&lt;1 second)</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
-              <span>No chargebacks, ever</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
-              <span>Free integration support</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="font-semibold">Gas fees covered by X1Pays</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
-              <span>Real-time analytics dashboard</span>
-            </li>
-          </ul>
-          <div className="mt-8">
-            <Link
-              to="/docs/getting-started"
-              className="block w-full py-4 bg-white text-indigo-600 text-center font-bold rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-lg"
-            >
-              Start Accepting Payments
-            </Link>
-          </div>
-        </div>
-
-        {/* For $XPY Holders */}
-        <div className="bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200 rounded-2xl p-8 hover:shadow-2xl hover:border-purple-300 transition-all duration-300">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold mb-2 text-gray-900">For $XPY Holders</h3>
-            <div className="flex items-center justify-center text-5xl font-bold text-purple-600 my-6">
-              <TrendingUpIcon sx={{ fontSize: 48, mr: 1.5 }} />
-              Earn
-            </div>
-            <p className="text-gray-700 text-lg">
-              Hold $XPY to capture protocol value and participate in governance.
-            </p>
-          </div>
-          <ul className="space-y-4">
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">Token appreciation from protocol growth</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">Vote on protocol changes</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">Treasury-backed value</span>
-            </li>
-            <li className="flex items-start">
-              <CheckIcon sx={{ fontSize: 24 }} className="text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-700">Exclusive holder benefits</span>
-            </li>
-            <li className="flex items-start">
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-sm font-semibold">
-                Coming Soon: Staking Rewards
-              </span>
-            </li>
-          </ul>
-          <div className="mt-8">
-            <Link
-              to="/token-economy"
-              className="block w-full py-4 bg-purple-600 text-white text-center font-bold rounded-lg hover:bg-purple-700 transition-all duration-200"
-            >
-              Learn About $XPY
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* How We Make Money */}
-      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-12 mb-20">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6 text-center">How X1Pays Makes Money</h2>
-          <p className="text-xl text-gray-700 text-center mb-8">
-            We don't charge transaction fees. Our revenue model is simple and aligned with your success.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="text-3xl font-bold text-purple-600 mb-3">$XPY Token</div>
-              <p className="text-gray-700">
-                X1Pays holds $XPY tokens. As protocol usage grows, <span className="font-semibold">$XPY value increases</span> from:
-              </p>
-              <ul className="mt-4 space-y-2 text-gray-600">
-                <li className="flex items-start">
-                  <CheckIcon sx={{ fontSize: 20 }} className="text-purple-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Increased demand from ecosystem growth</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckIcon sx={{ fontSize: 20 }} className="text-purple-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Governance rights for protocol decisions</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckIcon sx={{ fontSize: 20 }} className="text-purple-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Future staking rewards and utility</span>
-                </li>
-              </ul>
-            </div>
+      <Grid container spacing={3} sx={{ mb: 10 }}>
+        <Grid size={{ xs: 12, lg: 4 }}>
+          <Card
+            elevation={0}
             
-            <div className="bg-white rounded-xl p-6 shadow-lg">
-              <div className="text-3xl font-bold text-green-600 mb-3">Premium Services</div>
-              <p className="text-gray-700">
-                Once we achieve market leadership, we'll offer <span className="font-semibold">optional premium features</span>:
-              </p>
-              <ul className="mt-4 space-y-2 text-gray-600">
-                <li className="flex items-start">
-                  <CheckIcon sx={{ fontSize: 20 }} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Advanced analytics & reporting</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckIcon sx={{ fontSize: 20 }} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Priority support & SLA guarantees</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckIcon sx={{ fontSize: 20 }} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>White-label solutions for enterprises</span>
-                </li>
-              </ul>
-              <p className="text-sm text-gray-500 mt-4 italic">Core payments always free</p>
-            </div>
-          </div>
-        </div>
-      </div>
+            sx={{ transition: 'all 0.3s ease',
+              border: '1px solid',
+              borderColor: 'primary.dark',
+              height: '100%',
+              '&:hover': {
+                borderColor: 'primary.main',
+                transform: 'translateY(-4px)',
+              },
+            }}
+          >
+            <CardContent sx={{ p: 4 }}>
+              <Stack spacing={3} alignItems="center" textAlign="center">
+                <Typography variant="h4" sx={{ fontWeight: 700 }}>For Users</Typography>
+                <Typography variant="h3" sx={{ fontWeight: 800, color: 'primary.main', my: 3 }}>
+                  Pay Per Use
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  Only pay for API calls you make. Zero monthly fees, zero hidden costs.
+                </Typography>
+              </Stack>
+              <Stack spacing={2} sx={{ mt: 4 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" color="text.secondary">Pay only for what you use</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" color="text.secondary">Instant payment verification</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" color="text.secondary">No API keys to manage</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" color="text.secondary">Blockchain-verified receipts</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" color="text.secondary">
+                    <Box component="span" sx={{ fontWeight: 700 }}>Gas fees covered</Box> by X1Pays
+                  </Typography>
+                </Box>
+              </Stack>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      {/* Cost Comparison */}
-      <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 mb-20 shadow-xl">
-        <h2 className="text-3xl font-bold mb-8 text-center">Cost Comparison</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b-2 border-gray-300">
-                <th className="text-left py-4 px-6 font-bold text-gray-900">Provider</th>
-                <th className="text-left py-4 px-6 font-bold text-gray-900">Transaction Fee</th>
-                <th className="text-left py-4 px-6 font-bold text-gray-900">Gas Fees</th>
-                <th className="text-left py-4 px-6 font-bold text-gray-900">Settlement</th>
-                <th className="text-left py-4 px-6 font-bold text-gray-900">Chargebacks</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-gray-200 bg-gradient-to-r from-green-50 to-emerald-50">
-                <td className="py-4 px-6 font-bold text-green-700 text-lg">
-                  <div className="flex items-center">
-                    <CheckIcon sx={{ fontSize: 20 }} className="text-green-600 mr-2" />
-                    X1Pays
-                  </div>
-                </td>
-                <td className="py-4 px-6">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 font-bold">
-                    0%
-                  </span>
-                </td>
-                <td className="py-4 px-6">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 font-bold">
-                    Covered
-                  </span>
-                </td>
-                <td className="py-4 px-6 font-semibold text-green-600">&lt;1 second</td>
-                <td className="py-4 px-6">
-                  <CloseIcon sx={{ fontSize: 20 }} className="text-green-600" />
-                </td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-4 px-6 text-gray-700">Stripe</td>
-                <td className="py-4 px-6 text-gray-700">2.9% + $0.30</td>
-                <td className="py-4 px-6 text-gray-700">N/A</td>
-                <td className="py-4 px-6 text-gray-700">2-7 days</td>
-                <td className="py-4 px-6">
-                  <CheckIcon sx={{ fontSize: 20 }} className="text-red-500" />
-                </td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-4 px-6 text-gray-700">PayPal</td>
-                <td className="py-4 px-6 text-gray-700">3.49% + $0.49</td>
-                <td className="py-4 px-6 text-gray-700">N/A</td>
-                <td className="py-4 px-6 text-gray-700">1-3 days</td>
-                <td className="py-4 px-6">
-                  <CheckIcon sx={{ fontSize: 20 }} className="text-red-500" />
-                </td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td className="py-4 px-6 text-gray-700">PayAI.network</td>
-                <td className="py-4 px-6">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-semibold">
-                    0%
-                  </span>
-                </td>
-                <td className="py-4 px-6">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-semibold">
-                    Covered
-                  </span>
-                </td>
-                <td className="py-4 px-6 text-gray-700">~2 seconds</td>
-                <td className="py-4 px-6">
-                  <CloseIcon sx={{ fontSize: 20 }} className="text-blue-600" />
-                </td>
-              </tr>
-              <tr className="border-b border-gray-200 bg-gray-50">
-                <td className="py-4 px-6 text-gray-500 italic">Traditional Processor</td>
-                <td className="py-4 px-6 text-gray-500">2-4%</td>
-                <td className="py-4 px-6 text-gray-500">N/A</td>
-                <td className="py-4 px-6 text-gray-500">1-5 days</td>
-                <td className="py-4 px-6">
-                  <CheckIcon sx={{ fontSize: 20 }} className="text-red-400" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p className="text-center text-gray-600 mt-6">
-          <span className="font-semibold">X1 blockchain advantage:</span> Lower gas fees than Ethereum, faster than Solana for finality
-        </p>
-      </div>
+        <Grid size={{ xs: 12, lg: 4 }}>
+          <Card
+            elevation={0}
+            
+            sx={{ transition: 'all 0.3s ease',
+              position: 'relative',
+              background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
+              border: '2px solid',
+              borderColor: 'primary.light',
+              height: '100%',
+              transform: { lg: 'scale(1.05)' },
+              '&:hover': {
+                transform: { lg: 'scale(1.07)' },
+              },
+            }}
+          >
+            <Box
+              sx={{
+                position: 'absolute',
+                top: -16,
+                left: '50%',
+                transform: 'translateX(-50%)',
+              }}
+            >
+              <Chip
+                label="MOST POPULAR"
+                sx={{
+                  bgcolor: 'secondary.main',
+                  color: 'background.default',
+                  fontWeight: 700,
+                  fontSize: '0.75rem',
+                }}
+              />
+            </Box>
+            <CardContent sx={{ p: 4, pt: 5 }}>
+              <Stack spacing={3} alignItems="center" textAlign="center">
+                <Typography variant="h4" sx={{ fontWeight: 700, color: 'background.default' }}>For Merchants</Typography>
+                <Typography variant="h2" sx={{ fontWeight: 800, color: 'background.default', my: 3 }}>
+                  0%
+                </Typography>
+                <Typography variant="body1" sx={{ color: 'rgba(10, 25, 41, 0.8)' }}>
+                  Keep <Box component="span" sx={{ fontWeight: 700, color: 'background.default' }}>100%</Box> of every payment. 
+                  We charge absolutely nothing. Ever.
+                </Typography>
+              </Stack>
+              <Stack spacing={2} sx={{ mt: 4 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'background.default', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: 'background.default' }}>Receive 100% of payments</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'background.default', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" sx={{ color: 'rgba(10, 25, 41, 0.8)' }}>Instant settlement (&lt;1 second)</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'background.default', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" sx={{ color: 'rgba(10, 25, 41, 0.8)' }}>No chargebacks, ever</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'background.default', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" sx={{ color: 'rgba(10, 25, 41, 0.8)' }}>Free integration support</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'background.default', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: 'background.default' }}>Gas fees covered by X1Pays</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'background.default', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" sx={{ color: 'rgba(10, 25, 41, 0.8)' }}>Real-time analytics dashboard</Typography>
+                </Box>
+              </Stack>
+              <Button
+                component={Link}
+                to="/docs/getting-started"
+                variant="contained"
+                fullWidth
+                size="large"
+                sx={{
+                  mt: 4,
+                  bgcolor: 'background.default',
+                  color: 'primary.main',
+                  fontWeight: 700,
+                  '&:hover': {
+                    bgcolor: 'rgba(10, 25, 41, 0.9)',
+                  },
+                }}
+              >
+                Start Accepting Payments
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      {/* CTA */}
-      <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-2xl p-12 text-center shadow-2xl">
-        <h3 className="text-4xl font-bold mb-4">Start Accepting Payments Today</h3>
-        <p className="text-2xl mb-8 text-indigo-100">
-          <span className="font-bold">0%</span> fees. <span className="font-bold">0</span> gas costs. <span className="font-bold">100%</span> of payments to you.
-        </p>
-        <div className="flex gap-4 justify-center flex-wrap">
-          <Link
+        <Grid size={{ xs: 12, lg: 4 }}>
+          <Card
+            elevation={0}
+            
+            sx={{ transition: 'all 0.3s ease',
+              border: '1px solid',
+              borderColor: 'warning.dark',
+              height: '100%',
+              '&:hover': {
+                borderColor: 'warning.main',
+                transform: 'translateY(-4px)',
+              },
+            }}
+          >
+            <CardContent sx={{ p: 4 }}>
+              <Stack spacing={3} alignItems="center" textAlign="center">
+                <Typography variant="h4" sx={{ fontWeight: 700 }}>For $XPY Holders</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', color: 'warning.main', my: 3 }}>
+                  <TrendingUpIcon sx={{ fontSize: 48, mr: 1 }} />
+                  <Typography variant="h3" sx={{ fontWeight: 800 }}>Earn</Typography>
+                </Box>
+                <Typography variant="body1" color="text.secondary">
+                  Hold $XPY to capture protocol value and participate in governance.
+                </Typography>
+              </Stack>
+              <Stack spacing={2} sx={{ mt: 4 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'warning.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" color="text.secondary">Token appreciation from protocol growth</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'warning.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" color="text.secondary">Vote on protocol changes</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'warning.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" color="text.secondary">Treasury-backed value</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <CheckIcon sx={{ fontSize: 24, color: 'warning.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                  <Typography variant="body2" color="text.secondary">Exclusive holder benefits</Typography>
+                </Box>
+                <Box>
+                  <Chip
+                    label="Coming Soon: Staking Rewards"
+                    sx={{
+                      bgcolor: 'rgba(255, 183, 77, 0.1)',
+                      color: 'warning.main',
+                      fontWeight: 600,
+                    }}
+                  />
+                </Box>
+              </Stack>
+              <Button
+                component={Link}
+                to="/token-economy"
+                variant="outlined"
+                fullWidth
+                size="large"
+                sx={{
+                  mt: 4,
+                  borderColor: 'warning.main',
+                  color: 'warning.main',
+                  fontWeight: 700,
+                  '&:hover': {
+                    borderColor: 'warning.light',
+                    bgcolor: 'rgba(255, 183, 77, 0.1)',
+                  },
+                }}
+              >
+                Learn About $XPY
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      <Paper
+        elevation={0}
+        sx={{ transition: 'all 0.3s ease',
+          border: '1px solid',
+          borderColor: 'primary.dark',
+          p: { xs: 6, md: 8 },
+          mb: 10,
+        }}
+      >
+        <Container maxWidth="md">
+          <Typography variant="h3" sx={{ fontWeight: 700, mb: 3, textAlign: 'center' }}>
+            How X1Pays Makes Money
+          </Typography>
+          <Typography variant="h6" color="text.secondary" sx={{ textAlign: 'center', mb: 6 }}>
+            We don't charge transaction fees. Our revenue model is simple and aligned with your success.
+          </Typography>
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Card
+                elevation={0}
+                sx={{ transition: 'all 0.3s ease',
+                  border: '1px solid',
+                  borderColor: 'warning.dark',
+                  height: '100%',
+                }}
+              >
+                <CardContent sx={{ p: 3 }}>
+                  <Typography variant="h4" sx={{ fontWeight: 700, color: 'warning.main', mb: 2 }}>
+                    $XPY Token
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                    X1Pays holds $XPY tokens. As protocol usage grows, <Box component="span" sx={{ fontWeight: 600 }}>$XPY value increases</Box> from:
+                  </Typography>
+                  <Stack spacing={1.5}>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                      <CheckIcon sx={{ fontSize: 20, color: 'warning.main', mr: 1.5, mt: 0.3, flexShrink: 0 }} />
+                      <Typography variant="body2" color="text.secondary">Increased demand from ecosystem growth</Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                      <CheckIcon sx={{ fontSize: 20, color: 'warning.main', mr: 1.5, mt: 0.3, flexShrink: 0 }} />
+                      <Typography variant="body2" color="text.secondary">Governance rights for protocol decisions</Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                      <CheckIcon sx={{ fontSize: 20, color: 'warning.main', mr: 1.5, mt: 0.3, flexShrink: 0 }} />
+                      <Typography variant="body2" color="text.secondary">Future staking rewards and utility</Typography>
+                    </Box>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Card
+                elevation={0}
+                sx={{ transition: 'all 0.3s ease',
+                  border: '1px solid',
+                  borderColor: 'secondary.dark',
+                  height: '100%',
+                }}
+              >
+                <CardContent sx={{ p: 3 }}>
+                  <Typography variant="h4" sx={{ fontWeight: 700, color: 'secondary.main', mb: 2 }}>
+                    Premium Services
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                    Once we achieve market leadership, we'll offer <Box component="span" sx={{ fontWeight: 600 }}>optional premium features</Box>:
+                  </Typography>
+                  <Stack spacing={1.5}>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                      <CheckIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 1.5, mt: 0.3, flexShrink: 0 }} />
+                      <Typography variant="body2" color="text.secondary">Advanced analytics & reporting</Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                      <CheckIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 1.5, mt: 0.3, flexShrink: 0 }} />
+                      <Typography variant="body2" color="text.secondary">Priority support & SLA guarantees</Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                      <CheckIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 1.5, mt: 0.3, flexShrink: 0 }} />
+                      <Typography variant="body2" color="text.secondary">White-label solutions for enterprises</Typography>
+                    </Box>
+                  </Stack>
+                  <Typography variant="caption" color="text.secondary" sx={{ mt: 3, display: 'block', fontStyle: 'italic' }}>
+                    Core payments always free
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Container>
+      </Paper>
+
+      <Paper
+        elevation={0}
+        sx={{ transition: 'all 0.3s ease',
+          border: '1px solid',
+          borderColor: 'primary.dark',
+          p: { xs: 4, md: 6 },
+          mb: 10,
+        }}
+      >
+        <Typography variant="h3" sx={{ fontWeight: 700, mb: 6, textAlign: 'center' }}>
+          Cost Comparison
+        </Typography>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ borderBottom: '2px solid', borderColor: 'divider' }}>
+                <TableCell><Typography fontWeight={700}>Provider</Typography></TableCell>
+                <TableCell><Typography fontWeight={700}>Transaction Fee</Typography></TableCell>
+                <TableCell><Typography fontWeight={700}>Gas Fees</Typography></TableCell>
+                <TableCell><Typography fontWeight={700}>Settlement</Typography></TableCell>
+                <TableCell><Typography fontWeight={700}>Chargebacks</Typography></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow sx={{ bgcolor: 'rgba(118, 255, 3, 0.05)' }}>
+                <TableCell>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CheckIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 1 }} />
+                    <Typography fontWeight={700} sx={{ color: 'secondary.main' }}>X1Pays</Typography>
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Chip
+                    label="0%"
+                    size="small"
+                    sx={{
+                      bgcolor: 'rgba(118, 255, 3, 0.1)',
+                      color: 'secondary.main',
+                      fontWeight: 700,
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Chip
+                    label="Covered"
+                    size="small"
+                    sx={{
+                      bgcolor: 'rgba(118, 255, 3, 0.1)',
+                      color: 'secondary.main',
+                      fontWeight: 700,
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Typography fontWeight={600} sx={{ color: 'secondary.main' }}>&lt;1 second</Typography>
+                </TableCell>
+                <TableCell>
+                  <CloseIcon sx={{ fontSize: 20, color: 'secondary.main' }} />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><Typography color="text.secondary">Stripe</Typography></TableCell>
+                <TableCell><Typography color="text.secondary">2.9% + $0.30</Typography></TableCell>
+                <TableCell><Typography color="text.secondary">N/A</Typography></TableCell>
+                <TableCell><Typography color="text.secondary">2-7 days</Typography></TableCell>
+                <TableCell>
+                  <CheckIcon sx={{ fontSize: 20, color: 'error.main' }} />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><Typography color="text.secondary">PayPal</Typography></TableCell>
+                <TableCell><Typography color="text.secondary">3.49% + $0.49</Typography></TableCell>
+                <TableCell><Typography color="text.secondary">N/A</Typography></TableCell>
+                <TableCell><Typography color="text.secondary">1-3 days</Typography></TableCell>
+                <TableCell>
+                  <CheckIcon sx={{ fontSize: 20, color: 'error.main' }} />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><Typography color="text.secondary">PayAI.network</Typography></TableCell>
+                <TableCell>
+                  <Chip
+                    label="0%"
+                    size="small"
+                    sx={{
+                      bgcolor: 'rgba(0, 229, 255, 0.1)',
+                      color: 'primary.main',
+                      fontWeight: 600,
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Chip
+                    label="Covered"
+                    size="small"
+                    sx={{
+                      bgcolor: 'rgba(0, 229, 255, 0.1)',
+                      color: 'primary.main',
+                      fontWeight: 600,
+                    }}
+                  />
+                </TableCell>
+                <TableCell><Typography color="text.secondary">~2 seconds</Typography></TableCell>
+                <TableCell>
+                  <CloseIcon sx={{ fontSize: 20, color: 'primary.main' }} />
+                </TableCell>
+              </TableRow>
+              <TableRow sx={{ bgcolor: 'rgba(255, 255, 255, 0.02)' }}>
+                <TableCell>
+                  <Typography color="text.secondary" sx={{ fontStyle: 'italic' }}>Traditional Processor</Typography>
+                </TableCell>
+                <TableCell><Typography color="text.secondary">2-4%</Typography></TableCell>
+                <TableCell><Typography color="text.secondary">N/A</Typography></TableCell>
+                <TableCell><Typography color="text.secondary">1-5 days</Typography></TableCell>
+                <TableCell>
+                  <CheckIcon sx={{ fontSize: 20, color: 'error.dark' }} />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
+          <Box component="span" sx={{ fontWeight: 600 }}>X1 blockchain advantage:</Box> Lower gas fees than Ethereum, faster than Solana for finality
+        </Typography>
+      </Paper>
+
+      <Box
+        sx={{
+          background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
+          borderRadius: 4,
+          p: { xs: 6, md: 8 },
+          textAlign: 'center',
+        }}
+      >
+        <Typography variant="h3" sx={{ fontWeight: 800, color: 'background.default', mb: 2 }}>
+          Start Accepting Payments Today
+        </Typography>
+        <Typography variant="h5" sx={{ color: 'rgba(10, 25, 41, 0.8)', mb: 4 }}>
+          <Box component="span" sx={{ fontWeight: 700, color: 'background.default' }}>0%</Box> fees. <Box component="span" sx={{ fontWeight: 700, color: 'background.default' }}>0</Box> gas costs. <Box component="span" sx={{ fontWeight: 700, color: 'background.default' }}>100%</Box> of payments to you.
+        </Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
+          <Button
+            component={Link}
             to="/docs/getting-started"
-            className="px-10 py-4 bg-white text-indigo-600 rounded-lg font-bold text-lg hover:bg-gray-50 transition-all duration-200 shadow-xl hover:shadow-2xl inline-flex items-center"
+            variant="contained"
+            size="large"
+            endIcon={<BoltIcon />}
+            sx={{
+              bgcolor: 'background.default',
+              color: 'primary.main',
+              fontWeight: 700,
+              px: 5,
+              py: 2,
+              '&:hover': {
+                bgcolor: 'rgba(10, 25, 41, 0.9)',
+              },
+            }}
           >
             Integrate Now
-            <BoltIcon sx={{ fontSize: 20, ml: 1 }} />
-          </Link>
-          <Link
+          </Button>
+          <Button
+            component={Link}
             to="/echo"
-            className="px-10 py-4 bg-white/10 backdrop-blur-sm border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white/20 transition-all duration-200"
+            variant="outlined"
+            size="large"
+            sx={{
+              borderColor: 'background.default',
+              color: 'background.default',
+              fontWeight: 700,
+              px: 5,
+              py: 2,
+              borderWidth: 2,
+              '&:hover': {
+                borderWidth: 2,
+                borderColor: 'background.default',
+                bgcolor: 'rgba(10, 25, 41, 0.2)',
+              },
+            }}
           >
             Try Demo
-          </Link>
-        </div>
-        <p className="mt-6 text-indigo-200">
+          </Button>
+        </Stack>
+        <Typography variant="body2" sx={{ color: 'rgba(10, 25, 41, 0.7)', mt: 3 }}>
           No credit card • No setup fees • 5 minute integration
-        </p>
-      </div>
-    </div>
+        </Typography>
+      </Box>
+    </Container>
   )
 }
 

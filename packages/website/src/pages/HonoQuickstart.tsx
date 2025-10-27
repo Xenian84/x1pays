@@ -1,58 +1,99 @@
+import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Stack from '@mui/material/Stack'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import BoltIcon from '@mui/icons-material/Bolt'
+import CloudIcon from '@mui/icons-material/Cloud'
+import FeatherIcon from '@mui/icons-material/Lightbulb'
+import CodeBlock from '../components/CodeBlock'
+
 const HonoQuickstart = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="mb-8">
-          <a href="/facilitator" className="text-blue-600 hover:text-blue-700 mb-4 inline-block">
-            ← Back to Facilitator
-          </a>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Hono Quickstart</h1>
-          <p className="text-xl text-gray-600">
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 12 } }}>
+        <Box sx={{ mb: 8 }}>
+          <Button
+            component={Link}
+            to="/facilitator"
+            startIcon={<ArrowBackIcon />}
+            sx={{
+              mb: 4,
+              color: 'primary.main',
+              '&:hover': { bgcolor: 'rgba(0, 229, 255, 0.1)' }
+            }}
+          >
+            Back to Facilitator
+          </Button>
+          <Typography variant="h1" sx={{ mb: 2, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
+            Hono Quickstart
+          </Typography>
+          <Typography variant="h5" color="text.secondary">
             Build ultra-fast x402-enabled APIs with Hono framework.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         {/* Why Hono */}
-        <section className="mb-12 p-6 bg-purple-50 border border-purple-200 rounded-lg">
-          <h3 className="text-lg font-bold text-gray-900 mb-2">Why Hono?</h3>
-          <ul className="space-y-2 text-gray-700">
-            <li className="flex items-start gap-2">
-              <span className="text-purple-600">⚡</span>
-              <span><strong>Ultra-fast:</strong> Up to 4x faster than Express.js</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-purple-600">🏃</span>
-              <span><strong>Edge-ready:</strong> Works on Cloudflare Workers, Deno, Bun</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-purple-600">🪶</span>
-              <span><strong>Lightweight:</strong> Tiny bundle size, minimal dependencies</span>
-            </li>
-          </ul>
-        </section>
+        <Card
+          elevation={0}
+          sx={{ transition: 'all 0.3s ease',
+            mb: 8,
+            border: '1px solid',
+            borderColor: 'warning.dark',
+            bgcolor: 'rgba(118, 255, 3, 0.03)',
+          }}
+        >
+          <CardContent sx={{ p: 4 }}>
+            <Typography variant="h3" sx={{ fontSize: '1.5rem', fontWeight: 700, mb: 3 }}>
+              Why Hono?
+            </Typography>
+            <Stack spacing={2}>
+              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                <BoltIcon sx={{ color: 'warning.main', fontSize: 24, mt: 0.5 }} />
+                <Box>
+                  <Typography sx={{ fontWeight: 700 }}>Ultra-fast:</Typography>
+                  <Typography color="text.secondary">Up to 4x faster than Express.js</Typography>
+                </Box>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                <CloudIcon sx={{ color: 'warning.main', fontSize: 24, mt: 0.5 }} />
+                <Box>
+                  <Typography sx={{ fontWeight: 700 }}>Edge-ready:</Typography>
+                  <Typography color="text.secondary">Works on Cloudflare Workers, Deno, Bun</Typography>
+                </Box>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                <FeatherIcon sx={{ color: 'warning.main', fontSize: 24, mt: 0.5 }} />
+                <Box>
+                  <Typography sx={{ fontWeight: 700 }}>Lightweight:</Typography>
+                  <Typography color="text.secondary">Tiny bundle size, minimal dependencies</Typography>
+                </Box>
+              </Box>
+            </Stack>
+          </CardContent>
+        </Card>
 
         {/* Installation */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Installation</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Installation</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Install Hono and the x402 middleware:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <code className="text-green-400">
-              npm install hono @x1pays/middleware
-            </code>
-          </div>
-        </section>
+          </Typography>
+          <CodeBlock code="npm install hono @x1pays/middleware" language="bash" />
+        </Box>
 
         {/* Basic Setup */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Basic Setup</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Basic Setup</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Create a Hono server with x402 payment protection:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { Hono } from 'hono'
+          </Typography>
+          <CodeBlock
+            code={`import { Hono } from 'hono'
 import { x402 } from '@x1pays/middleware/hono'
 
 const app = new Hono()
@@ -83,19 +124,18 @@ app.get('/api/premium/data', payment, (c) => {
 })
 
 export default app`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Development Server */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Development Server</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Development Server</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Run with Node.js adapter:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { serve } from '@hono/node-server'
+          </Typography>
+          <CodeBlock
+            code={`import { serve } from '@hono/node-server'
 import app from './app'
 
 serve({
@@ -104,19 +144,18 @@ serve({
 })
 
 console.log('Server running on http://localhost:3000')`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Middleware Composition */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Middleware Composition</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Middleware Composition</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Combine x402 with other Hono middleware:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { cors } from 'hono/cors'
+          </Typography>
+          <CodeBlock
+            code={`import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { prettyJSON } from 'hono/pretty-json'
 
@@ -132,19 +171,18 @@ app.get('/api/premium/*', payment, prettyJSON())
 app.get('/api/premium/data', (c) => {
   return c.json({ data: 'Premium content' })
 })`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Dynamic Pricing */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Dynamic Pricing</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Dynamic Pricing</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Set prices based on request parameters:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`// Shared configuration
+          </Typography>
+          <CodeBlock
+            code={`// Shared configuration
 const config = {
   facilitatorUrl: 'https://facilitator.x1pays.network',
   network: 'x1-mainnet',
@@ -182,19 +220,18 @@ app.post('/api/analyze', async (c) => {
   
   return c.json({ analyzed: true })
 })`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Error Handling */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Error Handling</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Error Handling</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Handle payment errors in Hono:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { HTTPException } from 'hono/http-exception'
+          </Typography>
+          <CodeBlock
+            code={`import { HTTPException } from 'hono/http-exception'
 
 // Custom error handler
 app.onError((err, c) => {
@@ -211,19 +248,18 @@ app.onError((err, c) => {
   console.error('Error:', err)
   return c.json({ error: 'Internal server error' }, 500)
 })`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Deploy to Edge */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Deploy to Cloudflare Workers</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Deploy to Cloudflare Workers</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Hono works great on edge platforms:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto mb-4">
-            <pre className="text-sm text-gray-300">
-{`// wrangler.toml
+          </Typography>
+          <CodeBlock
+            code={`// wrangler.toml
 name = "x402-api"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
@@ -232,30 +268,30 @@ compatibility_date = "2024-01-01"
 NETWORK = "x1-mainnet"
 MERCHANT_WALLET = "your_wallet_address"
 WXNT_MINT = "your_wxnt_mint"`}
-            </pre>
-          </div>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`// src/index.ts
+            language="toml"
+          />
+          <Box sx={{ mt: 3 }}>
+            <CodeBlock
+              code={`// src/index.ts
 export default {
   fetch: app.fetch
 }
 
 // Deploy
 npx wrangler deploy`}
-            </pre>
-          </div>
-        </section>
+              language="typescript"
+            />
+          </Box>
+        </Box>
 
         {/* Testing */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Testing</h2>
-          <p className="text-gray-700 mb-4">
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 3, fontSize: '2rem' }}>Testing</Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Test your Hono server:
-          </p>
-          <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm text-gray-300">
-{`import { testClient } from 'hono/testing'
+          </Typography>
+          <CodeBlock
+            code={`import { testClient } from 'hono/testing'
 
 describe('Payment API', () => {
   const client = testClient(app)
@@ -274,41 +310,86 @@ describe('Payment API', () => {
     expect(res.status).toBe(200)
   })
 })`}
-            </pre>
-          </div>
-        </section>
+            language="typescript"
+          />
+        </Box>
 
         {/* Next Steps */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Next Steps</h2>
-          <div className="space-y-3">
-            <a 
-              href="/examples" 
-              className="block p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors"
+        <Box sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ mb: 4, fontSize: '2rem' }}>Next Steps</Typography>
+          <Stack spacing={3}>
+            <Card
+              component={Link}
+              to="/examples"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'success.dark',
+                '&:hover': {
+                  borderColor: 'success.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">View Complete Examples</h3>
-              <p className="text-gray-700 text-sm">See full working Hono applications</p>
-            </a>
-            <a 
-              href="/quickstart/fetch" 
-              className="block p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors"
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>View Complete Examples</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  See full working Hono applications
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card
+              component={Link}
+              to="/quickstart/fetch"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'success.dark',
+                '&:hover': {
+                  borderColor: 'success.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">Build a Client</h3>
-              <p className="text-gray-700 text-sm">Learn how to consume your Hono x402 API</p>
-            </a>
-            <a 
-              href="https://hono.dev/docs" 
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Build a Client</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Learn how to consume your Hono x402 API
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card
+              component="a"
+              href="https://hono.dev/docs"
               target="_blank"
               rel="noopener noreferrer"
-              className="block p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors"
+              elevation={0}
+              
+              sx={{ transition: 'all 0.3s ease',
+                textDecoration: 'none',
+                border: '1px solid',
+                borderColor: 'success.dark',
+                '&:hover': {
+                  borderColor: 'success.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
             >
-              <h3 className="font-bold text-gray-900 mb-1">Hono Documentation</h3>
-              <p className="text-gray-700 text-sm">Learn more about Hono framework</p>
-            </a>
-          </div>
-        </section>
-      </div>
-    </div>
+              <CardContent sx={{ p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>Hono Documentation</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Learn more about Hono framework
+                </Typography>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

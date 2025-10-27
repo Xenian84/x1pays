@@ -1,4 +1,21 @@
 import { useState, useEffect } from 'react'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Grid from '@mui/material/Grid'
+import Stack from '@mui/material/Stack'
+import CircularProgress from '@mui/material/CircularProgress'
+import Alert from '@mui/material/Alert'
+import Button from '@mui/material/Button'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import PaymentIcon from '@mui/icons-material/Payment'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import BarChartIcon from '@mui/icons-material/BarChart'
+import StoreIcon from '@mui/icons-material/Store'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'
 
 interface Stats {
   totalPayments: number
@@ -21,11 +38,11 @@ const Dashboard = () => {
     const fetchStats = async () => {
       try {
         const response = await fetch('/api/stats')
-        
+
         if (!response.ok) {
           throw new Error('Failed to fetch statistics')
         }
-        
+
         const data = await response.json()
         setStats(data)
         setLoading(false)
@@ -37,34 +54,42 @@ const Dashboard = () => {
 
     fetchStats()
     const interval = setInterval(fetchStats, 30000)
-    
+
     return () => clearInterval(interval)
   }, [])
 
   if (loading) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading statistics...</p>
-          </div>
-        </div>
-      </div>
+      <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+        <Container maxWidth="lg" sx={{ py: 12 }}>
+          <Stack spacing={3} alignItems="center" justifyContent="center" sx={{ minHeight: '400px' }}>
+            <CircularProgress size={48} />
+            <Typography variant="body1" color="text.secondary">
+              Loading statistics...
+            </Typography>
+          </Stack>
+        </Container>
+      </Box>
     )
   }
 
   if (error) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-          <p className="text-red-600 font-medium">Error loading statistics</p>
-          <p className="text-red-500 text-sm mt-2">{error}</p>
-          <p className="text-gray-600 text-sm mt-4">
-            Make sure the API server is running and the /stats endpoint is available.
-          </p>
-        </div>
-      </div>
+      <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+        <Container maxWidth="lg" sx={{ py: 12 }}>
+          <Alert severity="error" sx={{ maxWidth: '600px', mx: 'auto' }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+              Error loading statistics
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 2 }}>
+              {error}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Make sure the API server is running and the /stats endpoint is available.
+            </Typography>
+          </Alert>
+        </Container>
+      </Box>
     )
   }
 
@@ -73,109 +98,200 @@ const Dashboard = () => {
       title: 'Total Payments',
       value: stats?.totalPayments.toLocaleString() || '0',
       subtitle: 'All-time transactions',
-      icon: '💳',
-      color: 'bg-blue-50 border-blue-200'
+      icon: PaymentIcon,
+      color: 'primary',
     },
     {
       title: 'Total Volume',
       value: stats?.totalVolume || '0',
       subtitle: 'wXNT processed',
-      icon: '💰',
-      color: 'bg-green-50 border-green-200'
+      icon: AccountBalanceWalletIcon,
+      color: 'secondary',
     },
     {
       title: 'Average Payment',
       value: stats?.avgPaymentSize || '0',
       subtitle: 'wXNT per transaction',
-      icon: '📊',
-      color: 'bg-purple-50 border-purple-200'
+      icon: BarChartIcon,
+      color: 'info',
     },
     {
       title: 'Active Merchants',
       value: stats?.merchantCount.toLocaleString() || '0',
       subtitle: 'Using X1Pays',
-      icon: '🏪',
-      color: 'bg-indigo-50 border-indigo-200'
-    }
+      icon: StoreIcon,
+      color: 'warning',
+    },
   ]
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold mb-4">Protocol Dashboard</h1>
-        <p className="text-xl text-gray-600">
-          Real-time statistics and metrics for the X1Pays payment protocol
-        </p>
-      </div>
+    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+        <Stack spacing={2} sx={{ mb: 8 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+            <DashboardIcon sx={{ fontSize: 48, color: 'primary.main' }} />
+            <Typography variant="h1" sx={{ fontSize: { xs: '2.5rem', md: '3.5rem' }, fontWeight: 800 }}>
+              Protocol Dashboard
+            </Typography>
+          </Box>
+          <Typography variant="h5" color="text.secondary">
+            Real-time statistics and metrics for the X1Pays payment protocol
+          </Typography>
+        </Stack>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {statCards.map((card, index) => (
-          <div
-            key={index}
-            className={`${card.color} border rounded-lg p-6 hover:shadow-lg transition-shadow`}
-          >
-            <div className="text-3xl mb-3">{card.icon}</div>
-            <div className="text-3xl font-bold mb-1">{card.value}</div>
-            <div className="text-sm font-medium text-gray-700 mb-1">{card.title}</div>
-            <div className="text-xs text-gray-500">{card.subtitle}</div>
-          </div>
-        ))}
-      </div>
+        <Grid container spacing={3} sx={{ mb: 8 }}>
+          {statCards.map((card, index) => (
+            <Grid size={{ xs: 12, sm: 6, lg: 3 }} key={index}>
+              <Card
+                elevation={0}
+                sx={{
+                  border: '1px solid',
+                  borderColor: `${card.color}.dark`,
+                  height: '100%',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: 4,
+                  },
+                }}
+              >
+                <CardContent sx={{ p: 3 }}>
+                  <Box
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: 2,
+                      bgcolor: `rgba(${
+                        card.color === 'primary' ? '0, 229, 255' :
+                        card.color === 'secondary' ? '118, 255, 3' :
+                        card.color === 'info' ? '33, 150, 243' :
+                        '255, 183, 77'
+                      }, 0.1)`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mb: 2,
+                    }}
+                  >
+                    <card.icon sx={{ fontSize: 32, color: `${card.color}.main` }} />
+                  </Box>
+                  <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
+                    {card.value}
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
+                    {card.title}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {card.subtitle}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-4">Last 24 Hours</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center py-3 border-b border-gray-100">
-              <span className="text-gray-600">Payments Processed</span>
-              <span className="text-2xl font-bold text-indigo-600">
-                {stats?.last24h.payments.toLocaleString() || '0'}
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-3">
-              <span className="text-gray-600">Volume</span>
-              <span className="text-2xl font-bold text-green-600">
-                {stats?.last24h.volume || '0'} wXNT
-              </span>
-            </div>
-          </div>
-        </div>
+        <Grid container spacing={3} sx={{ mb: 8 }}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', height: '100%' }}>
+              <CardContent sx={{ p: 4 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
+                  <TrendingUpIcon sx={{ color: 'primary.main', fontSize: 28 }} />
+                  <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                    Last 24 Hours
+                  </Typography>
+                </Box>
+                <Stack spacing={3}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+                    <Typography variant="body1" color="text.secondary">
+                      Payments Processed
+                    </Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                      {stats?.last24h.payments.toLocaleString() || '0'}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 2 }}>
+                    <Typography variant="body1" color="text.secondary">
+                      Volume
+                    </Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 700, color: 'secondary.main' }}>
+                      {stats?.last24h.volume || '0'} wXNT
+                    </Typography>
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
 
-        <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-4">Network Info</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center py-3 border-b border-gray-100">
-              <span className="text-gray-600">Active Merchants</span>
-              <span className="text-2xl font-bold text-purple-600">
-                {stats?.merchantCount || '0'}
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-3">
-              <span className="text-gray-600">Protocol Fee</span>
-              <span className="text-2xl font-bold text-green-600">0%</span>
-            </div>
-          </div>
-        </div>
-      </div>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', height: '100%' }}>
+              <CardContent sx={{ p: 4 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
+                  <MonetizationOnIcon sx={{ color: 'secondary.main', fontSize: 28 }} />
+                  <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                    Network Info
+                  </Typography>
+                </Box>
+                <Stack spacing={3}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+                    <Typography variant="body1" color="text.secondary">
+                      Active Merchants
+                    </Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 700, color: 'warning.main' }}>
+                      {stats?.merchantCount || '0'}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 2 }}>
+                    <Typography variant="body1" color="text.secondary">
+                      Protocol Fee
+                    </Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 700, color: 'secondary.main' }}>
+                      0%
+                    </Typography>
+                  </Box>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
 
-      <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg p-8">
-        <h3 className="text-2xl font-bold mb-3">Want to become a merchant?</h3>
-        <p className="mb-6 text-indigo-100">
-          Integrate x402 payments into your API and start earning wXNT tokens today.
-          Setup takes less than 10 minutes with our simple SDK.
-        </p>
-        <a
-          href="/docs/getting-started"
-          className="inline-block px-6 py-3 bg-white text-indigo-600 rounded-lg font-medium hover:bg-indigo-50 transition-colors"
+        <Card
+          elevation={0}
+          sx={{
+            border: '1px solid',
+            borderColor: 'primary.dark',
+            background: 'linear-gradient(135deg, rgba(0, 229, 255, 0.1) 0%, rgba(118, 255, 3, 0.1) 100%)',
+            mb: 4,
+          }}
         >
-          Get Started Now →
-        </a>
-      </div>
+          <CardContent sx={{ p: 6 }}>
+            <Typography variant="h3" sx={{ fontWeight: 700, mb: 2 }}>
+              Want to become a merchant?
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: '700px' }}>
+              Integrate x402 payments into your API and start earning wXNT tokens today.
+              Setup takes less than 10 minutes with our simple SDK.
+            </Typography>
+            <Button
+              variant="contained"
+              href="/docs/getting-started"
+              size="large"
+              sx={{
+                bgcolor: 'primary.main',
+                '&:hover': {
+                  bgcolor: 'primary.dark',
+                },
+              }}
+            >
+              Get Started Now →
+            </Button>
+          </CardContent>
+        </Card>
 
-      <div className="mt-6 text-center text-sm text-gray-500">
-        <p>Statistics update every 30 seconds • Last updated: {new Date().toLocaleTimeString()}</p>
-      </div>
-    </div>
+        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'center' }}>
+          Statistics update every 30 seconds • Last updated: {new Date().toLocaleTimeString()}
+        </Typography>
+      </Container>
+    </Box>
   )
 }
 
