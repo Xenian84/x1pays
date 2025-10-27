@@ -26,11 +26,11 @@ const FAQ = () => {
       questions: [
         {
           q: "What's the difference between wXNT and $XPY?",
-          a: "wXNT is the settlement token - users pay with it for API access. $XPY is the governance and value capture token - holders can stake it for governance rights and future treasury distributions. X1Pays charges 0% protocol fees, so all payments go directly to merchants."
+          a: "wXNT is the payment token - users pay with it for API access. $XPY is the governance and value capture token - holders can stake it for governance rights and benefit from protocol growth. X1Pays charges 0% protocol fees, so merchants receive 100% of every payment."
         },
         {
           q: "How much does each payment cost?",
-          a: "Payment amounts are set by the merchant (API provider). X1Pays charges 0% protocol fees and covers all gas costs. For example, if an API endpoint costs 100 wXNT, the merchant receives 100 wXNT (100%). Zero fees, instant settlement."
+          a: "Payment amounts are set by the merchant (API provider). X1Pays charges 0% protocol fees and covers all gas costs. For example, if an API endpoint costs 1000 wXNT atomic units (0.001 wXNT), the merchant receives the full 1000 units (100%). Zero fees, instant settlement."
         },
         {
           q: "Where can I get wXNT tokens?",
@@ -47,11 +47,11 @@ const FAQ = () => {
       questions: [
         {
           q: "How do I integrate x402 into my API?",
-          a: "It's simple! Install the x402 middleware, configure your merchant wallet address, and wrap your premium routes. The middleware automatically handles payment verification and settlement. Check our Getting Started guide for detailed steps."
+          a: "It's simple! Install @x1pays/middleware, configure your merchant wallet address, and wrap your premium routes. The middleware automatically handles payment verification and settlement. Check our Getting Started guide for detailed steps."
         },
         {
           q: "Can I use x402 with any programming language?",
-          a: "Yes! While we provide official SDKs for Node.js/TypeScript, the x402 protocol is just HTTP - any language that can make HTTP requests can integrate. We have examples for Python, Go, and more in our documentation."
+          a: "Yes! We provide official packages for Node.js/TypeScript (@x1pays/middleware for servers, @x1pays/client for API consumers). The x402 protocol is just HTTP - any language that can make HTTP requests and sign Ed25519 signatures can integrate. We have examples for Python, cURL, and more in our documentation."
         },
         {
           q: "Do my users need a special wallet?",
@@ -89,11 +89,11 @@ const FAQ = () => {
       questions: [
         {
           q: "Why am I getting 'Invalid signature' errors?",
-          a: "This usually means the payment signature doesn't match the payment data. Check that: 1) The signature was created with the correct private key, 2) The payment amount and recipient match exactly, 3) The timestamp is recent (within 5 minutes)."
+          a: "This usually means the payment signature doesn't match the payment data. Check that: 1) You're using Ed25519 signatures (not secp256k1), 2) The signature was created with the correct private key, 3) The payment amount, recipient, and tokenMint match exactly what the API expects, 4) The signature is base58-encoded."
         },
         {
           q: "Payments verify but don't settle - what's wrong?",
-          a: "Check your Facilitator configuration. Ensure PAYTO_ADDRESS (merchant wallet) environment variable is set correctly in your API. In development mode, settlements are simulated by default."
+          a: "Check your configuration. Ensure the payToAddress parameter in your middleware config matches your merchant wallet address. In development mode, settlements are simulated by default (check the 'simulated' field in the payment response)."
         },
         {
           q: "How do I test without spending real tokens?",
