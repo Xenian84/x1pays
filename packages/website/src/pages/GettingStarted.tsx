@@ -17,7 +17,6 @@ RPC_URL=https://rpc.mainnet.x1.xyz
 NETWORK=x1-mainnet
 WXNT_MINT=YOUR_WXNT_MINT_ADDRESS
 FEE_PAYER_SECRET=YOUR_BASE58_SECRET_KEY
-MERCHANT_WALLET=YOUR_MERCHANT_WALLET_ADDRESS
 TREASURY_ADDRESS=YOUR_TREASURY_WALLET_ADDRESS
 FEE_PERCENT=1
 XPY_MINT=YOUR_XPY_TOKEN_MINT_ADDRESS`
@@ -119,10 +118,11 @@ app.use("/premium", x420(), x402("YourBrand"), premiumRoutes);`
               <strong>💡 Configuration Tips:</strong>
             </p>
             <ul className="list-disc list-inside space-y-1 ml-4">
-              <li><strong>MERCHANT_WALLET:</strong> The wallet that receives 99% of payments</li>
+              <li><strong>PAYTO_ADDRESS (API):</strong> The merchant wallet that receives 99% of payments</li>
               <li><strong>TREASURY_ADDRESS:</strong> The wallet that receives 1% protocol fee</li>
               <li><strong>FEE_PERCENT:</strong> Protocol fee percentage (default: 1)</li>
               <li><strong>XPY_MINT:</strong> $XPY governance token mint address</li>
+              <li><strong>Note:</strong> The facilitator is multi-tenant and processes payments for any merchant</li>
             </ul>
           </div>
         </div>

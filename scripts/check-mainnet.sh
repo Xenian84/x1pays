@@ -9,6 +9,16 @@ RPC_URL="https://rpc.mainnet.x1.xyz"
 echo "📡 Testing RPC endpoint: $RPC_URL"
 echo ""
 
+# Check if jq is available
+if ! command -v jq &> /dev/null; then
+  echo "⚠️  Note: 'jq' not found. Output will be raw JSON."
+  echo "   Install jq for pretty output: apt-get install jq"
+  echo ""
+  USE_JQ=false
+else
+  USE_JQ=true
+fi
+
 # Test 1: Get version
 echo "1️⃣  Fetching network version..."
 VERSION=$(curl -s -X POST $RPC_URL \
@@ -17,7 +27,11 @@ VERSION=$(curl -s -X POST $RPC_URL \
 
 if echo "$VERSION" | grep -q "solana-core"; then
   echo "✅ Connection successful!"
-  echo "$VERSION" | jq '.'
+  if [ "$USE_JQ" = true ]; then
+    echo "$VERSION" | jq '.'
+  else
+    echo "$VERSION"
+  fi
 else
   echo "❌ Connection failed"
   echo "$VERSION"
@@ -34,7 +48,11 @@ SLOT=$(curl -s -X POST $RPC_URL \
 
 if echo "$SLOT" | grep -q "result"; then
   echo "✅ Slot fetched successfully!"
-  echo "$SLOT" | jq '.'
+  if [ "$USE_JQ" = true ]; then
+    echo "$SLOT" | jq '.'
+  else
+    echo "$SLOT"
+  fi
 else
   echo "❌ Failed to fetch slot"
   exit 1
@@ -50,7 +68,11 @@ HEIGHT=$(curl -s -X POST $RPC_URL \
 
 if echo "$HEIGHT" | grep -q "result"; then
   echo "✅ Block height fetched successfully!"
-  echo "$HEIGHT" | jq '.'
+  if [ "$USE_JQ" = true ]; then
+    echo "$HEIGHT" | jq '.'
+  else
+    echo "$HEIGHT"
+  fi
 else
   echo "❌ Failed to fetch block height"
   exit 1
