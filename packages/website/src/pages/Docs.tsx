@@ -1,38 +1,41 @@
 import { Link } from 'react-router-dom'
-import { Book, Rocket, Code, Coins } from 'lucide-react'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
+import CodeIcon from '@mui/icons-material/Code'
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'
 
 export default function Docs() {
   const sections = [
     {
-      icon: <Rocket className="h-8 w-8" />,
+      icon: <RocketLaunchIcon sx={{ fontSize: 32 }} />,
       title: 'Getting Started',
       description: 'Quick start guide to integrating X1Pays into your project',
       link: '/docs/getting-started',
       color: 'bg-blue-100 text-blue-600'
     },
     {
-      icon: <Code className="h-8 w-8" />,
+      icon: <CodeIcon sx={{ fontSize: 32 }} />,
       title: 'API Reference',
       description: 'Complete API documentation for facilitator and client SDK',
       link: '/docs/api-reference',
       color: 'bg-purple-100 text-purple-600'
     },
     {
-      icon: <Coins className="h-8 w-8" />,
+      icon: <MonetizationOnIcon sx={{ fontSize: 32 }} />,
       title: 'Token Economy',
       description: 'Dual-token model: wXNT for settlement, $XPY for governance',
       link: '/docs/token-economy',
       color: 'bg-green-100 text-green-600'
     },
     {
-      icon: <Code className="h-8 w-8" />,
+      icon: <CodeIcon sx={{ fontSize: 32 }} />,
       title: 'Integration Examples',
       description: 'Real-world code examples in Node.js, Python, React, and more',
       link: '/docs/examples',
       color: 'bg-orange-100 text-orange-600'
     },
     {
-      icon: <Book className="h-8 w-8" />,
+      icon: <MenuBookIcon sx={{ fontSize: 32 }} />,
       title: 'Troubleshooting',
       description: 'Solutions to common issues when integrating x402 payments',
       link: '/docs/troubleshooting',
@@ -44,7 +47,7 @@ export default function Docs() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="mb-12">
         <div className="flex items-center mb-4">
-          <Book className="h-10 w-10 text-primary mr-3" />
+          <MenuBookIcon sx={{ fontSize: 40, mr: 1.5, color: 'primary.main' }} />
           <h1 className="text-4xl font-bold text-gray-900">Documentation</h1>
         </div>
         <p className="text-xl text-gray-600">

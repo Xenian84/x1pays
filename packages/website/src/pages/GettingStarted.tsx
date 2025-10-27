@@ -1,5 +1,7 @@
 import CodeBlock from '../components/CodeBlock'
-import { Terminal, Cog, Rocket } from 'lucide-react'
+import TerminalIcon from '@mui/icons-material/Terminal'
+import SettingsIcon from '@mui/icons-material/Settings'
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
 
 export default function GettingStarted() {
   const installCode = `# Clone the repository
@@ -73,7 +75,7 @@ app.use("/premium", x420(), x402Middleware({
       {/* Prerequisites */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-          <Terminal className="h-6 w-6 mr-2 text-primary" />
+          <TerminalIcon sx={{ fontSize: 24, mr: 1 }} className="text-primary" />
           Prerequisites
         </h2>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
@@ -86,7 +88,7 @@ app.use("/premium", x420(), x402Middleware({
       {/* Installation */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-          <Cog className="h-6 w-6 mr-2 text-primary" />
+          <SettingsIcon sx={{ fontSize: 24, mr: 1 }} className="text-primary" />
           Installation
         </h2>
         <CodeBlock code={installCode} language="bash" />
@@ -126,7 +128,7 @@ app.use("/premium", x420(), x402Middleware({
       {/* Running */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-          <Rocket className="h-6 w-6 mr-2 text-primary" />
+          <RocketLaunchIcon sx={{ fontSize: 24, mr: 1 }} className="text-primary" />
           Running the Services
         </h2>
         <CodeBlock code={runCode} language="bash" />

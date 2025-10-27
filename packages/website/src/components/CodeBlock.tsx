@@ -1,5 +1,6 @@
 import { Highlight, themes } from 'prism-react-renderer'
-import { Copy, Check } from 'lucide-react'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import CheckIcon from '@mui/icons-material/Check'
 import { useState } from 'react'
 
 interface CodeBlockProps {
@@ -30,7 +31,7 @@ export default function CodeBlock({ code, language, filename }: CodeBlockProps) 
           className="absolute right-2 top-2 p-2 rounded-md bg-gray-800 hover:bg-gray-700 text-gray-300 transition-colors duration-200"
           title="Copy code"
         >
-          {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+          {copied ? <CheckIcon sx={{ fontSize: 16 }} /> : <ContentCopyIcon sx={{ fontSize: 16 }} />}
         </button>
         <Highlight theme={themes.nightOwl} code={code.trim()} language={language}>
           {({ className, style, tokens, getLineProps, getTokenProps }) => (

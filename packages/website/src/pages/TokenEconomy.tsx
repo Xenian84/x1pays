@@ -1,4 +1,8 @@
-import { Coins, ArrowRightLeft, Users, TrendingUp, Zap } from 'lucide-react'
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz'
+import GroupIcon from '@mui/icons-material/Group'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import BoltIcon from '@mui/icons-material/Bolt'
 import CodeBlock from '../components/CodeBlock'
 
 export default function TokenEconomy() {
@@ -6,7 +10,7 @@ export default function TokenEconomy() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="mb-12">
         <div className="flex items-center mb-4">
-          <Coins className="h-10 w-10 text-primary mr-3" />
+          <MonetizationOnIcon sx={{ fontSize: 40, mr: 1.5 }} className="text-primary" />
           <h1 className="text-4xl font-bold text-gray-900">Token Economy</h1>
         </div>
         <p className="text-xl text-gray-600">
@@ -24,14 +28,14 @@ export default function TokenEconomy() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           <div className="bg-white rounded-lg p-6 border border-indigo-200">
             <div className="flex items-center mb-3">
-              <ArrowRightLeft className="h-6 w-6 text-green-600 mr-2" />
+              <SwapHorizIcon sx={{ fontSize: 24 }} className="text-green-600 mr-2" />
               <h3 className="text-lg font-semibold text-gray-900">wXNT</h3>
             </div>
             <p className="text-sm text-gray-600">Settlement token - merchants receive 100% of payments</p>
           </div>
           <div className="bg-white rounded-lg p-6 border border-indigo-200">
             <div className="flex items-center mb-3">
-              <Users className="h-6 w-6 text-purple-600 mr-2" />
+              <GroupIcon sx={{ fontSize: 24 }} className="text-purple-600 mr-2" />
               <h3 className="text-lg font-semibold text-gray-900">$XPY</h3>
             </div>
             <p className="text-sm text-gray-600">Governance and value capture token</p>
@@ -147,7 +151,7 @@ Instant transfer on X1 blockchain in wXNT`} language="text" />
           </div>
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
             <div className="flex items-start">
-              <TrendingUp className="h-5 w-5 text-yellow-600 mr-2 flex-shrink-0 mt-0.5" />
+              <TrendingUpIcon sx={{ fontSize: 20 }} className="text-yellow-600 mr-2 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-yellow-800">
                 <strong>Value Capture:</strong> Instead of charging fees, X1Pays monetizes through $XPY token appreciation. 
                 As more transactions flow through the protocol, $XPY holders benefit from increased demand and ecosystem value.
@@ -189,7 +193,7 @@ Instant transfer on X1 blockchain in wXNT`} language="text" />
           
           <div className="bg-white rounded-lg p-4 border border-purple-300">
             <div className="flex items-center mb-2">
-              <Zap className="h-5 w-5 text-purple-600 mr-2" />
+              <BoltIcon sx={{ fontSize: 20 }} className="text-purple-600 mr-2" />
               <h4 className="font-semibold text-gray-900">Coming Soon</h4>
             </div>
             <p className="text-sm text-gray-600">

@@ -1,6 +1,22 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Code2, Menu, X } from 'lucide-react'
 import { useState } from 'react'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Drawer from '@mui/material/Drawer'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@mui/material/ListItemText'
+import Container from '@mui/material/Container'
+import MenuIcon from '@mui/icons-material/Menu'
+import CodeIcon from '@mui/icons-material/Code'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import TwitterIcon from '@mui/icons-material/Twitter'
+import { SiDiscord } from '@icons-pack/react-simple-icons'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation()
@@ -15,160 +31,182 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <Link to="/" className="flex items-center space-x-2">
-                <Code2 className="h-8 w-8 text-primary" />
-                <span className="text-2xl font-bold gradient-text">X1Pays</span>
-              </Link>
-            </div>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', flexDirection: 'column' }}>
+      <AppBar position="sticky" elevation={0}>
+        <Toolbar className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+          <Link to="/" className="flex items-center gap-2 no-underline">
+            <CodeIcon sx={{ fontSize: 32, color: 'primary.main' }} />
+            <Typography
+              variant="h6"
+              component="span"
+              sx={{
+                fontWeight: 700,
+                fontSize: '1.5rem',
+                background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              X1Pays
+            </Typography>
+          </Link>
 
-            <div className="hidden md:flex md:items-center md:space-x-8">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
+          <Box sx={{ flexGrow: 1 }} />
+
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 3 }}>
+            {navigation.map((item) => (
+              <Button
+                key={item.name}
+                component={Link}
+                to={item.href}
+                sx={{
+                  color: location.pathname === item.href ? 'primary.main' : 'text.primary',
+                  fontWeight: location.pathname === item.href ? 600 : 400,
+                  '&:hover': {
+                    color: 'primary.main',
+                    bgcolor: 'transparent',
+                  },
+                }}
+              >
+                {item.name}
+              </Button>
+            ))}
+            <Button
+              variant="contained"
+              href="https://github.com/x1pays/x1pays"
+              target="_blank"
+              rel="noopener noreferrer"
+              startIcon={<GitHubIcon />}
+              sx={{ ml: 1 }}
+            >
+              GitHub
+            </Button>
+          </Box>
+
+          <IconButton
+            sx={{ display: { xs: 'flex', md: 'none' }, ml: 2 }}
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+
+      <Drawer
+        anchor="right"
+        open={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+      >
+        <Box sx={{ width: 250, bgcolor: 'background.paper', height: '100%' }}>
+          <List>
+            {navigation.map((item) => (
+              <ListItem key={item.name} disablePadding>
+                <ListItemButton
+                  component={Link}
                   to={item.href}
-                  className={`${
-                    location.pathname === item.href
-                      ? 'text-primary font-semibold'
-                      : 'text-gray-600 hover:text-gray-900'
-                  } transition-colors duration-200`}
+                  selected={location.pathname === item.href}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
-                  {item.name}
-                </Link>
-              ))}
-              <a
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+            <ListItem disablePadding>
+              <ListItemButton
+                component="a"
                 href="https://github.com/x1pays/x1pays"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-indigo-700 transition-colors duration-200"
               >
-                GitHub
-              </a>
-            </div>
+                <GitHubIcon sx={{ mr: 2 }} />
+                <ListItemText primary="GitHub" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
 
-            <div className="md:hidden flex items-center">
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-gray-600 hover:text-gray-900"
-              >
-                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
-          </div>
-        </div>
+      <Box component="main" sx={{ flexGrow: 1 }}>
+        {children}
+      </Box>
 
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`${
-                    location.pathname === item.href
-                      ? 'bg-primary text-white'
-                      : 'text-gray-600 hover:bg-gray-100'
-                  } block px-3 py-2 rounded-md text-base font-medium`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </nav>
-
-      <main>{children}</main>
-
-      <footer className="bg-white border-t border-gray-200 mt-20">
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <Box component="footer" className="border-t border-primary/10 mt-20" sx={{ bgcolor: 'background.paper' }}>
+        <Container maxWidth="lg" className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <Code2 className="h-6 w-6 text-primary" />
-                <span className="text-xl font-bold gradient-text">X1Pays</span>
+              <div className="flex items-center gap-2 mb-4">
+                <CodeIcon sx={{ fontSize: 24, color: 'primary.main' }} />
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 700,
+                    background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  X1Pays
+                </Typography>
               </div>
-              <p className="text-gray-600 text-sm">
+              <Typography variant="body2" color="text.secondary">
                 HTTP 402 micropayments on X1 blockchain using wXNT tokens.
-              </p>
+              </Typography>
             </div>
+            
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">
+              <Typography variant="subtitle2" className="mb-4 uppercase tracking-wider" sx={{ fontWeight: 600 }}>
                 Resources
-              </h3>
-              <ul className="space-y-2">
-                <li>
-                  <Link to="/docs" className="text-gray-600 hover:text-primary">
-                    Documentation
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/docs/getting-started" className="text-gray-600 hover:text-primary">
-                    Getting Started
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/docs/api-reference" className="text-gray-600 hover:text-primary">
-                    API Reference
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/docs/examples" className="text-gray-600 hover:text-primary">
-                    Integration Examples
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/docs/troubleshooting" className="text-gray-600 hover:text-primary">
-                    Troubleshooting
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/pricing" className="text-gray-600 hover:text-primary">
-                    Pricing
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/faq" className="text-gray-600 hover:text-primary">
-                    FAQ
-                  </Link>
-                </li>
-              </ul>
+              </Typography>
+              <div className="flex flex-col gap-2">
+                <Link to="/docs" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                  Documentation
+                </Link>
+                <Link to="/docs/getting-started" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                  Getting Started
+                </Link>
+                <Link to="/docs/api-reference" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                  API Reference
+                </Link>
+                <Link to="/docs/examples" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                  Integration Examples
+                </Link>
+                <Link to="/docs/troubleshooting" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                  Troubleshooting
+                </Link>
+                <Link to="/pricing" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                  Pricing
+                </Link>
+                <Link to="/faq" className="text-sm no-underline hover:text-primary transition-colors" style={{ color: 'inherit' }}>
+                  FAQ
+                </Link>
+              </div>
             </div>
+            
             <div>
-              <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">
+              <Typography variant="subtitle2" className="mb-4 uppercase tracking-wider" sx={{ fontWeight: 600 }}>
                 Community
-              </h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="https://github.com/x1pays/x1pays" className="text-gray-600 hover:text-primary">
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a href="https://twitter.com/x1pays" className="text-gray-600 hover:text-primary">
-                    Twitter
-                  </a>
-                </li>
-                <li>
-                  <a href="https://discord.gg/x1pays" className="text-gray-600 hover:text-primary">
-                    Discord
-                  </a>
-                </li>
-              </ul>
+              </Typography>
+              <div className="flex flex-col gap-2">
+                <a href="https://github.com/x1pays/x1pays" target="_blank" rel="noopener noreferrer" className="text-sm no-underline hover:text-primary transition-colors flex items-center gap-2" style={{ color: 'inherit' }}>
+                  <GitHubIcon fontSize="small" /> GitHub
+                </a>
+                <a href="https://twitter.com/x1pays" target="_blank" rel="noopener noreferrer" className="text-sm no-underline hover:text-primary transition-colors flex items-center gap-2" style={{ color: 'inherit' }}>
+                  <TwitterIcon fontSize="small" /> Twitter
+                </a>
+                <a href="https://discord.gg/x1pays" target="_blank" rel="noopener noreferrer" className="text-sm no-underline hover:text-primary transition-colors flex items-center gap-2" style={{ color: 'inherit' }}>
+                  <SiDiscord size={16} /> Discord
+                </a>
+              </div>
             </div>
           </div>
-          <div className="mt-8 border-t border-gray-200 pt-8">
-            <p className="text-gray-400 text-sm text-center">
+          
+          <div className="mt-8 pt-8 border-t border-primary/10">
+            <Typography variant="body2" align="center" color="text.secondary">
               © 2025 X1Pays. Open source under MIT License.
-            </p>
+            </Typography>
           </div>
-        </div>
-      </footer>
-    </div>
+        </Container>
+      </Box>
+    </Box>
   )
 }

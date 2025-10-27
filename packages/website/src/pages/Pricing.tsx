@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
-import { Check, X, Zap, TrendingUp } from 'lucide-react'
+import CheckIcon from '@mui/icons-material/Check'
+import CloseIcon from '@mui/icons-material/Close'
+import BoltIcon from '@mui/icons-material/Bolt'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 
 const Pricing = () => {
   return (
@@ -7,7 +10,7 @@ const Pricing = () => {
       {/* Hero */}
       <div className="text-center mb-16">
         <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-semibold mb-6">
-          <Zap className="h-4 w-4 mr-2" />
+          <BoltIcon sx={{ fontSize: 16, mr: 1 }} />
           Zero Protocol Fees Forever
         </div>
         <h1 className="text-5xl sm:text-6xl font-bold mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
@@ -36,23 +39,23 @@ const Pricing = () => {
           </div>
           <ul className="space-y-4">
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
               <span className="text-gray-700">Pay only for what you use</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
               <span className="text-gray-700">Instant payment verification</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
               <span className="text-gray-700">No API keys to manage</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
               <span className="text-gray-700">Blockchain-verified receipts</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
               <span className="text-gray-700"><span className="font-bold">Gas fees covered</span> by X1Pays</span>
             </li>
           </ul>
@@ -77,27 +80,27 @@ const Pricing = () => {
           </div>
           <ul className="space-y-4">
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-green-300 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
               <span className="font-semibold">Receive 100% of payments</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-green-300 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
               <span>Instant settlement (&lt;1 second)</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-green-300 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
               <span>No chargebacks, ever</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-green-300 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
               <span>Free integration support</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-green-300 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
               <span className="font-semibold">Gas fees covered by X1Pays</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-green-300 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-green-300 mr-3 flex-shrink-0 mt-0.5" />
               <span>Real-time analytics dashboard</span>
             </li>
           </ul>
@@ -116,7 +119,7 @@ const Pricing = () => {
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold mb-2 text-gray-900">For $XPY Holders</h3>
             <div className="flex items-center justify-center text-5xl font-bold text-purple-600 my-6">
-              <TrendingUp className="h-12 w-12 mr-3" />
+              <TrendingUpIcon sx={{ fontSize: 48, mr: 1.5 }} />
               Earn
             </div>
             <p className="text-gray-700 text-lg">
@@ -125,19 +128,19 @@ const Pricing = () => {
           </div>
           <ul className="space-y-4">
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
               <span className="text-gray-700">Token appreciation from protocol growth</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
               <span className="text-gray-700">Vote on protocol changes</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
               <span className="text-gray-700">Treasury-backed value</span>
             </li>
             <li className="flex items-start">
-              <Check className="h-6 w-6 text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
+              <CheckIcon sx={{ fontSize: 24 }} className="text-purple-500 mr-3 flex-shrink-0 mt-0.5" />
               <span className="text-gray-700">Exclusive holder benefits</span>
             </li>
             <li className="flex items-start">
@@ -172,15 +175,15 @@ const Pricing = () => {
               </p>
               <ul className="mt-4 space-y-2 text-gray-600">
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-purple-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckIcon sx={{ fontSize: 20 }} className="text-purple-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span>Increased demand from ecosystem growth</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-purple-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckIcon sx={{ fontSize: 20 }} className="text-purple-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span>Governance rights for protocol decisions</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-purple-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckIcon sx={{ fontSize: 20 }} className="text-purple-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span>Future staking rewards and utility</span>
                 </li>
               </ul>
@@ -193,15 +196,15 @@ const Pricing = () => {
               </p>
               <ul className="mt-4 space-y-2 text-gray-600">
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckIcon sx={{ fontSize: 20 }} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span>Advanced analytics & reporting</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckIcon sx={{ fontSize: 20 }} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span>Priority support & SLA guarantees</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckIcon sx={{ fontSize: 20 }} className="text-green-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span>White-label solutions for enterprises</span>
                 </li>
               </ul>
@@ -229,7 +232,7 @@ const Pricing = () => {
               <tr className="border-b border-gray-200 bg-gradient-to-r from-green-50 to-emerald-50">
                 <td className="py-4 px-6 font-bold text-green-700 text-lg">
                   <div className="flex items-center">
-                    <Check className="h-5 w-5 text-green-600 mr-2" />
+                    <CheckIcon sx={{ fontSize: 20 }} className="text-green-600 mr-2" />
                     X1Pays
                   </div>
                 </td>
@@ -245,7 +248,7 @@ const Pricing = () => {
                 </td>
                 <td className="py-4 px-6 font-semibold text-green-600">&lt;1 second</td>
                 <td className="py-4 px-6">
-                  <X className="h-5 w-5 text-green-600" />
+                  <CloseIcon sx={{ fontSize: 20 }} className="text-green-600" />
                 </td>
               </tr>
               <tr className="border-b border-gray-200">
@@ -254,7 +257,7 @@ const Pricing = () => {
                 <td className="py-4 px-6 text-gray-700">N/A</td>
                 <td className="py-4 px-6 text-gray-700">2-7 days</td>
                 <td className="py-4 px-6">
-                  <Check className="h-5 w-5 text-red-500" />
+                  <CheckIcon sx={{ fontSize: 20 }} className="text-red-500" />
                 </td>
               </tr>
               <tr className="border-b border-gray-200">
@@ -263,7 +266,7 @@ const Pricing = () => {
                 <td className="py-4 px-6 text-gray-700">N/A</td>
                 <td className="py-4 px-6 text-gray-700">1-3 days</td>
                 <td className="py-4 px-6">
-                  <Check className="h-5 w-5 text-red-500" />
+                  <CheckIcon sx={{ fontSize: 20 }} className="text-red-500" />
                 </td>
               </tr>
               <tr className="border-b border-gray-200">
@@ -280,7 +283,7 @@ const Pricing = () => {
                 </td>
                 <td className="py-4 px-6 text-gray-700">~2 seconds</td>
                 <td className="py-4 px-6">
-                  <X className="h-5 w-5 text-blue-600" />
+                  <CloseIcon sx={{ fontSize: 20 }} className="text-blue-600" />
                 </td>
               </tr>
               <tr className="border-b border-gray-200 bg-gray-50">
@@ -289,7 +292,7 @@ const Pricing = () => {
                 <td className="py-4 px-6 text-gray-500">N/A</td>
                 <td className="py-4 px-6 text-gray-500">1-5 days</td>
                 <td className="py-4 px-6">
-                  <Check className="h-5 w-5 text-red-400" />
+                  <CheckIcon sx={{ fontSize: 20 }} className="text-red-400" />
                 </td>
               </tr>
             </tbody>
@@ -312,7 +315,7 @@ const Pricing = () => {
             className="px-10 py-4 bg-white text-indigo-600 rounded-lg font-bold text-lg hover:bg-gray-50 transition-all duration-200 shadow-xl hover:shadow-2xl inline-flex items-center"
           >
             Integrate Now
-            <Zap className="ml-2 h-5 w-5" />
+            <BoltIcon sx={{ fontSize: 20, ml: 1 }} />
           </Link>
           <Link
             to="/echo"

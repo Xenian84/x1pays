@@ -9,7 +9,7 @@
     "dev:api": "pnpm -C packages/api dev",
     "dev:web": "pnpm -C packages/website dev",
     "dev:backend": "concurrently -k \"pnpm dev:fac\" \"pnpm dev:api\"",
-    "dev": "concurrently -k \"pnpm dev:fac\" \"pnpm dev:api\" \"pnpm dev:web\"",
+    "dev": "concurrently -k \"pnpm dev:api\" \"pnpm dev:web\"",
     "build": "pnpm -C packages/facilitator build && pnpm -C packages/api build && pnpm -C packages/sdk build && pnpm -C packages/website build",
     "test": "pnpm -C packages/facilitator test && pnpm -C packages/api test && pnpm -C packages/sdk test",
     "lint": "eslint .",

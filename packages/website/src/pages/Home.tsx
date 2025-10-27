@@ -1,5 +1,21 @@
 import { Link } from 'react-router-dom'
-import { Zap, Shield, Code, DollarSign, ArrowRight, Sparkles, CheckCircle } from 'lucide-react'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Chip from '@mui/material/Chip'
+import Stack from '@mui/material/Stack'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+import BoltIcon from '@mui/icons-material/Bolt'
+import SecurityIcon from '@mui/icons-material/Security'
+import CodeIcon from '@mui/icons-material/Code'
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CodeBlock from '../components/CodeBlock'
 
 export default function Home() {
@@ -18,286 +34,490 @@ console.log(response.data);        // Your data
 console.log(response.payment);     // Payment proof`
 
   return (
-    <div className="bg-white">
-      {/* Hero Section - PayAI Style */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-800">
-        <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32">
-          <div className="text-center">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium mb-6">
-              <Sparkles className="h-4 w-4 mr-2" />
-              <span>X1-first, multi-network x402 facilitator</span>
-            </div>
-            <h1 className="text-5xl sm:text-7xl font-bold tracking-tight text-white mb-6">
-              Instant, Invisible
-              <span className="block mt-2 bg-gradient-to-r from-green-300 to-cyan-300 bg-clip-text text-transparent">
+    <Box>
+      <Box className="relative overflow-hidden" sx={{ bgcolor: 'background.default', py: { xs: 8, md: 16 } }}>
+        <Box className="absolute inset-0 opacity-20" sx={{
+          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(0, 229, 255, 0.15) 1px, transparent 0)',
+          backgroundSize: '40px 40px',
+        }} />
+        
+        <Container maxWidth="lg" className="relative">
+          <Stack spacing={4} alignItems="center" textAlign="center">
+            <Chip
+              icon={<AutoAwesomeIcon />}
+              label="X1-first, multi-network x402 facilitator"
+              sx={{
+                bgcolor: 'rgba(0, 229, 255, 0.1)',
+                color: 'primary.main',
+                borderColor: 'primary.main',
+                border: '1px solid',
+                fontWeight: 600,
+              }}
+            />
+            
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem' },
+                fontWeight: 800,
+                maxWidth: '800px',
+              }}
+            >
+              Instant, Invisible{' '}
+              <Box
+                component="span"
+                sx={{
+                  background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  display: 'block',
+                  mt: 1,
+                }}
+              >
                 Payments
-              </span>
-            </h1>
-            <p className="mt-6 text-xl sm:text-2xl text-indigo-100 max-w-3xl mx-auto leading-relaxed">
-              Accept payments from <span className="font-bold text-white">$0.001</span> in under a second. 
-              Perfect for AI agents, microtransactions, and lightning-fast commerce — <span className="font-bold text-green-300">live on X1</span>.
-            </p>
-            <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link
+              </Box>
+            </Typography>
+            
+            <Typography
+              variant="h5"
+              color="text.secondary"
+              sx={{
+                maxWidth: '700px',
+                fontWeight: 400,
+                lineHeight: 1.7,
+              }}
+            >
+              Accept payments from <Box component="span" sx={{ color: 'primary.main', fontWeight: 700 }}>$0.001</Box> in under a second.
+              Perfect for AI agents, microtransactions, and lightning-fast commerce —{' '}
+              <Box component="span" sx={{ color: 'secondary.main', fontWeight: 700 }}>live on X1</Box>.
+            </Typography>
+            
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 4 }}>
+              <Button
+                component={Link}
                 to="/docs/getting-started"
-                className="inline-flex items-center px-8 py-4 text-lg font-bold rounded-lg text-indigo-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-2xl hover:shadow-green-500/20"
+                variant="contained"
+                size="large"
+                endIcon={<ArrowForwardIcon />}
+                sx={{ px: 4, py: 1.5 }}
               >
                 Get Started
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link
+              </Button>
+              <Button
+                component={Link}
                 to="/echo"
-                className="inline-flex items-center px-8 py-4 text-lg font-bold rounded-lg text-white bg-white/10 backdrop-blur-sm border-2 border-white/30 hover:bg-white/20 transition-all duration-200"
+                variant="outlined"
+                size="large"
+                sx={{
+                  px: 4,
+                  py: 1.5,
+                  borderColor: 'primary.main',
+                  color: 'primary.main',
+                  '&:hover': {
+                    borderColor: 'primary.light',
+                    bgcolor: 'rgba(0, 229, 255, 0.1)',
+                  },
+                }}
               >
                 Try x402 Echo
-              </Link>
-            </div>
+              </Button>
+            </Stack>
             
-            {/* Live Stats */}
-            <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold text-white mb-1">0%</div>
-                <div className="text-indigo-200 text-sm">Protocol Fees</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold text-white mb-1">&lt;1s</div>
-                <div className="text-indigo-200 text-sm">Settlement Time</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold text-white mb-1">$0.001</div>
-                <div className="text-indigo-200 text-sm">Minimum Payment</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            <Grid container spacing={4} sx={{ mt: 4, maxWidth: '800px' }}>
+              {[
+                { value: '0%', label: 'Protocol Fees' },
+                { value: '<1s', label: 'Settlement Time' },
+                { value: '$0.001', label: 'Minimum Payment' },
+              ].map((stat) => (
+                <Grid size={{ xs: 12, sm: 4 }} key={stat.label}>
+                  <Box>
+                    <Typography variant="h3" sx={{ fontWeight: 800, color: 'primary.main' }}>
+                      {stat.value}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                      {stat.label}
+                    </Typography>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Stack>
+        </Container>
+      </Box>
 
-      {/* Feature Highlight Section */}
-      <div className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-              Why X1Pays?
-            </h2>
-            <p className="text-xl text-gray-600">
-              Built for developers who want instant, gasless payments
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-            <div className="relative p-8 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border-2 border-green-200 hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-300">
-              <div className="inline-flex items-center justify-center p-4 bg-green-500 rounded-xl text-white mb-6">
-                <DollarSign className="h-8 w-8" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Zero Protocol Fees
-              </h3>
-              <p className="text-gray-700 text-lg mb-4">
-                <span className="font-bold text-green-600">0%</span> fees for merchants and buyers. We cover all gas costs.
-                Revenue comes from <span className="font-semibold">$XPY token</span> appreciation.
-              </p>
-              <ul className="space-y-2">
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  <span>100% of payments to merchant</span>
-                </li>
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  <span>Gas fees covered by X1Pays</span>
-                </li>
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  <span>Lower than Stripe's 2.9%</span>
-                </li>
-              </ul>
-            </div>
+      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+        <Stack spacing={2} alignItems="center" textAlign="center" sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ fontWeight: 700 }}>
+            Why X1Pays?
+          </Typography>
+          <Typography variant="h6" color="text.secondary" sx={{ maxWidth: '600px' }}>
+            Built for developers who want instant, gasless payments
+          </Typography>
+        </Stack>
+        
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Card
+              elevation={0}
+              className="h-full transition-all hover:shadow-xl"
+              sx={{
+                border: '1px solid',
+                borderColor: 'secondary.dark',
+                '&:hover': {
+                  borderColor: 'secondary.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
+            >
+              <CardContent sx={{ p: 4 }}>
+                <Box
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: 2,
+                    bgcolor: 'rgba(118, 255, 3, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mb: 3,
+                  }}
+                >
+                  <AttachMoneyIcon sx={{ fontSize: 32, color: 'secondary.main' }} />
+                </Box>
+                <Typography variant="h5" sx={{ fontWeight: 700, mb: 2 }}>
+                  Zero Protocol Fees
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 3, lineHeight: 1.7 }}>
+                  <Box component="span" sx={{ color: 'secondary.main', fontWeight: 700 }}>0%</Box> fees for merchants and buyers. 
+                  We cover all gas costs. Revenue comes from <Box component="span" sx={{ fontWeight: 600 }}>$XPY token</Box> appreciation.
+                </Typography>
+                <Stack spacing={1.5}>
+                  {[
+                    '100% of payments to merchant',
+                    'Gas fees covered by X1Pays',
+                    "Lower than Stripe's 2.9%",
+                  ].map((feature) => (
+                    <Box key={feature} className="flex items-center gap-3">
+                      <CheckCircleIcon sx={{ color: 'secondary.main', fontSize: 20 }} />
+                      <Typography variant="body2" color="text.secondary">{feature}</Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
 
-            <div className="relative p-8 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl border-2 border-indigo-200 hover:shadow-2xl hover:shadow-indigo-500/20 transition-all duration-300">
-              <div className="inline-flex items-center justify-center p-4 bg-indigo-600 rounded-xl text-white mb-6">
-                <Zap className="h-8 w-8" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Lightning Fast Settlement
-              </h3>
-              <p className="text-gray-700 text-lg mb-4">
-                Payments settle in <span className="font-bold text-indigo-600">&lt;1 second</span> on X1 blockchain.
-                No waiting days for funds.
-              </p>
-              <ul className="space-y-2">
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-indigo-500 mr-3" />
-                  <span>Instant finality on X1</span>
-                </li>
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-indigo-500 mr-3" />
-                  <span>No chargebacks ever</span>
-                </li>
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-indigo-500 mr-3" />
-                  <span>Perfect for AI agents</span>
-                </li>
-              </ul>
-            </div>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Card
+              elevation={0}
+              className="h-full transition-all hover:shadow-xl"
+              sx={{
+                border: '1px solid',
+                borderColor: 'primary.dark',
+                '&:hover': {
+                  borderColor: 'primary.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
+            >
+              <CardContent sx={{ p: 4 }}>
+                <Box
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: 2,
+                    bgcolor: 'rgba(0, 229, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mb: 3,
+                  }}
+                >
+                  <BoltIcon sx={{ fontSize: 32, color: 'primary.main' }} />
+                </Box>
+                <Typography variant="h5" sx={{ fontWeight: 700, mb: 2 }}>
+                  Lightning Fast Settlement
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 3, lineHeight: 1.7 }}>
+                  Payments settle in <Box component="span" sx={{ color: 'primary.main', fontWeight: 700 }}>&lt;1 second</Box> on X1 blockchain.
+                  No waiting days for funds.
+                </Typography>
+                <Stack spacing={1.5}>
+                  {[
+                    'Instant finality on X1',
+                    'No chargebacks ever',
+                    'Perfect for AI agents',
+                  ].map((feature) => (
+                    <Box key={feature} className="flex items-center gap-3">
+                      <CheckCircleIcon sx={{ color: 'primary.main', fontSize: 20 }} />
+                      <Typography variant="body2" color="text.secondary">{feature}</Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
 
-            <div className="relative p-8 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border-2 border-blue-200 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300">
-              <div className="inline-flex items-center justify-center p-4 bg-blue-600 rounded-xl text-white mb-6">
-                <Code className="h-8 w-8" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                1-Line Integration
-              </h3>
-              <p className="text-gray-700 text-lg mb-4">
-                Add x402 payments with <span className="font-bold text-blue-600">one line of code</span>.
-                No complex setup or API keys.
-              </p>
-              <ul className="space-y-2">
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-blue-500 mr-3" />
-                  <span>Simple SDK for Node.js</span>
-                </li>
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-blue-500 mr-3" />
-                  <span>Works with any HTTP client</span>
-                </li>
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-blue-500 mr-3" />
-                  <span>5 minute setup time</span>
-                </li>
-              </ul>
-            </div>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Card
+              elevation={0}
+              className="h-full transition-all hover:shadow-xl"
+              sx={{
+                border: '1px solid',
+                borderColor: 'info.dark',
+                '&:hover': {
+                  borderColor: 'info.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
+            >
+              <CardContent sx={{ p: 4 }}>
+                <Box
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: 2,
+                    bgcolor: 'rgba(0, 229, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mb: 3,
+                  }}
+                >
+                  <CodeIcon sx={{ fontSize: 32, color: 'info.main' }} />
+                </Box>
+                <Typography variant="h5" sx={{ fontWeight: 700, mb: 2 }}>
+                  1-Line Integration
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 3, lineHeight: 1.7 }}>
+                  Add x402 payments with <Box component="span" sx={{ color: 'info.main', fontWeight: 700 }}>one line of code</Box>.
+                  No complex setup or API keys.
+                </Typography>
+                <Stack spacing={1.5}>
+                  {[
+                    'Simple SDK for Node.js',
+                    'Works with any HTTP client',
+                    '5 minute setup time',
+                  ].map((feature) => (
+                    <Box key={feature} className="flex items-center gap-3">
+                      <CheckCircleIcon sx={{ color: 'info.main', fontSize: 20 }} />
+                      <Typography variant="body2" color="text.secondary">{feature}</Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
 
-            <div className="relative p-8 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border-2 border-purple-200 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300">
-              <div className="inline-flex items-center justify-center p-4 bg-purple-600 rounded-xl text-white mb-6">
-                <Shield className="h-8 w-8" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Cryptographically Secure
-              </h3>
-              <p className="text-gray-700 text-lg mb-4">
-                Ed25519 signatures verify every payment before access.
-                <span className="font-bold text-purple-600"> No trust required</span>.
-              </p>
-              <ul className="space-y-2">
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-purple-500 mr-3" />
-                  <span>Signature verification</span>
-                </li>
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-purple-500 mr-3" />
-                  <span>On-chain settlement proof</span>
-                </li>
-                <li className="flex items-center text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-purple-500 mr-3" />
-                  <span>No intermediary custody</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Card
+              elevation={0}
+              className="h-full transition-all hover:shadow-xl"
+              sx={{
+                border: '1px solid',
+                borderColor: 'warning.dark',
+                '&:hover': {
+                  borderColor: 'warning.main',
+                  transform: 'translateY(-4px)',
+                },
+              }}
+            >
+              <CardContent sx={{ p: 4 }}>
+                <Box
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: 2,
+                    bgcolor: 'rgba(255, 183, 77, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mb: 3,
+                  }}
+                >
+                  <SecurityIcon sx={{ fontSize: 32, color: 'warning.main' }} />
+                </Box>
+                <Typography variant="h5" sx={{ fontWeight: 700, mb: 2 }}>
+                  Cryptographically Secure
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mb: 3, lineHeight: 1.7 }}>
+                  Ed25519 signatures verify every payment before access.
+                  <Box component="span" sx={{ color: 'warning.main', fontWeight: 700 }}> No trust required</Box>.
+                </Typography>
+                <Stack spacing={1.5}>
+                  {[
+                    'Signature verification',
+                    'On-chain settlement proof',
+                    'No intermediary custody',
+                  ].map((feature) => (
+                    <Box key={feature} className="flex items-center gap-3">
+                      <CheckCircleIcon sx={{ color: 'warning.main', fontSize: 20 }} />
+                      <Typography variant="body2" color="text.secondary">{feature}</Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
 
-      {/* Code Example Section */}
-      <div className="bg-gray-900 py-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+      <Box sx={{ bgcolor: 'background.paper', py: { xs: 8, md: 12 } }}>
+        <Container maxWidth="lg">
+          <Stack spacing={2} alignItems="center" textAlign="center" sx={{ mb: 6 }}>
+            <Typography variant="h2" sx={{ fontWeight: 700 }}>
               Simple to Integrate
-            </h2>
-            <p className="text-xl text-gray-400">
+            </Typography>
+            <Typography variant="h6" color="text.secondary">
               Add x402 micropayments to your API in minutes
-            </p>
-          </div>
+            </Typography>
+          </Stack>
           <CodeBlock code={exampleCode} language="typescript" filename="client.ts" />
-          <div className="mt-8 flex justify-center">
-            <Link
+          <Box className="flex justify-center mt-6">
+            <Button
+              component={Link}
               to="/docs/api-reference"
-              className="text-green-400 hover:text-green-300 font-medium inline-flex items-center text-lg"
+              variant="text"
+              endIcon={<ArrowForwardIcon />}
+              sx={{
+                color: 'secondary.main',
+                fontWeight: 600,
+                fontSize: '1.1rem',
+                '&:hover': {
+                  bgcolor: 'transparent',
+                  color: 'secondary.light',
+                },
+              }}
             >
               View full API documentation
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
-        </div>
-      </div>
+            </Button>
+          </Box>
+        </Container>
+      </Box>
 
-      {/* How It Works */}
-      <div className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-              How It Works
-            </h2>
-            <p className="text-xl text-gray-600">
-              Three simple steps to payment-gated APIs
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            {[
-              {
-                step: '1',
-                title: 'Request Without Payment',
-                description: 'Client requests your API endpoint. Server returns HTTP 402 with payment details in wXNT.',
-                color: 'indigo'
-              },
-              {
-                step: '2',
-                title: 'Sign & Pay',
-                description: 'Client signs payment intent with their wallet and includes X-PAYMENT header in retry.',
-                color: 'purple'
-              },
-              {
-                step: '3',
-                title: 'Instant Settlement',
-                description: 'X1Pays verifies signature, settles on X1 blockchain (<1s), and API grants access.',
-                color: 'green'
-              }
-            ].map((item, index) => (
-              <div key={index} className="relative bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <div className={`flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-${item.color}-500 to-${item.color}-600 text-white text-2xl font-bold mb-6 shadow-lg`}>
-                  {item.step}
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+        <Stack spacing={2} alignItems="center" textAlign="center" sx={{ mb: 8 }}>
+          <Typography variant="h2" sx={{ fontWeight: 700 }}>
+            How It Works
+          </Typography>
+          <Typography variant="h6" color="text.secondary">
+            Three simple steps to payment-gated APIs
+          </Typography>
+        </Stack>
+        
+        <Grid container spacing={4}>
+          {[
+            {
+              step: '1',
+              title: 'Request Without Payment',
+              description: 'Client requests your API endpoint. Server returns HTTP 402 with payment details in wXNT.',
+              color: 'primary',
+            },
+            {
+              step: '2',
+              title: 'Sign & Pay',
+              description: 'Client signs payment intent with their wallet and includes X-PAYMENT header in retry.',
+              color: 'warning',
+            },
+            {
+              step: '3',
+              title: 'Instant Settlement',
+              description: 'X1Pays verifies signature, settles on X1 blockchain (<1s), and API grants access.',
+              color: 'secondary',
+            },
+          ].map((item) => (
+            <Grid size={{ xs: 12, md: 4 }} key={item.step}>
+              <Paper
+                elevation={0}
+                className="h-full transition-all hover:shadow-xl"
+                sx={{
+                  p: 4,
+                  border: '1px solid',
+                  borderColor: `${item.color}.dark`,
+                  '&:hover': {
+                    borderColor: `${item.color}.main`,
+                    transform: 'translateY(-4px)',
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: '50%',
+                    bgcolor: `rgba(${item.color === 'primary' ? '0, 229, 255' : item.color === 'warning' ? '255, 183, 77' : '118, 255, 3'}, 0.2)`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mb: 3,
+                  }}
+                >
+                  <Typography variant="h4" sx={{ fontWeight: 800, color: `${item.color}.main` }}>
+                    {item.step}
+                  </Typography>
+                </Box>
+                <Typography variant="h5" sx={{ fontWeight: 700, mb: 2 }}>
                   {item.title}
-                </h3>
-                <p className="text-gray-600 text-lg leading-relaxed">
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
                   {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+                </Typography>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
 
-      {/* CTA Section */}
-      <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-            Ready to accept instant payments?
-          </h2>
-          <p className="text-xl sm:text-2xl text-indigo-100 mb-10 max-w-3xl mx-auto">
-            Join the payment revolution. <span className="font-bold text-white">Zero fees</span>, instant settlement, built for the AI age.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/docs/getting-started"
-              className="inline-flex items-center px-10 py-5 text-lg font-bold rounded-lg text-indigo-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-2xl hover:shadow-green-400/30"
-            >
-              Get Started Free
-              <ArrowRight className="ml-2 h-6 w-6" />
-            </Link>
-            <Link
-              to="/echo"
-              className="inline-flex items-center px-10 py-5 text-lg font-bold rounded-lg text-white bg-white/10 backdrop-blur-sm border-2 border-white hover:bg-white/20 transition-all duration-200"
-            >
-              Try Live Demo
-            </Link>
-          </div>
-          <p className="mt-8 text-indigo-200 text-sm">
-            No credit card required • 100% refund on test transactions • Gas fees covered
-          </p>
-        </div>
-      </div>
-    </div>
+      <Box className="relative overflow-hidden" sx={{ bgcolor: 'background.paper', py: { xs: 8, md: 12 } }}>
+        <Box className="absolute inset-0 opacity-10" sx={{
+          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(118, 255, 3, 0.3) 1px, transparent 0)',
+          backgroundSize: '40px 40px',
+        }} />
+        
+        <Container maxWidth="lg" className="relative">
+          <Stack spacing={4} alignItems="center" textAlign="center">
+            <Typography variant="h2" sx={{ fontWeight: 700, maxWidth: '700px' }}>
+              Ready to accept instant payments?
+            </Typography>
+            <Typography variant="h5" color="text.secondary" sx={{ maxWidth: '600px', lineHeight: 1.7 }}>
+              Join the payment revolution. <Box component="span" sx={{ color: 'secondary.main', fontWeight: 700 }}>Zero fees</Box>, instant settlement, built for the AI age.
+            </Typography>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <Button
+                component={Link}
+                to="/docs/getting-started"
+                variant="contained"
+                size="large"
+                endIcon={<ArrowForwardIcon />}
+                sx={{ px: 5, py: 2 }}
+              >
+                Get Started Free
+              </Button>
+              <Button
+                component={Link}
+                to="/echo"
+                variant="outlined"
+                size="large"
+                sx={{
+                  px: 5,
+                  py: 2,
+                  borderColor: 'primary.main',
+                  color: 'primary.main',
+                  '&:hover': {
+                    borderColor: 'primary.light',
+                    bgcolor: 'rgba(0, 229, 255, 0.1)',
+                  },
+                }}
+              >
+                Try Live Demo
+              </Button>
+            </Stack>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 4 }}>
+              No credit card required • 100% refund on test transactions • Gas fees covered
+            </Typography>
+          </Stack>
+        </Container>
+      </Box>
+    </Box>
   )
 }

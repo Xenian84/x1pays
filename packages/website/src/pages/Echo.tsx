@@ -1,5 +1,10 @@
 import { useState } from 'react'
-import { CheckCircle, XCircle, Loader, DollarSign, Zap, ArrowRight } from 'lucide-react'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CancelIcon from '@mui/icons-material/Cancel'
+import CircularProgress from '@mui/material/CircularProgress'
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
+import BoltIcon from '@mui/icons-material/Bolt'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import CodeBlock from '../components/CodeBlock'
 
 export default function Echo() {
@@ -44,7 +49,7 @@ console.log(data); // Echo response + refund confirmed`
       {/* Hero */}
       <div className="text-center mb-16">
         <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-semibold mb-6">
-          <Zap className="h-4 w-4 mr-2" />
+          <BoltIcon sx={{ fontSize: 16, mr: 1 }} />
           Live on X1 Mainnet
         </div>
         <h1 className="text-5xl sm:text-6xl font-bold mb-6">
@@ -81,7 +86,7 @@ console.log(data); // Echo response + refund confirmed`
 
           {testStatus === 'testing' && (
             <div className="flex items-center justify-center py-8">
-              <Loader className="h-8 w-8 text-indigo-600 animate-spin mr-3" />
+              <CircularProgress sx={{ fontSize: 32, mr: 1.5 }} className="text-indigo-600" />
               <span className="text-gray-700 font-medium">Processing payment on X1...</span>
             </div>
           )}
@@ -90,7 +95,7 @@ console.log(data); // Echo response + refund confirmed`
             <div className="space-y-4">
               <div className="bg-green-50 border-2 border-green-200 rounded-lg p-6">
                 <div className="flex items-center mb-3">
-                  <CheckCircle className="h-6 w-6 text-green-600 mr-2" />
+                  <CheckCircleIcon sx={{ fontSize: 24 }} className="text-green-600 mr-2" />
                   <span className="font-bold text-green-700 text-lg">Payment Successful!</span>
                 </div>
                 <div className="space-y-2 text-sm text-gray-700">
@@ -119,7 +124,7 @@ console.log(data); // Echo response + refund confirmed`
 
               <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
                 <div className="flex items-center mb-2">
-                  <DollarSign className="h-5 w-5 text-blue-600 mr-2" />
+                  <AttachMoneyIcon sx={{ fontSize: 20 }} className="text-blue-600 mr-2" />
                   <span className="font-bold text-blue-700">Refund Initiated</span>
                 </div>
                 <p className="text-sm text-gray-700">
@@ -140,7 +145,7 @@ console.log(data); // Echo response + refund confirmed`
           {testStatus === 'error' && (
             <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6">
               <div className="flex items-center mb-3">
-                <XCircle className="h-6 w-6 text-red-600 mr-2" />
+                <CancelIcon sx={{ fontSize: 24 }} className="text-red-600 mr-2" />
                 <span className="font-bold text-red-700">Payment Failed</span>
               </div>
               <p className="text-sm text-gray-700 mb-4">
@@ -180,23 +185,23 @@ console.log(data); // Echo response + refund confirmed`
             <h3 className="text-xl font-bold mb-4 text-gray-900">What You Get</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+                <CheckCircleIcon sx={{ fontSize: 20 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
                 <span className="text-gray-700"><span className="font-semibold">Real blockchain transactions</span> on X1 mainnet</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+                <CheckCircleIcon sx={{ fontSize: 20 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
                 <span className="text-gray-700"><span className="font-semibold">100% refund</span> of all test payments</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+                <CheckCircleIcon sx={{ fontSize: 20 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
                 <span className="text-gray-700"><span className="font-semibold">Gas fees covered</span> by X1Pays treasury</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+                <CheckCircleIcon sx={{ fontSize: 20 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
                 <span className="text-gray-700"><span className="font-semibold">Full x402 flow</span> including verification & settlement</span>
               </li>
               <li className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
+                <CheckCircleIcon sx={{ fontSize: 20 }} className="text-green-500 mr-3 flex-shrink-0 mt-0.5" />
                 <span className="text-gray-700"><span className="font-semibold">Real transaction receipts</span> with on-chain proof</span>
               </li>
             </ul>
@@ -253,7 +258,7 @@ console.log(data); // Echo response + refund confirmed`
             className="inline-flex items-center px-8 py-4 bg-white text-indigo-600 rounded-lg font-bold hover:bg-gray-50 transition-all duration-200 shadow-lg"
           >
             Get Started
-            <ArrowRight className="ml-2 h-5 w-5" />
+            <ArrowForwardIcon sx={{ fontSize: 20, ml: 1 }} />
           </a>
           <a
             href="/docs/examples"
