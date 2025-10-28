@@ -4,7 +4,7 @@ import { BackpackWalletAdapter } from '@solana/wallet-adapter-backpack';
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
 import { SolflareWalletAdapter } from '@solana/wallet-adapter-solflare';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { X402Paywall } from 'x402-x1-react';
+import { X402Paywall } from '@x1pays/react';
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 // Your premium content component

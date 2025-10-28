@@ -31,7 +31,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.1",
-    "x402-x1-react": "workspace:*"
+    "@x1pays/react": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

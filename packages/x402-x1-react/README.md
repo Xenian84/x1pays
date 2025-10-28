@@ -1,4 +1,4 @@
-# x402-x1-react
+# @x1pays/react
 
 A React component library for integrating x402 payment protocol on X1 blockchain with Backpack wallet support.
 
@@ -14,11 +14,11 @@ A React component library for integrating x402 payment protocol on X1 blockchain
 ## 📦 Installation
 
 ```bash
-npm install x402-x1-react
+npm install @x1pays/react
 # or
-yarn add x402-x1-react
+yarn add @x1pays/react
 # or
-pnpm add x402-x1-react
+pnpm add @x1pays/react
 ```
 
 ### Install Peer Dependencies
@@ -62,7 +62,7 @@ function App() {
 ## 🎯 Quick Start
 
 ```tsx
-import { X402Paywall } from 'x402-x1-react';
+import { X402Paywall } from '@x1pays/react';
 
 function PremiumPage() {
   return (

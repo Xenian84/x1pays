@@ -104,7 +104,7 @@ getPremiumData()`
     {
       title: 'React (X1 Blockchain)',
       icon: <RocketLaunchIcon />,
-      code: `import { X402Paywall } from 'x402-x1-react'
+      code: `import { X402Paywall } from '@x1pays/react'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { BackpackWalletAdapter } from '@solana/wallet-adapter-backpack'
