@@ -50,11 +50,12 @@ export default function Echo() {
       const encodedMessage = new TextEncoder().encode(message)
       const signature = await signMessage(encodedMessage)
       
-      const base64Signature = btoa(String.fromCharCode(...Array.from(signature)))
+      // Convert signature to base58 (bs58) format as expected by facilitator
+      const bs58Signature = await import('bs58').then(m => m.default.encode(signature))
       
       const signedPayload = {
         ...paymentPayload,
-        signature: base64Signature,
+        signature: bs58Signature,
       }
 
       setTestStatus('verifying')
