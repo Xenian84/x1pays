@@ -1,9 +1,24 @@
 {
   "name": "@x1pays/sdk",
   "version": "0.1.0",
+  "description": "TypeScript SDK for x402 payment protocol on X1 blockchain",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "keywords": [
+    "x402",
+    "sdk",
+    "payments",
+    "x1",
+    "blockchain",
+    "typescript"
+  ],
+  "author": "X1Pays",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/x1pays"
+  },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",
     "test": "vitest run"

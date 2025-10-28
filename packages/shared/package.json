@@ -1,8 +1,16 @@
 {
   "name": "@x1pays/shared",
   "version": "0.1.0",
+  "description": "Shared utilities for X1 blockchain interactions and x402 protocol",
   "type": "module",
+  "private": true,
   "main": "src/blockchain.ts",
+  "author": "X1Pays",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/x1pays"
+  },
   "exports": {
     "./blockchain": "./src/blockchain.ts"
   },

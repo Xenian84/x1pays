@@ -1,7 +1,15 @@
 {
   "name": "@x1pays/website",
   "version": "0.1.0",
+  "description": "X1Pays documentation website - comprehensive guide to x402 payment protocol",
   "type": "module",
+  "private": true,
+  "author": "X1Pays",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/x1pays"
+  },
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5000",
     "build": "tsc && vite build",

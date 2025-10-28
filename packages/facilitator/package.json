@@ -1,9 +1,25 @@
 {
   "name": "@x1pays/facilitator",
   "version": "0.1.0",
+  "description": "x402 payment facilitator service for X1 blockchain - handles signature verification and blockchain settlement",
   "type": "module",
+  "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "keywords": [
+    "x402",
+    "facilitator",
+    "payments",
+    "x1",
+    "blockchain",
+    "settlement"
+  ],
+  "author": "X1Pays",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/x1pays"
+  },
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsc -p tsconfig.json",

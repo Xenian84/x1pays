@@ -76,6 +76,23 @@ export default function Echo() {
       return
     }
 
+    // Validate required environment variables
+    if (!import.meta.env.VITE_MERCHANT_ADDRESS) {
+      setTestStatus('error')
+      setErrorMessage('VITE_MERCHANT_ADDRESS not configured. Please check .env.local')
+      return
+    }
+    if (!import.meta.env.VITE_WXNT_MINT) {
+      setTestStatus('error')
+      setErrorMessage('VITE_WXNT_MINT not configured. Please check .env.local')
+      return
+    }
+    if (!import.meta.env.VITE_FACILITATOR_URL) {
+      setTestStatus('error')
+      setErrorMessage('VITE_FACILITATOR_URL not configured. Please check .env.local')
+      return
+    }
+
     try {
       setTestStatus('signing')
       
@@ -85,8 +102,8 @@ export default function Echo() {
       const paymentPayload = {
         scheme: 'x402' as const,
         network: currentNetwork,
-        payTo: import.meta.env.VITE_MERCHANT_ADDRESS || 'JDxUE7U8uWmyp9V22h9w14vWgwZxUhf8HBZvvSg247Zp',
-        asset: import.meta.env.VITE_WXNT_MINT || 'So11111111111111111111111111111111111111112',
+        payTo: import.meta.env.VITE_MERCHANT_ADDRESS,
+        asset: import.meta.env.VITE_WXNT_MINT,
         amount: '100000',
         resource: '/api/echo',
         memo: 'Echo Test Payment',
@@ -107,7 +124,7 @@ export default function Echo() {
 
       setTestStatus('verifying')
       
-      const facilitatorUrl = import.meta.env.VITE_FACILITATOR_URL || 'http://localhost:3001'
+      const facilitatorUrl = import.meta.env.VITE_FACILITATOR_URL
       const verifyResponse = await fetch(`${facilitatorUrl}/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -163,7 +180,11 @@ export default function Echo() {
   const initiateRefund = async (buyerAddress: string, originalTxId?: string) => {
     try {
       // Call facilitator to process refund transaction
-      const facilitatorUrl = import.meta.env.VITE_FACILITATOR_URL || 'http://localhost:3001'
+      const facilitatorUrl = import.meta.env.VITE_FACILITATOR_URL
+      if (!facilitatorUrl) {
+        console.error('VITE_FACILITATOR_URL not configured')
+        return
+      }
       const refundResponse = await fetch(`${facilitatorUrl}/refund`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

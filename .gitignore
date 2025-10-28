@@ -14,3 +14,13 @@ coverage
 .wallets-backup/
 *-wallet.json
 *.keypair
+
+# Temporary files
+attached_assets/
+*.old.*
+*.tmp
+*.temp
+
+# Build artifacts
+*.tsbuildinfo
+.turbo

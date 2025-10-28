@@ -1,13 +1,14 @@
 # X1Pays
 
-**x402 payment protocol implementation on X1 blockchain using wrapped XNT (wXNT) tokens**
+**Production-ready x402 payment protocol for X1 blockchain - Instant, Invisible Payments**
 
-X1Pays is a complete TypeScript monorepo enabling HTTP 402 Payment Required micropayments on the X1 blockchain. It includes:
+X1Pays is a complete TypeScript monorepo enabling HTTP 402 Payment Required micropayments on the X1 blockchain with signature-first verification achieving sub-second payment flows. It includes:
 
-- **Facilitator Service** - Verifies signatures and settles wXNT token transfers
-- **x402-enabled API** - Returns HTTP 402 until valid payment is provided
-- **Client SDK** - Handles payment signing and x402 handshake for browsers/Node
-- **Documentation Website** - Landing page and interactive API documentation
+- **Facilitator Service** - Signature verification (~50ms) and blockchain settlement
+- **Client Libraries** - Drop-in Axios and Fetch clients with automatic payment handling  
+- **Server Middleware** - Express, Hono, Fastify, and Next.js integrations
+- **React Components** - Pre-built paywall components for easy integration
+- **Documentation Website** - Comprehensive guides and live demos on X1 testnet
 
 ## Architecture
 
@@ -96,9 +97,14 @@ The protocol will introduce **$XPY staking** for holders:
 x1pays/
 ├─ packages/
 │  ├─ facilitator/     # Payment verification & settlement service
-│  ├─ api/             # x402-enabled API server
-│  ├─ sdk/             # Client SDK for Node/browser
-│  └─ website/         # Documentation website (React + Vite)
+│  ├─ api/             # Example x402-enabled API server
+│  ├─ client/          # @x1pays/client - Axios and Fetch libraries
+│  ├─ middleware/      # @x1pays/middleware - Express, Hono, Fastify, Next.js
+│  ├─ x402-x1-react/   # React component library for X1 blockchain
+│  ├─ sdk/             # TypeScript SDK
+│  ├─ shared/          # Shared blockchain utilities
+│  └─ website/         # Documentation website (React + Vite + Material-UI)
+├─ examples/           # Usage examples for all frameworks
 ├─ scripts/            # Utility scripts
 ├─ ops/                # Deployment configs (PM2, Nginx, Docker)
 ├─ package.json        # Root workspace config
@@ -129,13 +135,16 @@ cp packages/facilitator/.env.example packages/facilitator/.env
 
 # API
 cp packages/api/.env.example packages/api/.env
+
+# Website
+cp packages/website/.env.example packages/website/.env.local
 ```
 
 **Required environment variables:**
 
 **Facilitator:**
-- `RPC_URL` - X1 RPC endpoint (default: https://rpc.mainnet.x1.xyz)
-- `NETWORK` - Network identifier (x1-mainnet or x1-devnet)
+- `RPC_URL` - X1 RPC endpoint (Mainnet: https://rpc.x1.xyz, Testnet: https://rpc-testnet.x1.xyz)
+- `NETWORK` - Network identifier (x1-mainnet or x1-testnet)
 - `WXNT_MINT` - wXNT SPL token mint address on X1
 - `FEE_PAYER_SECRET` - Base58-encoded private key that covers gas costs for all transactions
 
@@ -145,7 +154,15 @@ cp packages/api/.env.example packages/api/.env
 - `WXNT_MINT` - wXNT SPL token mint address (same as facilitator)
 - `PAYTO_ADDRESS` - Merchant wallet address receiving 100% of payments
 - `FACILITATOR_URL` - Facilitator service URL (typically http://localhost:4000)
-- `DOMAIN` - Public domain for the service (e.g., x1pays.xyz)
+- `DOMAIN` - Public domain for the service (e.g., localhost for development)
+
+**Website:**
+- `VITE_NETWORK` - Network identifier (x1-mainnet or x1-testnet)
+- `VITE_X1_MAINNET_RPC` - X1 mainnet RPC URL
+- `VITE_X1_TESTNET_RPC` - X1 testnet RPC URL
+- `VITE_FACILITATOR_URL` - Facilitator service URL
+- `VITE_MERCHANT_ADDRESS` - Merchant wallet for Echo demo
+- `VITE_WXNT_MINT` - wXNT token mint address
 
 **Note:** The merchant wallet address is set in the API's `PAYTO_ADDRESS`. The facilitator is multi-tenant and processes payments for any merchant specified in the payment request.
 
@@ -180,26 +197,24 @@ Visit:
 pnpm build
 ```
 
-## 🌐 Mainnet Deployment
+## 🌐 Network Configuration
 
-X1Pays is configured to connect to **X1 Mainnet** by default.
+X1Pays supports both **X1 Mainnet** and **X1 Testnet**. Configure via the `NETWORK` environment variable.
 
-### RPC Connection Status
+### RPC Endpoints
 
-**X1 Mainnet RPC:** `https://rpc.mainnet.x1.xyz`
-- ✅ **Status:** Online and operational
-- **Solana Version:** 2.2.17
-- **Current Slot:** ~4.5M+
+**X1 Mainnet:** `https://rpc.x1.xyz`  
+**X1 Testnet:** `https://rpc-testnet.x1.xyz`
 
-### Quick Mainnet Check
-
-Test the RPC connection:
+Test the connection:
 ```bash
-# Using the check script
-./scripts/check-mainnet.sh
+# Mainnet
+curl -X POST https://rpc.x1.xyz \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getVersion"}'
 
-# Or manually with curl
-curl -X POST https://rpc.mainnet.x1.xyz \
+# Testnet  
+curl -X POST https://rpc-testnet.x1.xyz \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"getVersion"}'
 ```
