@@ -18,7 +18,6 @@ import {
   Alert
 } from '@mui/material';
 import { Connection, PublicKey } from '@solana/web3.js';
-import { getExplorerUrl } from '@x1pays/client';
 
 // Memo parsing utilities (inline for now)
 interface ParsedMemo {
@@ -147,6 +146,19 @@ async function fetchTransaction(
     console.error('Failed to fetch transaction:', error);
     return null;
   }
+}
+
+/**
+ * Get blockchain explorer URL for transaction
+ */
+function getExplorerUrl(
+  signature: string,
+  network: 'x1-testnet' | 'x1-mainnet' | string
+): string {
+  const baseUrl = network === 'x1-testnet'
+    ? 'https://explorer.x1-testnet.xyz/tx'
+    : 'https://explorer.x1.xyz/tx';
+  return `${baseUrl}/${signature}`;
 }
 
 interface TransactionHistoryProps {

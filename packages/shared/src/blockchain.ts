@@ -201,3 +201,16 @@ export function getNetworkFromRpc(rpcUrl: string): 'x1-mainnet' | 'x1-devnet' | 
   if (rpcUrl.includes('devnet')) return 'x1-devnet';
   return 'x1-testnet';
 }
+
+/**
+ * Get blockchain explorer URL for transaction
+ */
+export function getExplorerUrl(
+  signature: string,
+  network: 'x1-testnet' | 'x1-mainnet' | string
+): string {
+  const baseUrl = network === 'x1-testnet'
+    ? 'https://explorer.x1-testnet.xyz/tx'
+    : 'https://explorer.x1.xyz/tx';
+  return `${baseUrl}/${signature}`;
+}
