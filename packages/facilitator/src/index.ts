@@ -4,7 +4,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import pino from "pino";
 import { PublicKey } from "@solana/web3.js";
-import * as nacl from "tweetnacl";
+import nacl from "tweetnacl";
 import bs58 from "bs58";
 import { getConnection, loadFeePayer, tokenTransferTx } from "./lib/solana.js";
 import { 

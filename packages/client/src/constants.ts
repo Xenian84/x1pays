@@ -4,7 +4,8 @@
 
 export const NETWORKS = {
   X1_MAINNET: 'x1-mainnet',
-  X1_DEVNET: 'x1-devnet'
+  X1_DEVNET: 'x1-devnet',
+  X1_TESTNET: 'x1-testnet'
 } as const;
 
 export type Network = typeof NETWORKS[keyof typeof NETWORKS];
@@ -24,7 +25,8 @@ export const X402_VERSION = 1;
  */
 export const FACILITATOR_URLS = {
   MAINNET: 'https://facilitator.x1pays.network',
-  DEVNET: 'https://facilitator-devnet.x1pays.network'
+  DEVNET: 'https://facilitator-devnet.x1pays.network',
+  TESTNET: 'https://facilitator-testnet.x1pays.network'
 } as const;
 
 /**
