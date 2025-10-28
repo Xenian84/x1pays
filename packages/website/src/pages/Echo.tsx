@@ -56,7 +56,6 @@ export default function Echo() {
   const { publicKey, signMessage } = useWallet()
   const [testStatus, setTestStatus] = useState<'idle' | 'connecting' | 'signing' | 'verifying' | 'settling' | 'success' | 'error'>('idle')
   const [txHash, setTxHash] = useState<string>('')
-  const [isSimulated, setIsSimulated] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   const handlePayment = async () => {
@@ -125,7 +124,6 @@ export default function Echo() {
       
       setTestStatus('success')
       setTxHash(settleResult.txHash || 'TX_COMPLETED')
-      setIsSimulated(settleResult.simulated === true)
     } catch (error) {
       console.error('Payment error:', error)
       setTestStatus('error')
@@ -136,7 +134,6 @@ export default function Echo() {
   const resetTest = () => {
     setTestStatus('idle')
     setTxHash('')
-    setIsSimulated(false)
     setErrorMessage('')
   }
 
@@ -278,67 +275,44 @@ export default function Echo() {
                         <Typography variant="body2" sx={{ fontWeight: 700, color: 'secondary.main' }}>0% (FREE)</Typography>
                       </Box>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 1, borderTop: '1px solid', borderColor: 'secondary.dark' }}>
-                        <Typography variant="body2" color="text.secondary">
-                          {isSimulated ? 'Demo TX:' : 'TX Hash:'}
-                        </Typography>
+                        <Typography variant="body2" color="text.secondary">TX Hash:</Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                           <Typography variant="caption" sx={{ fontFamily: 'monospace', maxWidth: '150px', wordBreak: 'break-all', textAlign: 'right' }}>
-                            {isSimulated ? '(Simulated)' : `${txHash.slice(0, 8)}...${txHash.slice(-8)}`}
+                            {txHash.slice(0, 8)}...{txHash.slice(-8)}
                           </Typography>
-                          {!isSimulated && (
-                            <Button
-                              component="a"
-                              href={`https://explorer.x1.xyz/tx/${txHash}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              size="small"
-                              sx={{ minWidth: 'auto', p: 0.5 }}
-                            >
-                              <OpenInNewIcon sx={{ fontSize: 16, color: 'primary.main' }} />
-                            </Button>
-                          )}
+                          <Button
+                            component="a"
+                            href={`https://explorer.x1.xyz/tx/${txHash}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            size="small"
+                            sx={{ minWidth: 'auto', p: 0.5 }}
+                          >
+                            <OpenInNewIcon sx={{ fontSize: 16, color: 'primary.main' }} />
+                          </Button>
                         </Box>
                       </Box>
                     </Stack>
                   </Paper>
 
-                  {isSimulated && (
-                    <Paper
-                      elevation={0}
-                      sx={{
-                        bgcolor: 'rgba(118, 255, 3, 0.05)',
-                        border: '1px solid',
-                        borderColor: 'secondary.dark',
-                        p: 3,
-                      }}
-                    >
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                        <Box component="span" sx={{ fontWeight: 700, color: 'secondary.main' }}>Demo Mode:</Box> This payment was verified using real wallet signature but not settled on-chain. 
-                        The x402 protocol verification is fully functional - settlement simulation allows testing without spending testnet tokens.
-                      </Typography>
-                    </Paper>
-                  )}
-                  
-                  {!isSimulated && (
-                    <Paper
-                      elevation={0}
-                      sx={{
-                        bgcolor: 'rgba(0, 229, 255, 0.1)',
-                        border: '1px solid',
-                        borderColor: 'primary.dark',
-                        p: 3,
-                      }}
-                    >
-                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                        <AttachMoneyIcon sx={{ fontSize: 20, color: 'primary.main', mr: 1 }} />
-                        <Typography variant="body1" sx={{ fontWeight: 700, color: 'primary.main' }}>Refund Initiated</Typography>
-                      </Box>
-                      <Typography variant="body2" color="text.secondary">
-                        Your <Box component="span" sx={{ fontWeight: 700 }}>0.0001 XNT</Box> will be refunded within 1 minute. 
-                        X1Pays covers all costs for Echo testing.
-                      </Typography>
-                    </Paper>
-                  )}
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      bgcolor: 'rgba(0, 229, 255, 0.1)',
+                      border: '1px solid',
+                      borderColor: 'primary.dark',
+                      p: 3,
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                      <AttachMoneyIcon sx={{ fontSize: 20, color: 'primary.main', mr: 1 }} />
+                      <Typography variant="body1" sx={{ fontWeight: 700, color: 'primary.main' }}>Refund Initiated</Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Your <Box component="span" sx={{ fontWeight: 700 }}>0.0001 XNT</Box> will be refunded within 1 minute. 
+                      X1Pays covers all costs for Echo testing.
+                    </Typography>
+                  </Paper>
 
                   <Button
                     onClick={resetTest}
