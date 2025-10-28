@@ -154,7 +154,7 @@ console.log(data); // Echo response + refund confirmed`
                     <Stack spacing={1}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="body2" color="text.secondary">Amount Paid:</Typography>
-                        <Typography variant="body2" sx={{ fontFamily: 'monospace', fontWeight: 600 }}>1000 wXNT (0.001)</Typography>
+                        <Typography variant="body2" sx={{ fontFamily: 'monospace', fontWeight: 600 }}>0.001 XNT</Typography>
                       </Box>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="body2" color="text.secondary">Settlement:</Typography>
@@ -189,7 +189,7 @@ console.log(data); // Echo response + refund confirmed`
                       <Typography variant="body1" sx={{ fontWeight: 700, color: 'primary.main' }}>Refund Initiated</Typography>
                     </Box>
                     <Typography variant="body2" color="text.secondary">
-                      Your <Box component="span" sx={{ fontWeight: 700 }}>1000 wXNT</Box> will be refunded within 1 minute. 
+                      Your <Box component="span" sx={{ fontWeight: 700 }}>0.001 XNT</Box> will be refunded within 1 minute. 
                       X1Pays covers all costs for Echo testing.
                     </Typography>
                   </Paper>

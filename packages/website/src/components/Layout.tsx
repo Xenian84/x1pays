@@ -184,7 +184,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Typography>
               </Box>
               <Typography variant="body2" color="text.secondary">
-                HTTP 402 micropayments on X1 blockchain using wXNT tokens.
+                HTTP 402 micropayments on X1 blockchain using XNT tokens.
               </Typography>
             </Box>
             
