@@ -159,9 +159,9 @@ app.post("/settle", async (req, res) => {
     const { Transaction, SystemProgram } = await import("@solana/web3.js");
     const tx = new Transaction();
     
-    // Enhanced memo format: x402v1:scheme:txId:resource:timestamp
+    // Enhanced memo format: x402v1:exact:txId:resource:timestamp
     const memoData = Buffer.from(
-      `x402v1:${payment.scheme}:${txId}:${resourceShort}:${timestamp}`,
+      `x402v1:exact:${txId}:${resourceShort}:${timestamp}`,
       'utf-8'
     );
     

@@ -210,7 +210,8 @@ export function getExplorerUrl(
   network: 'x1-testnet' | 'x1-mainnet' | string
 ): string {
   const baseUrl = network === 'x1-testnet'
-    ? 'https://explorer.x1-testnet.xyz/tx'
+    ? 'https://explorer.testnet.x1.xyz/tx'
     : 'https://explorer.x1.xyz/tx';
+  
   return `${baseUrl}/${signature}`;
 }

@@ -67,7 +67,7 @@ export default function Echo() {
     if (network === 'x1-testnet') {
       return `https://explorer.testnet.x1.xyz/tx/${hash}`
     }
-    return `https://explorer.mainnet.x1.xyz/tx/${hash}`
+    return `https://explorer.x1.xyz/tx/${hash}`
   }
 
   const handlePayment = async () => {
