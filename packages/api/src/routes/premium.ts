@@ -7,7 +7,7 @@ r.get("/data", async (req: Request, res: Response) => {
   const paymentResponse = {
     txHash: tx,
     amount: res.locals.amount,
-    simulated: res.locals.simulated
+    network: res.locals.network
   };
   
   res.setHeader("X-PAYMENT-RESPONSE", JSON.stringify(paymentResponse));

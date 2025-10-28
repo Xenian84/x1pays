@@ -30,6 +30,23 @@ export const FACILITATOR_URLS = {
 } as const;
 
 /**
+ * X1 Explorer URLs by network
+ */
+export const EXPLORER_URLS = {
+  'x1-mainnet': 'https://explorer.mainnet.x1.xyz',
+  'x1-devnet': 'https://explorer.testnet.x1.xyz',
+  'x1-testnet': 'https://explorer.testnet.x1.xyz'
+} as const;
+
+/**
+ * Get explorer URL for a transaction on a specific network
+ */
+export function getExplorerUrl(txHash: string, network: Network): string {
+  const baseUrl = EXPLORER_URLS[network] || EXPLORER_URLS['x1-mainnet'];
+  return `${baseUrl}/tx/${txHash}`;
+}
+
+/**
  * Maximum payment amount (safety limit)
  * 1 billion atomic units = 1,000 wXNT
  */

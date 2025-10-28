@@ -56,7 +56,18 @@ export default function Echo() {
   const { publicKey, signMessage } = useWallet()
   const [testStatus, setTestStatus] = useState<'idle' | 'connecting' | 'signing' | 'verifying' | 'settling' | 'success' | 'error'>('idle')
   const [txHash, setTxHash] = useState<string>('')
+  const [network, setNetwork] = useState<'x1-testnet' | 'x1-mainnet'>('x1-testnet')
+  const [refundTxHash, setRefundTxHash] = useState<string>('')
+  const [refundCountdown, setRefundCountdown] = useState<number>(60)
   const [errorMessage, setErrorMessage] = useState<string>('')
+
+  // Get explorer URL based on network
+  const getExplorerUrl = (hash: string) => {
+    if (network === 'x1-testnet') {
+      return `https://explorer.testnet.x1.xyz/tx/${hash}`
+    }
+    return `https://explorer.mainnet.x1.xyz/tx/${hash}`
+  }
 
   const handlePayment = async () => {
     if (!publicKey || !signMessage) {
@@ -68,9 +79,12 @@ export default function Echo() {
     try {
       setTestStatus('signing')
       
+      const currentNetwork = (import.meta.env.VITE_NETWORK || 'x1-testnet') as 'x1-testnet' | 'x1-mainnet'
+      setNetwork(currentNetwork)
+
       const paymentPayload = {
         scheme: 'x402' as const,
-        network: 'x1-testnet' as const,
+        network: currentNetwork,
         payTo: import.meta.env.VITE_MERCHANT_ADDRESS || 'JDxUE7U8uWmyp9V22h9w14vWgwZxUhf8HBZvvSg247Zp',
         asset: import.meta.env.VITE_WXNT_MINT || 'So11111111111111111111111111111111111111112',
         amount: '100000',
@@ -124,6 +138,20 @@ export default function Echo() {
       
       setTestStatus('success')
       setTxHash(settleResult.txHash || 'TX_COMPLETED')
+      
+      // Start refund countdown
+      setRefundCountdown(60)
+      const countdownInterval = setInterval(() => {
+        setRefundCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(countdownInterval)
+            // Simulate refund transaction after countdown
+            initiateRefund(publicKey.toString())
+            return 0
+          }
+          return prev - 1
+        })
+      }, 1000)
     } catch (error) {
       console.error('Payment error:', error)
       setTestStatus('error')
@@ -131,9 +159,34 @@ export default function Echo() {
     }
   }
 
+  const initiateRefund = async (buyerAddress: string) => {
+    try {
+      // Call facilitator to process refund transaction
+      const facilitatorUrl = import.meta.env.VITE_FACILITATOR_URL || 'http://localhost:3001'
+      const refundResponse = await fetch(`${facilitatorUrl}/refund`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          buyer: buyerAddress,
+          amount: '100000',
+          network: network,
+        }),
+      })
+
+      if (refundResponse.ok) {
+        const refundResult = await refundResponse.json()
+        setRefundTxHash(refundResult.txHash || '')
+      }
+    } catch (error) {
+      console.error('Refund error:', error)
+    }
+  }
+
   const resetTest = () => {
     setTestStatus('idle')
     setTxHash('')
+    setRefundTxHash('')
+    setRefundCountdown(60)
     setErrorMessage('')
   }
 
@@ -282,7 +335,7 @@ export default function Echo() {
                           </Typography>
                           <Button
                             component="a"
-                            href={`https://explorer.x1.xyz/tx/${txHash}`}
+                            href={getExplorerUrl(txHash)}
                             target="_blank"
                             rel="noopener noreferrer"
                             size="small"
@@ -306,12 +359,44 @@ export default function Echo() {
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                       <AttachMoneyIcon sx={{ fontSize: 20, color: 'primary.main', mr: 1 }} />
-                      <Typography variant="body1" sx={{ fontWeight: 700, color: 'primary.main' }}>Refund Initiated</Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                        {refundTxHash ? 'Refund Completed' : 'Refund Initiated'}
+                      </Typography>
                     </Box>
-                    <Typography variant="body2" color="text.secondary">
-                      Your <Box component="span" sx={{ fontWeight: 700 }}>0.0001 XNT</Box> will be refunded within 1 minute. 
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      Your <Box component="span" sx={{ fontWeight: 700 }}>0.0001 XNT</Box> {refundTxHash ? 'has been refunded' : 'will be refunded within 1 minute'}. 
                       X1Pays covers all costs for Echo testing.
                     </Typography>
+                    
+                    {!refundTxHash && refundCountdown > 0 && (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <CircularProgress size={16} sx={{ color: 'primary.main' }} />
+                        <Typography variant="body2" color="text.secondary">
+                          Refund in <Box component="span" sx={{ fontWeight: 700, color: 'primary.main' }}>{refundCountdown}s</Box>
+                        </Typography>
+                      </Box>
+                    )}
+                    
+                    {refundTxHash && (
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 1, borderTop: '1px solid', borderColor: 'primary.dark' }}>
+                        <Typography variant="body2" color="text.secondary">Refund TX:</Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          <Typography variant="caption" sx={{ fontFamily: 'monospace', maxWidth: '150px', wordBreak: 'break-all', textAlign: 'right' }}>
+                            {refundTxHash.slice(0, 8)}...{refundTxHash.slice(-8)}
+                          </Typography>
+                          <Button
+                            component="a"
+                            href={getExplorerUrl(refundTxHash)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            size="small"
+                            sx={{ minWidth: 'auto', p: 0.5 }}
+                          >
+                            <OpenInNewIcon sx={{ fontSize: 16, color: 'primary.main' }} />
+                          </Button>
+                        </Box>
+                      </Box>
+                    )}
                   </Paper>
 
                   <Button

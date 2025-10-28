@@ -8,7 +8,7 @@ declare module 'fastify' {
     x402Payment?: {
       txHash: string;
       amount: string;
-      simulated: boolean;
+      network: string;
     };
   }
 
@@ -78,14 +78,14 @@ const x402Plugin: FastifyPluginAsync<X402PluginOptions> = async (fastify, option
         request.x402Payment = {
           txHash: settlement.txHash,
           amount: settlement.amount,
-          simulated: settlement.simulated
+          network: settlement.network
         };
 
         // Add payment response header
         reply.header('X-Payment-Response', JSON.stringify({
           txHash: settlement.txHash,
           amount: settlement.amount,
-          simulated: settlement.simulated
+          network: settlement.network
         }));
       } catch (error: any) {
         if (error instanceof X402Error) {

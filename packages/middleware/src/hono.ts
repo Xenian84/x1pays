@@ -44,13 +44,13 @@ export function x402(config: X402Config): MiddlewareHandler {
       // Store settlement details in context for access in route handler
       c.set('txHash', settlement.txHash);
       c.set('amount', settlement.amount);
-      c.set('simulated', settlement.simulated);
+      c.set('network', settlement.network);
 
       // Add payment response header
       c.header('X-Payment-Response', JSON.stringify({
         txHash: settlement.txHash,
         amount: settlement.amount,
-        simulated: settlement.simulated
+        network: settlement.network
       }));
 
       await next();

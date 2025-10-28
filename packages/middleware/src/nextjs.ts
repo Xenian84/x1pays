@@ -4,7 +4,7 @@ import { createPaymentRequirement, validatePayment, verifyPayment, settlePayment
 
 export interface X402HandlerConfig extends X402Config {
   handler: (
-    req: NextApiRequest & { x402Payment?: { txHash: string; amount: string; simulated: boolean } },
+    req: NextApiRequest & { x402Payment?: { txHash: string; amount: string; network: string } },
     res: NextApiResponse
   ) => Promise<void> | void;
 }
@@ -52,14 +52,14 @@ export function x402Handler(config: X402HandlerConfig) {
       (req as any).x402Payment = {
         txHash: settlement.txHash,
         amount: settlement.amount,
-        simulated: settlement.simulated
+        network: settlement.network
       };
 
       // Add payment response header
       res.setHeader('X-Payment-Response', JSON.stringify({
         txHash: settlement.txHash,
         amount: settlement.amount,
-        simulated: settlement.simulated
+        network: settlement.network
       }));
 
       // Call the actual handler

@@ -39,7 +39,7 @@ export interface PaymentRequirement {
 export interface SettlementResponse {
   txHash: string;
   amount: string;
-  simulated: boolean;
+  network: string;
 }
 
 export interface VerifyResponse {

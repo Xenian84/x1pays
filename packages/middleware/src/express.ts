@@ -44,13 +44,13 @@ export function x402Middleware(config: X402Config) {
       // Store settlement details in res.locals for access in route handler
       res.locals.txHash = settlement.txHash;
       res.locals.amount = settlement.amount;
-      res.locals.simulated = settlement.simulated;
+      res.locals.network = settlement.network;
 
       // Add payment response header
       res.setHeader('X-Payment-Response', JSON.stringify({
         txHash: settlement.txHash,
         amount: settlement.amount,
-        simulated: settlement.simulated
+        network: settlement.network
       }));
 
       return next();

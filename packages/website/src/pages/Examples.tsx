@@ -35,11 +35,9 @@ const Examples = () => {
 import { Keypair } from '@solana/web3.js'
 import fs from 'fs'
 
-// Load wallet from secret key file
-const secretKey = JSON.parse(
-  fs.readFileSync('./wallet-secret.json', 'utf-8')
-)
-const wallet = Keypair.fromSecretKey(new Uint8Array(secretKey))
+// Load wallet from environment or secret key
+const secretKeyBase58 = process.env.WALLET_SECRET_KEY!
+const wallet = Keypair.fromSecretKey(bs58.decode(secretKeyBase58))
 
 // Make a paid request
 async function fetchPremiumData() {
@@ -57,7 +55,6 @@ async function fetchPremiumData() {
     console.log('Premium data:', response.data)
     console.log('Payment TX:', response.payment?.txHash)
     console.log('Amount paid:', response.payment?.amount)
-    console.log('Simulated:', response.payment?.simulated)
   } catch (error) {
     console.error('Request failed:', error)
   }
@@ -278,7 +275,7 @@ curl -X POST https://facilitator.x1pays.xyz/settle \\
   -H "Content-Type: application/json" \\
   -d "$PAYMENT"
 
-# Response: {"txHash": "SIM_ABC123...", "amount": "1000", "simulated": true}
+# Response: {"txHash": "3RnYh8r9...oVgpXDYMC", "amount": "1000", "network": "x1-mainnet"}
 
 # Step 5: Retry request with payment proof
 curl -H "X-Payment: $PAYMENT" \\
@@ -317,7 +314,7 @@ app.get('/api/premium/data',
       payment: {
         txHash: payment.txHash,
         amount: payment.amount,
-        simulated: payment.simulated
+        network: payment.network
       }
     })
   }

@@ -181,12 +181,93 @@ app.post("/settle", async (req, res) => {
 
     return res.json({ 
       txHash,
-      simulated: false,
       amount: totalAmount.toString(),
-      network: "x1-testnet"
+      network: payment.network
     });
   } catch (e: any) {
     logger.error(e, "Settlement failed");
+    return res.status(400).json({ error: e.message });
+  }
+});
+
+app.post("/refund", async (req, res) => {
+  try {
+    const { buyer, amount, network } = req.body;
+    
+    if (!buyer || !amount || !network) {
+      return res.status(400).json({ error: "Missing required fields: buyer, amount, network" });
+    }
+
+    // Validate network matches expected network
+    const expectedNetwork = process.env.NETWORK || "x1-testnet";
+    if (network !== expectedNetwork) {
+      return res.status(400).json({ 
+        error: `Network mismatch. Expected: ${expectedNetwork}, received: ${network}` 
+      });
+    }
+
+    const connection = getConnection();
+    const feePayer = loadFeePayer();
+    const buyerPubkey = new PublicKey(buyer);
+    const refundAmount = BigInt(amount);
+
+    logger.info({ 
+      buyer,
+      amount,
+      network
+    }, "Processing refund on X1 blockchain");
+
+    const { Transaction, SystemProgram } = await import("@solana/web3.js");
+    const tx = new Transaction();
+    
+    // Add memo for refund transaction
+    const memoData = Buffer.from(
+      `x402-refund:${amount}:${buyer.slice(0, 8)}`,
+      'utf-8'
+    );
+    
+    tx.add({
+      keys: [],
+      programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
+      data: memoData,
+    });
+
+    // Transfer exact refund amount back to buyer (1000 lamports for demo = 0.000001 SOL)
+    tx.add(
+      SystemProgram.transfer({
+        fromPubkey: feePayer.publicKey,
+        toPubkey: buyerPubkey,
+        lamports: 1000,
+      })
+    );
+
+    tx.feePayer = feePayer.publicKey;
+    tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+    
+    // Sign and send refund transaction
+    tx.sign(feePayer);
+    const txHash = await connection.sendRawTransaction(tx.serialize(), {
+      skipPreflight: false,
+      preflightCommitment: 'confirmed',
+    });
+    
+    // Wait for on-chain confirmation
+    await connection.confirmTransaction(txHash, "confirmed");
+    
+    logger.info({ 
+      txHash, 
+      buyer,
+      amount,
+      network
+    }, "Refund completed on X1 blockchain");
+
+    return res.json({ 
+      txHash,
+      amount: amount,
+      network
+    });
+  } catch (e: any) {
+    logger.error(e, "Refund failed");
     return res.status(400).json({ error: e.message });
   }
 });
