@@ -85,6 +85,7 @@ app.post("/verify", async (req, res) => {
       payTo: payment.payTo,
       asset: payment.asset,
       amount: payment.amount,
+      resource: payment.resource,
       memo: payment.memo ?? null,
       buyer: payment.buyer
     };
