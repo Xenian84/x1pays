@@ -27,7 +27,7 @@ export default function Echo() {
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   const handlePayment = async () => {
-    if (!publicKey || !signMessage || !sendTransaction) {
+    if (!publicKey || !signMessage) {
       setTestStatus('error')
       setErrorMessage('Please connect your wallet first')
       return
