@@ -199,12 +199,15 @@ export function TransactionHistory({
         signatures.map(sig => fetchTransaction(connection, sig.signature, network))
       );
 
-      // Filter and sort
+      // Filter and sort - show all transactions, even without memos
       const validTxs = txs
-        .filter((tx): tx is TransactionData => tx !== null && tx.memo !== null)
+        .filter((tx): tx is TransactionData => tx !== null)
         .sort((a, b) => (b.blockTime || 0) - (a.blockTime || 0));
 
       setTransactions(validTxs);
+      
+      // Log for debugging
+      console.log(`Fetched ${validTxs.length} transactions for ${walletAddress} on ${network}`);
     } catch (err: any) {
       setError(err.message || 'Failed to fetch transactions');
       console.error('Failed to fetch transaction history:', err);
@@ -266,7 +269,7 @@ export function TransactionHistory({
           </Box>
         ) : transactions.length === 0 ? (
           <Alert severity="info">
-            No x402 transactions found for this address
+            No transactions found for this wallet on {network}
           </Alert>
         ) : (
           <TableContainer component={Paper} variant="outlined">
@@ -285,20 +288,30 @@ export function TransactionHistory({
                 {transactions.map((tx) => (
                   <TableRow key={tx.signature}>
                     <TableCell>
-                      <Chip
-                        label={tx.memo?.type}
-                        color={tx.memo?.type === 'settlement' ? 'success' : 'warning'}
-                        size="small"
-                      />
+                      {tx.memo ? (
+                        <Chip
+                          label={tx.memo.type}
+                          color={tx.memo.type === 'settlement' ? 'success' : 'warning'}
+                          size="small"
+                        />
+                      ) : (
+                        <Chip label="transfer" color="default" size="small" />
+                      )}
                     </TableCell>
                     <TableCell>
-                      <Typography variant="body2" fontFamily="monospace">
-                        {tx.memo?.txId}
-                      </Typography>
-                      {tx.memo?.originalTxId && (
-                        <Typography variant="caption" color="text.secondary">
-                          Refund of: {tx.memo.originalTxId}
-                        </Typography>
+                      {tx.memo ? (
+                        <>
+                          <Typography variant="body2" fontFamily="monospace">
+                            {tx.memo.txId}
+                          </Typography>
+                          {tx.memo.originalTxId && (
+                            <Typography variant="caption" color="text.secondary" display="block">
+                              Refund of: {tx.memo.originalTxId}
+                            </Typography>
+                          )}
+                        </>
+                      ) : (
+                        <Typography variant="caption" color="text.secondary">-</Typography>
                       )}
                     </TableCell>
                     <TableCell>

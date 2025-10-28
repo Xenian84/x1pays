@@ -610,7 +610,11 @@ export default function Echo() {
         <Box sx={{ mt: 6 }}>
           <TransactionHistory
             walletAddress={publicKey.toString()}
-            rpcUrl={import.meta.env.VITE_X1_TESTNET_RPC || 'https://rpc-testnet.x1.xyz'}
+            rpcUrl={
+              network === 'x1-testnet'
+                ? (import.meta.env.VITE_X1_TESTNET_RPC || 'https://rpc-testnet.x1.xyz')
+                : (import.meta.env.VITE_X1_MAINNET_RPC || 'https://rpc.x1.xyz')
+            }
             network={network}
             limit={10}
           />
