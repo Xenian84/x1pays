@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import crypto from "crypto";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,6 +24,20 @@ import {
   X402_VERSION,
   NETWORKS
 } from "@x1pays/client";
+
+// Utility: Generate unique 8-character transaction ID
+function generateTxId(): string {
+  return crypto.randomBytes(4).toString('hex');
+}
+
+// Utility: Extract resource shortname from path
+function getResourceShort(resource?: string): string {
+  if (!resource) return 'default';
+  // Extract last path segment and limit to 10 chars
+  const parts = resource.split('/').filter(Boolean);
+  const last = parts[parts.length - 1] || 'default';
+  return last.slice(0, 10).replace(/[^a-z0-9\-]/gi, '');
+}
 
 const PORT = Number(process.env.PORT || 4000);
 const logger = pino({ transport: { target: "pino-pretty" } });
@@ -128,18 +143,25 @@ app.post("/settle", async (req, res) => {
     const merchant = new PublicKey(payment.payTo);
     const totalAmount = BigInt(payment.amount);
 
+    // Generate unique transaction ID and get timestamp
+    const txId = generateTxId();
+    const timestamp = Math.floor(Date.now() / 1000);
+    const resourceShort = getResourceShort(payment.resource);
+
     logger.info({ 
+      txId,
       buyer: payment.buyer,
       merchant: payment.payTo,
       amount: payment.amount,
-    }, "Processing settlement on X1 testnet");
+      resource: resourceShort,
+    }, "Processing settlement on X1 blockchain");
 
     const { Transaction, SystemProgram } = await import("@solana/web3.js");
     const tx = new Transaction();
     
-    // Add memo with payment metadata for transparency
+    // Enhanced memo format: x402v1:scheme:txId:resource:timestamp
     const memoData = Buffer.from(
-      `x402:${payment.scheme}:${payment.amount}:${payment.buyer.slice(0, 8)}`,
+      `x402v1:${payment.scheme}:${txId}:${resourceShort}:${timestamp}`,
       'utf-8'
     );
     
@@ -172,17 +194,22 @@ app.post("/settle", async (req, res) => {
     await connection.confirmTransaction(txHash, "confirmed");
     
     logger.info({ 
+      txId,
       txHash, 
       buyer: payment.buyer, 
       merchant: payment.payTo,
       amount: totalAmount.toString(),
-      network: "x1-testnet"
+      resource: resourceShort,
+      network: payment.network
     }, "Payment settled on X1 blockchain");
 
     return res.json({ 
+      txId,
       txHash,
       amount: totalAmount.toString(),
-      network: payment.network
+      network: payment.network,
+      resource: resourceShort,
+      timestamp
     });
   } catch (e: any) {
     logger.error(e, "Settlement failed");
@@ -192,7 +219,7 @@ app.post("/settle", async (req, res) => {
 
 app.post("/refund", async (req, res) => {
   try {
-    const { buyer, amount, network } = req.body;
+    const { buyer, amount, network, originalTxId } = req.body;
     
     if (!buyer || !amount || !network) {
       return res.status(400).json({ error: "Missing required fields: buyer, amount, network" });
@@ -211,18 +238,24 @@ app.post("/refund", async (req, res) => {
     const buyerPubkey = new PublicKey(buyer);
     const refundAmount = BigInt(amount);
 
+    // Generate unique refund ID and timestamp
+    const refundId = generateTxId();
+    const timestamp = Math.floor(Date.now() / 1000);
+
     logger.info({ 
+      refundId,
       buyer,
       amount,
-      network
+      network,
+      originalTxId
     }, "Processing refund on X1 blockchain");
 
     const { Transaction, SystemProgram } = await import("@solana/web3.js");
     const tx = new Transaction();
     
-    // Add memo for refund transaction
+    // Enhanced refund memo format: x402v1-refund:refundId:originalTxId:timestamp
     const memoData = Buffer.from(
-      `x402-refund:${amount}:${buyer.slice(0, 8)}`,
+      `x402v1-refund:${refundId}:${originalTxId || 'unknown'}:${timestamp}`,
       'utf-8'
     );
     
@@ -255,16 +288,21 @@ app.post("/refund", async (req, res) => {
     await connection.confirmTransaction(txHash, "confirmed");
     
     logger.info({ 
+      refundId,
       txHash, 
       buyer,
       amount,
-      network
+      network,
+      originalTxId
     }, "Refund completed on X1 blockchain");
 
     return res.json({ 
+      refundId,
       txHash,
       amount: amount,
-      network
+      network,
+      originalTxId: originalTxId || null,
+      timestamp
     });
   } catch (e: any) {
     logger.error(e, "Refund failed");
