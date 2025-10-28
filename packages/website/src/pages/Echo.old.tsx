@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { Link } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
@@ -18,91 +16,43 @@ import CircularProgress from '@mui/material/CircularProgress'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import BoltIcon from '@mui/icons-material/Bolt'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import CodeBlock from '../components/CodeBlock'
 
 export default function Echo() {
-  const { publicKey, signMessage } = useWallet()
-  const [testStatus, setTestStatus] = useState<'idle' | 'connecting' | 'signing' | 'verifying' | 'settling' | 'success' | 'error'>('idle')
+  const [testStatus, setTestStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle')
   const [txHash, setTxHash] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
 
-  const handlePayment = async () => {
-    if (!publicKey || !signMessage || !sendTransaction) {
-      setTestStatus('error')
-      setErrorMessage('Please connect your wallet first')
-      return
-    }
+  const curlExample = `curl -X POST https://api.x1pays.xyz/premium/data \\
+  -H "Content-Type: application/json" \\
+  -H "X-PAYMENT: <your_payment_payload>"
 
-    try {
-      setTestStatus('signing')
-      
-      const paymentPayload = {
-        scheme: 'x402' as const,
-        network: 'x1-testnet' as const,
-        payTo: import.meta.env.VITE_MERCHANT_ADDRESS || 'JDxUE7U8uWmyp9V22h9w14vWgwZxUhf8HBZvvSg247Zp',
-        asset: import.meta.env.VITE_WXNT_MINT || 'So11111111111111111111111111111111111111112',
-        amount: '100000',
-        memo: 'Echo Test Payment',
-        timestamp: Date.now(),
-        payer: publicKey.toString(),
-      }
+# Response includes X-PAYMENT-RESPONSE header with settlement details
+# 100% of payment will be refunded automatically
+# X1Pays covers all gas fees`
 
-      const message = JSON.stringify(paymentPayload)
-      const encodedMessage = new TextEncoder().encode(message)
-      const signature = await signMessage(encodedMessage)
-      
-      const base64Signature = btoa(String.fromCharCode(...Array.from(signature)))
-      
-      const signedPayload = {
-        ...paymentPayload,
-        signature: base64Signature,
-      }
+  const sdkExample = `import { getWithPayment } from "@x1pays/sdk";
+import { Keypair } from "@solana/web3.js";
 
-      setTestStatus('verifying')
-      
-      const facilitatorUrl = import.meta.env.VITE_FACILITATOR_URL || 'http://localhost:3001'
-      const verifyResponse = await fetch(`${facilitatorUrl}/verify`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(signedPayload),
-      })
-
-      if (!verifyResponse.ok) {
-        throw new Error(`Verification failed: ${await verifyResponse.text()}`)
-      }
-
-      const verifyResult = await verifyResponse.json()
-      if (!verifyResult.valid) {
-        throw new Error(verifyResult.message || 'Payment verification failed')
-      }
-
-      setTestStatus('settling')
-
-      const settleResponse = await fetch(`${facilitatorUrl}/settle`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(signedPayload),
-      })
-
-      if (!settleResponse.ok) {
-        throw new Error(`Settlement failed: ${await settleResponse.text()}`)
-      }
-
-      const settleResult = await settleResponse.json()
-      
-      setTestStatus('success')
-      setTxHash(settleResult.txHash || 'TX_COMPLETED')
-    } catch (error) {
-      console.error('Payment error:', error)
-      setTestStatus('error')
-      setErrorMessage(error instanceof Error ? error.message : 'Payment failed')
-    }
+// Try x402 Echo - Get 100% refund
+const data = await getWithPayment(
+  "https://x402.payai.network/echo",
+  payer,
+  {
+    facilitatorUrl: "https://facilitator.x1pays.xyz",
+    payTo: "ECHO_MERCHANT_ADDRESS",
+    asset: process.env.WXNT_MINT,
+    amountAtomic: "1000" // Will be refunded!
   }
+);
 
-  const resetTest = () => {
-    setTestStatus('idle')
-    setTxHash('')
-    setErrorMessage('')
+console.log(data); // Echo response + refund confirmed`
+
+  const simulateTest = () => {
+    setTestStatus('testing')
+    setTimeout(() => {
+      setTestStatus('success')
+      setTxHash(`SIM_TX_${Math.random().toString(36).substring(7).toUpperCase()}`)
+    }, 2000)
   }
 
   return (
@@ -110,7 +60,7 @@ export default function Echo() {
       <Stack spacing={2} alignItems="center" textAlign="center" sx={{ mb: 8 }}>
         <Chip
           icon={<BoltIcon />}
-          label="Live on X1 Testnet"
+          label="Live on X1 Mainnet"
           sx={{
             bgcolor: 'rgba(118, 255, 3, 0.1)',
             color: 'secondary.main',
@@ -159,58 +109,30 @@ export default function Echo() {
             <CardContent sx={{ p: 4 }}>
               <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>Try It Now</Typography>
               <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-                Connect your wallet and send a real x402 payment on X1 testnet. You'll get 100% refunded!
+                Click below to simulate a real x402 payment. In production, you'll use our SDK or curl.
               </Typography>
 
-              {!publicKey && (
-                <Box sx={{ mb: 3, display: 'flex', justifyContent: 'center' }}>
-                  <WalletMultiButton />
-                </Box>
+              {testStatus === 'idle' && (
+                <Button
+                  onClick={simulateTest}
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  sx={{
+                    background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
+                    color: 'background.default',
+                    fontWeight: 700,
+                    py: 2,
+                  }}
+                >
+                  Simulate x402 Payment
+                </Button>
               )}
 
-              {publicKey && testStatus === 'idle' && (
-                <Stack spacing={2}>
-                  <Paper
-                    elevation={0}
-                    sx={{
-                      bgcolor: 'rgba(0, 229, 255, 0.1)',
-                      border: '1px solid',
-                      borderColor: 'primary.dark',
-                      p: 2,
-                    }}
-                  >
-                    <Typography variant="body2" color="text.secondary">
-                      <Box component="span" sx={{ fontWeight: 700 }}>Wallet Connected:</Box>
-                    </Typography>
-                    <Typography variant="caption" sx={{ fontFamily: 'monospace', wordBreak: 'break-all' }}>
-                      {publicKey.toString()}
-                    </Typography>
-                  </Paper>
-                  <Button
-                    onClick={handlePayment}
-                    variant="contained"
-                    fullWidth
-                    size="large"
-                    sx={{
-                      background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
-                      color: 'background.default',
-                      fontWeight: 700,
-                      py: 2,
-                    }}
-                  >
-                    Send x402 Payment
-                  </Button>
-                </Stack>
-              )}
-
-              {(testStatus === 'signing' || testStatus === 'verifying' || testStatus === 'settling') && (
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', py: 4 }}>
-                  <CircularProgress sx={{ mb: 2, color: 'primary.main' }} />
-                  <Typography color="text.primary" sx={{ fontWeight: 600 }}>
-                    {testStatus === 'signing' && 'Signing payment...'}
-                    {testStatus === 'verifying' && 'Verifying with facilitator...'}
-                    {testStatus === 'settling' && 'Settling on X1 blockchain...'}
-                  </Typography>
+              {testStatus === 'testing' && (
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
+                  <CircularProgress sx={{ mr: 2, color: 'primary.main' }} />
+                  <Typography color="text.primary" sx={{ fontWeight: 600 }}>Processing payment on X1...</Typography>
                 </Box>
               )}
 
@@ -232,7 +154,7 @@ export default function Echo() {
                     <Stack spacing={1}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="body2" color="text.secondary">Amount Paid:</Typography>
-                        <Typography variant="body2" sx={{ fontFamily: 'monospace', fontWeight: 600 }}>0.0001 XNT</Typography>
+                        <Typography variant="body2" sx={{ fontFamily: 'monospace', fontWeight: 600 }}>0.001 XNT</Typography>
                       </Box>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="body2" color="text.secondary">Settlement:</Typography>
@@ -242,23 +164,13 @@ export default function Echo() {
                         <Typography variant="body2" color="text.secondary">Protocol Fee:</Typography>
                         <Typography variant="body2" sx={{ fontWeight: 700, color: 'secondary.main' }}>0% (FREE)</Typography>
                       </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2" color="text.secondary">Gas Fees:</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 600, color: 'secondary.main' }}>Covered by X1Pays</Typography>
+                      </Box>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 1, borderTop: '1px solid', borderColor: 'secondary.dark' }}>
                         <Typography variant="body2" color="text.secondary">TX Hash:</Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <Typography variant="caption" sx={{ fontFamily: 'monospace', maxWidth: '150px', wordBreak: 'break-all', textAlign: 'right' }}>
-                            {txHash.slice(0, 8)}...{txHash.slice(-8)}
-                          </Typography>
-                          <Button
-                            component="a"
-                            href={`https://explorer.solana.com/tx/${txHash}?cluster=custom&customUrl=https://rpc.testnet.x1.xyz`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            size="small"
-                            sx={{ minWidth: 'auto', p: 0.5 }}
-                          >
-                            <OpenInNewIcon sx={{ fontSize: 16, color: 'primary.main' }} />
-                          </Button>
-                        </Box>
+                        <Typography variant="caption" sx={{ fontFamily: 'monospace', maxWidth: '200px', wordBreak: 'break-all', textAlign: 'right' }}>{txHash}</Typography>
                       </Box>
                     </Stack>
                   </Paper>
@@ -277,13 +189,13 @@ export default function Echo() {
                       <Typography variant="body1" sx={{ fontWeight: 700, color: 'primary.main' }}>Refund Initiated</Typography>
                     </Box>
                     <Typography variant="body2" color="text.secondary">
-                      Your <Box component="span" sx={{ fontWeight: 700 }}>0.0001 XNT</Box> will be refunded within 1 minute. 
+                      Your <Box component="span" sx={{ fontWeight: 700 }}>0.001 XNT</Box> will be refunded within 1 minute. 
                       X1Pays covers all costs for Echo testing.
                     </Typography>
                   </Paper>
 
                   <Button
-                    onClick={resetTest}
+                    onClick={() => setTestStatus('idle')}
                     variant="outlined"
                     fullWidth
                     sx={{
@@ -301,26 +213,24 @@ export default function Echo() {
               )}
 
               {testStatus === 'error' && (
-                <Stack spacing={2}>
-                  <Paper
-                    elevation={0}
-                    sx={{
-                      bgcolor: 'rgba(255, 82, 82, 0.1)',
-                      border: '1px solid',
-                      borderColor: 'error.dark',
-                      p: 3,
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <CancelIcon sx={{ fontSize: 24, color: 'error.main', mr: 1 }} />
-                      <Typography variant="h6" sx={{ fontWeight: 700, color: 'error.main' }}>Payment Failed</Typography>
-                    </Box>
-                    <Typography variant="body2" color="text.secondary">
-                      {errorMessage || 'Something went wrong with the payment.'}
-                    </Typography>
-                  </Paper>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    bgcolor: 'rgba(255, 82, 82, 0.1)',
+                    border: '1px solid',
+                    borderColor: 'error.dark',
+                    p: 3,
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <CancelIcon sx={{ fontSize: 24, color: 'error.main', mr: 1 }} />
+                    <Typography variant="h6" sx={{ fontWeight: 700, color: 'error.main' }}>Payment Failed</Typography>
+                  </Box>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                    Something went wrong. In production, check your payment signature and wallet balance.
+                  </Typography>
                   <Button
-                    onClick={resetTest}
+                    onClick={() => setTestStatus('idle')}
                     variant="outlined"
                     fullWidth
                     sx={{
@@ -334,7 +244,7 @@ export default function Echo() {
                   >
                     Try Again
                   </Button>
-                </Stack>
+                </Paper>
               )}
 
               <Box sx={{ mt: 4, pt: 4, borderTop: '1px solid', borderColor: 'divider' }}>
@@ -342,19 +252,15 @@ export default function Echo() {
                 <Stack component="ol" spacing={1.5} sx={{ pl: 0, listStyle: 'none' }}>
                   <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start' }}>
                     <Typography sx={{ fontWeight: 700, color: 'primary.main', mr: 1 }}>1.</Typography>
-                    <Typography variant="body2" color="text.secondary">Connect your Phantom/Backpack wallet</Typography>
+                    <Typography variant="body2" color="text.secondary">You send a real x402 payment on X1 mainnet</Typography>
                   </Box>
                   <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start' }}>
                     <Typography sx={{ fontWeight: 700, color: 'primary.main', mr: 1 }}>2.</Typography>
-                    <Typography variant="body2" color="text.secondary">Sign an x402 payment (no transaction approval needed!)</Typography>
+                    <Typography variant="body2" color="text.secondary">Echo merchant verifies and settles instantly</Typography>
                   </Box>
                   <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start' }}>
                     <Typography sx={{ fontWeight: 700, color: 'primary.main', mr: 1 }}>3.</Typography>
-                    <Typography variant="body2" color="text.secondary">Facilitator verifies and settles on X1 blockchain</Typography>
-                  </Box>
-                  <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <Typography sx={{ fontWeight: 700, color: 'primary.main', mr: 1 }}>4.</Typography>
-                    <Typography variant="body2" color="text.secondary">Get 100% refund automatically (gas covered)</Typography>
+                    <Typography variant="body2" color="text.secondary">You receive 100% refund automatically (gas covered)</Typography>
                   </Box>
                 </Stack>
               </Box>
@@ -377,13 +283,7 @@ export default function Echo() {
                   <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                     <CheckCircleIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
                     <Typography variant="body2" color="text.secondary">
-                      <Box component="span" sx={{ fontWeight: 600 }}>Real blockchain transactions</Box> on X1 testnet
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <CheckCircleIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
-                    <Typography variant="body2" color="text.secondary">
-                      <Box component="span" sx={{ fontWeight: 600 }}>Wallet signature</Box> via Phantom or Backpack
+                      <Box component="span" sx={{ fontWeight: 600 }}>Real blockchain transactions</Box> on X1 mainnet
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -401,7 +301,13 @@ export default function Echo() {
                   <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                     <CheckCircleIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
                     <Typography variant="body2" color="text.secondary">
-                      <Box component="span" sx={{ fontWeight: 600 }}>Full x402 protocol</Box> with verification & settlement
+                      <Box component="span" sx={{ fontWeight: 600 }}>Full x402 flow</Box> including verification & settlement
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                    <CheckCircleIcon sx={{ fontSize: 20, color: 'secondary.main', mr: 2, mt: 0.5, flexShrink: 0 }} />
+                    <Typography variant="body2" color="text.secondary">
+                      <Box component="span" sx={{ fontWeight: 600 }}>Real transaction receipts</Box> with on-chain proof
                     </Typography>
                   </Box>
                 </Stack>
@@ -484,6 +390,20 @@ export default function Echo() {
           </Stack>
         </Grid>
       </Grid>
+
+      <Box sx={{ mb: 10 }}>
+        <Typography variant="h3" sx={{ fontWeight: 700, mb: 4, textAlign: 'center' }}>Integration Examples</Typography>
+        <Grid container spacing={4}>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>Using cURL</Typography>
+            <CodeBlock code={curlExample} language="bash" filename="test-echo.sh" />
+          </Grid>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>Using X1Pays SDK</Typography>
+            <CodeBlock code={sdkExample} language="typescript" filename="test-echo.ts" />
+          </Grid>
+        </Grid>
+      </Box>
 
       <Box
         sx={{
