@@ -109,7 +109,7 @@ MERCHANT_WALLET=your_x1_wallet_address
 # wXNT token contract on X1
 WXNT_MINT=your_wxnt_mint_address
 
-# Network (x1-mainnet or x1-devnet)
+# Network (x1-mainnet or x1-testnet)
 NETWORK=x1-mainnet
 
 # Port

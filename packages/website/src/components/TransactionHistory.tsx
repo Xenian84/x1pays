@@ -165,7 +165,7 @@ function getExplorerUrl(
 interface TransactionHistoryProps {
   walletAddress?: string;
   rpcUrl: string;
-  network: 'x1-mainnet' | 'x1-devnet' | 'x1-testnet';
+  network: 'x1-mainnet' | 'x1-testnet';
   limit?: number;
 }
 
