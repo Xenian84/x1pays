@@ -19,6 +19,7 @@ export interface PaymentPayload {
   payTo: string;
   asset: string;
   amount: string;
+  resource?: string; // API endpoint or resource path
   buyer: string;
   signature: string;
   txSignature?: string;

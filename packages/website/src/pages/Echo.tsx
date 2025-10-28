@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { Link } from 'react-router-dom'
@@ -57,7 +57,6 @@ export default function Echo() {
   const { publicKey, signMessage } = useWallet()
   const [testStatus, setTestStatus] = useState<'idle' | 'connecting' | 'signing' | 'verifying' | 'settling' | 'success' | 'error'>('idle')
   const [txHash, setTxHash] = useState<string>('')
-  const [txId, setTxId] = useState<string>('')
   const [network, setNetwork] = useState<'x1-testnet' | 'x1-mainnet'>('x1-testnet')
   const [refundTxHash, setRefundTxHash] = useState<string>('')
   const [refundCountdown, setRefundCountdown] = useState<number>(60)
@@ -141,7 +140,6 @@ export default function Echo() {
       
       setTestStatus('success')
       setTxHash(settleResult.txHash || 'TX_COMPLETED')
-      setTxId(settleResult.txId || '')
       
       // Start refund countdown
       setRefundCountdown(60)
@@ -190,7 +188,6 @@ export default function Echo() {
   const resetTest = () => {
     setTestStatus('idle')
     setTxHash('')
-    setTxId('')
     setRefundTxHash('')
     setRefundCountdown(60)
     setErrorMessage('')

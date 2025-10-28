@@ -13,6 +13,7 @@ export const PaymentPayloadSchema = z.object({
   payTo: z.string().min(1, 'Payment recipient address is required'),
   asset: z.string().min(1, 'Asset address is required'),
   amount: z.string().regex(/^\d+$/, 'Amount must be a positive integer string'),
+  resource: z.string().optional(), // API endpoint or resource path
   buyer: z.string().min(1, 'Buyer public key is required'),
   signature: z.string().min(1, 'Payment signature is required'),
   txSignature: z.string().optional(),
