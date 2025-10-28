@@ -1,0 +1,15 @@
+{
+  "name": "@x1pays/shared",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/blockchain.ts",
+  "exports": {
+    "./blockchain": "./src/blockchain.ts"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.87.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6"
+  }
+}

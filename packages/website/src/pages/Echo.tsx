@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { Link } from 'react-router-dom'
+import { TransactionHistory } from '../components/TransactionHistory'
 
 // Simple base58 encoder for signatures
 const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
@@ -56,6 +57,7 @@ export default function Echo() {
   const { publicKey, signMessage } = useWallet()
   const [testStatus, setTestStatus] = useState<'idle' | 'connecting' | 'signing' | 'verifying' | 'settling' | 'success' | 'error'>('idle')
   const [txHash, setTxHash] = useState<string>('')
+  const [txId, setTxId] = useState<string>('')
   const [network, setNetwork] = useState<'x1-testnet' | 'x1-mainnet'>('x1-testnet')
   const [refundTxHash, setRefundTxHash] = useState<string>('')
   const [refundCountdown, setRefundCountdown] = useState<number>(60)
@@ -88,6 +90,7 @@ export default function Echo() {
         payTo: import.meta.env.VITE_MERCHANT_ADDRESS || 'JDxUE7U8uWmyp9V22h9w14vWgwZxUhf8HBZvvSg247Zp',
         asset: import.meta.env.VITE_WXNT_MINT || 'So11111111111111111111111111111111111111112',
         amount: '100000',
+        resource: '/api/echo',
         memo: 'Echo Test Payment',
         buyer: publicKey.toString(),
       }
@@ -138,6 +141,7 @@ export default function Echo() {
       
       setTestStatus('success')
       setTxHash(settleResult.txHash || 'TX_COMPLETED')
+      setTxId(settleResult.txId || '')
       
       // Start refund countdown
       setRefundCountdown(60)
@@ -145,8 +149,8 @@ export default function Echo() {
         setRefundCountdown(prev => {
           if (prev <= 1) {
             clearInterval(countdownInterval)
-            // Simulate refund transaction after countdown
-            initiateRefund(publicKey.toString())
+            // Initiate refund transaction after countdown
+            initiateRefund(publicKey.toString(), settleResult.txId)
             return 0
           }
           return prev - 1
@@ -159,7 +163,7 @@ export default function Echo() {
     }
   }
 
-  const initiateRefund = async (buyerAddress: string) => {
+  const initiateRefund = async (buyerAddress: string, originalTxId?: string) => {
     try {
       // Call facilitator to process refund transaction
       const facilitatorUrl = import.meta.env.VITE_FACILITATOR_URL || 'http://localhost:3001'
@@ -170,6 +174,7 @@ export default function Echo() {
           buyer: buyerAddress,
           amount: '100000',
           network: network,
+          originalTxId: originalTxId || null,
         }),
       })
 
@@ -185,6 +190,7 @@ export default function Echo() {
   const resetTest = () => {
     setTestStatus('idle')
     setTxHash('')
+    setTxId('')
     setRefundTxHash('')
     setRefundCountdown(60)
     setErrorMessage('')
@@ -602,12 +608,25 @@ export default function Echo() {
         </Grid>
       </Grid>
 
+      {/* Transaction History */}
+      {publicKey && (
+        <Box sx={{ mt: 6 }}>
+          <TransactionHistory
+            walletAddress={publicKey.toString()}
+            rpcUrl={import.meta.env.VITE_X1_TESTNET_RPC || 'https://rpc-testnet.x1.xyz'}
+            network={network}
+            limit={10}
+          />
+        </Box>
+      )}
+
       <Box
         sx={{
           background: 'linear-gradient(135deg, #00E5FF 0%, #76FF03 100%)',
           borderRadius: 4,
           p: { xs: 6, md: 8 },
           textAlign: 'center',
+          mt: 6,
         }}
       >
         <Typography variant="h3" sx={{ fontWeight: 800, color: 'background.default', mb: 2 }}>
