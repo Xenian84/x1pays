@@ -47,7 +47,7 @@ function PremiumPage() {
 // App with wallet providers
 export default function App() {
   // X1 Devnet RPC endpoint
-  const endpoint = 'https://rpc-testnet.x1.xyz';
+  const endpoint = 'https://rpc.testnet.x1.xyz';
 
   // Configure wallets - Backpack, Phantom, and Solflare all work with X1
   const wallets = [

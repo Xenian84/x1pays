@@ -184,8 +184,8 @@ export async function fetchAddressTransactions(
  */
 export function createConnection(network: 'x1-mainnet' | 'x1-testnet'): Connection {
   const rpcUrls = {
-    'x1-mainnet': process.env.VITE_X1_MAINNET_RPC || 'https://rpc.x1.xyz',
-    'x1-testnet': process.env.VITE_X1_TESTNET_RPC || 'https://rpc-testnet.x1.xyz'
+    'x1-mainnet': process.env.VITE_X1_MAINNET_RPC || 'https://rpc.mainnet.x1.xyz',
+    'x1-testnet': process.env.VITE_X1_TESTNET_RPC || 'https://rpc.testnet.x1.xyz'
   };
 
   const rpcUrl = rpcUrls[network];

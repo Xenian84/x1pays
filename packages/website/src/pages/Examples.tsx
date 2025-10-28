@@ -111,7 +111,7 @@ import { BackpackWalletAdapter } from '@solana/wallet-adapter-backpack'
 import '@solana/wallet-adapter-react-ui/styles.css'
 
 function App() {
-  const endpoint = 'https://rpc-testnet.x1.xyz'
+  const endpoint = 'https://rpc.testnet.x1.xyz'
   const wallets = [new BackpackWalletAdapter()]
 
   return (

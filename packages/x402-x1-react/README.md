@@ -41,7 +41,7 @@ import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 function App() {
-  const endpoint = 'https://rpc-testnet.x1.xyz';
+  const endpoint = 'https://rpc.testnet.x1.xyz';
   const wallets = [
     new BackpackWalletAdapter(),
     new PhantomWalletAdapter(),

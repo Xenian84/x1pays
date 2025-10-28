@@ -25,13 +25,13 @@ pnpm install
 pnpm build`
 
   const envFacilitatorCode = `PORT=4000
-RPC_URL=https://rpc.x1.xyz
+RPC_URL=https://rpc.mainnet.x1.xyz
 NETWORK=x1-mainnet
 WXNT_MINT=YOUR_WXNT_MINT_ADDRESS
 FEE_PAYER_SECRET=YOUR_BASE58_SECRET_KEY`
 
   const envApiCode = `PORT=3000
-RPC_URL=https://rpc.x1.xyz
+RPC_URL=https://rpc.mainnet.x1.xyz
 NETWORK=x1-mainnet
 WXNT_MINT=YOUR_WXNT_MINT_ADDRESS
 PAYTO_ADDRESS=YOUR_MERCHANT_PUBKEY
