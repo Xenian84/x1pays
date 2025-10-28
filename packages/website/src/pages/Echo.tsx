@@ -2,6 +2,38 @@ import { useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { Link } from 'react-router-dom'
+
+// Simple base58 encoder for signatures
+const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+
+function encodeBase58(bytes: Uint8Array): string {
+  if (bytes.length === 0) return ''
+  
+  const digits = [0]
+  for (let i = 0; i < bytes.length; i++) {
+    let carry = bytes[i]
+    for (let j = 0; j < digits.length; j++) {
+      carry += digits[j] << 8
+      digits[j] = carry % 58
+      carry = (carry / 58) | 0
+    }
+    while (carry > 0) {
+      digits.push(carry % 58)
+      carry = (carry / 58) | 0
+    }
+  }
+  
+  let result = ''
+  for (let i = 0; bytes[i] === 0 && i < bytes.length - 1; i++) {
+    result += BASE58_ALPHABET[0]
+  }
+  
+  for (let i = digits.length - 1; i >= 0; i--) {
+    result += BASE58_ALPHABET[digits[i]]
+  }
+  
+  return result
+}
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -50,8 +82,8 @@ export default function Echo() {
       const encodedMessage = new TextEncoder().encode(message)
       const signature = await signMessage(encodedMessage)
       
-      // Convert signature to base58 (bs58) format as expected by facilitator
-      const bs58Signature = await import('bs58').then(m => m.default.encode(signature))
+      // Convert signature to base58 format as expected by facilitator
+      const bs58Signature = encodeBase58(signature)
       
       const signedPayload = {
         ...paymentPayload,
