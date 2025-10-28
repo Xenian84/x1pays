@@ -135,7 +135,7 @@ async function fetchTransaction(
 
     return {
       signature,
-      memo,
+      memo: memo || undefined,
       from,
       to,
       amount,
