@@ -12,7 +12,6 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import WarningIcon from '@mui/icons-material/Warning'
 
 export default function GettingStarted() {
   const installCode = `# Clone the repository
@@ -371,46 +370,6 @@ const display = formatWXNT("1000");           // "0.001 wXNT"`} language="typesc
             </Card>
           </Box>
 
-          <Card
-            elevation={0}
-            sx={{
-              bgcolor: 'rgba(255, 183, 77, 0.05)',
-              border: '1px solid',
-              borderColor: 'warning.dark',
-            }}
-          >
-            <CardContent sx={{ p: 4 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                <WarningIcon sx={{ fontSize: 28, color: 'warning.main' }} />
-                <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                  Important: MVP Mode
-                </Typography>
-              </Box>
-              <Typography variant="body1" color="text.secondary" sx={{ mb: 2, lineHeight: 1.7 }}>
-                The current implementation runs in <Box component="strong" sx={{ color: 'text.primary' }}>MVP simulation mode</Box>. Settlement
-                returns a simulated transaction hash without actual on-chain transfers.
-              </Typography>
-              <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-                For production, you must implement delegate approval or client-signed transaction patterns.
-                See{' '}
-                <Box
-                  component="code"
-                  sx={{
-                    bgcolor: 'rgba(255, 183, 77, 0.1)',
-                    color: 'warning.main',
-                    px: 1,
-                    py: 0.5,
-                    borderRadius: 1,
-                    fontFamily: 'monospace',
-                  }}
-                >
-                  PRODUCTION_NOTES.md
-                </Box>{' '}
-                for details.
-              </Typography>
-            </CardContent>
-          </Card>
-
           <Paper
             elevation={0}
             sx={{
@@ -497,28 +456,6 @@ const display = formatWXNT("1000");           // "0.001 wXNT"`} language="typesc
                 },
                 {
                   number: '4',
-                  text: (
-                    <>
-                      Review{' '}
-                      <Box
-                        component="code"
-                        sx={{
-                          bgcolor: 'rgba(0, 229, 255, 0.1)',
-                          color: 'primary.main',
-                          px: 1,
-                          py: 0.5,
-                          borderRadius: 1,
-                          fontFamily: 'monospace',
-                        }}
-                      >
-                        PRODUCTION_NOTES.md
-                      </Box>{' '}
-                      for security best practices
-                    </>
-                  ),
-                },
-                {
-                  number: '5',
                   text: (
                     <>
                       Visit the{' '}

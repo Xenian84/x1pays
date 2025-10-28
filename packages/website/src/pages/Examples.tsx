@@ -536,7 +536,7 @@ app.listen(3000, () => {
               title: 'Best Practices',
               color: 'secondary',
               items: [
-                'Use MVP/simulated mode for testing',
+                'Use simulation mode for testing',
                 'Store wallet keys in environment variables',
                 'Set reasonable payment amounts',
                 'Log transaction hashes for records',

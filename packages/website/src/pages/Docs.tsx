@@ -12,7 +12,6 @@ import CodeIcon from '@mui/icons-material/Code'
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'
 import BuildIcon from '@mui/icons-material/Build'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import WarningIcon from '@mui/icons-material/Warning'
 import LayersIcon from '@mui/icons-material/Layers'
 import StorageIcon from '@mui/icons-material/Storage'
 import ApiIcon from '@mui/icons-material/Api'
@@ -263,32 +262,6 @@ export default function Docs() {
           </CardContent>
         </Card>
 
-        <Card
-          elevation={0}
-          sx={{
-            border: '1px solid',
-            borderColor: 'warning.dark',
-            bgcolor: 'rgba(255, 183, 77, 0.05)',
-          }}
-        >
-          <CardContent sx={{ p: 4 }}>
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 3, mb: 3 }}>
-              <WarningIcon sx={{ color: 'warning.main', fontSize: 28 }} />
-              <Typography variant="h5" sx={{ fontWeight: 700, color: 'warning.main' }}>
-                MVP vs Production
-              </Typography>
-            </Box>
-            <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-              The current implementation is an MVP that demonstrates the x402 protocol.
-              For production deployment, please review the{' '}
-              <Box component="code" sx={{ bgcolor: 'rgba(255, 183, 77, 0.1)', px: 1, py: 0.5, borderRadius: 1, fontSize: '0.875rem' }}>
-                PRODUCTION_NOTES.md
-              </Box>{' '}
-              file for critical security considerations including delegate approval patterns,
-              replay attack prevention, and comprehensive validation.
-            </Typography>
-          </CardContent>
-        </Card>
       </Container>
     </Box>
   )

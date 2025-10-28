@@ -149,7 +149,7 @@ export default function ApiReference() {
                 </Typography>
               </Box>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                Settles payment on X1 blockchain. In MVP mode, returns simulated transaction hash.
+                Settles payment on X1 blockchain.
               </Typography>
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1.5 }}>Request Body</Typography>
               <CodeBlock code={`{
@@ -163,10 +163,9 @@ export default function ApiReference() {
 }`} language="json" />
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1.5, mt: 3 }}>Success Response (200)</Typography>
               <CodeBlock code={`{
-  "txHash": "SIM_ABC123...",
+  "txHash": "ABC123...",
   "amount": "1000",
-  "simulated": true,
-  "message": "MVP mode: payment verified but not settled on-chain"
+  "simulated": false
 }`} language="json" />
             </CardContent>
           </Card>
@@ -212,7 +211,7 @@ export default function ApiReference() {
   payment?: {
     txHash: string;               // Transaction hash
     amount: string;               // Amount paid (atomic units)
-    simulated: boolean;           // Whether this was simulated (MVP mode)
+    simulated: boolean;           // Whether this was simulated
   };
   headers: Record<string, string>;
 }`} language="typescript" />
@@ -607,7 +606,7 @@ isValidAmount(-100)       // false (must be positive)`,
                 code: `interface PaymentResponse {
   txHash: string;           // Transaction hash
   amount: string;           // Amount settled
-  simulated: boolean;       // Whether simulated (MVP mode)
+  simulated: boolean;       // Whether simulated
   message?: string;         // Optional message
 }`,
               },
