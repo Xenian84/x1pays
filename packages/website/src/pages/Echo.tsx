@@ -79,11 +79,19 @@ export default function Echo() {
       }
 
       const message = JSON.stringify(paymentPayload)
+      console.log('Signing message:', message)
+      console.log('Message length:', message.length)
+      console.log('Payload:', paymentPayload)
+      
       const encodedMessage = new TextEncoder().encode(message)
       const signature = await signMessage(encodedMessage)
       
+      console.log('Raw signature length:', signature.length)
+      
       // Convert signature to base58 format as expected by facilitator
       const bs58Signature = encodeBase58(signature)
+      console.log('Base58 signature:', bs58Signature)
+      console.log('Base58 signature length:', bs58Signature.length)
       
       const signedPayload = {
         ...paymentPayload,
