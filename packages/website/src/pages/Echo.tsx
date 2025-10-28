@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { Link } from 'react-router-dom'
-import { TransactionHistory } from '../components/TransactionHistory'
 
 // Simple base58 encoder for signatures
 const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
@@ -604,22 +603,6 @@ export default function Echo() {
           </Stack>
         </Grid>
       </Grid>
-
-      {/* Transaction History */}
-      {publicKey && (
-        <Box sx={{ mt: 6 }}>
-          <TransactionHistory
-            walletAddress={publicKey.toString()}
-            rpcUrl={
-              network === 'x1-testnet'
-                ? (import.meta.env.VITE_X1_TESTNET_RPC || 'https://rpc-testnet.x1.xyz')
-                : (import.meta.env.VITE_X1_MAINNET_RPC || 'https://rpc.x1.xyz')
-            }
-            network={network}
-            limit={10}
-          />
-        </Box>
-      )}
 
       <Box
         sx={{
