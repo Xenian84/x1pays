@@ -10,6 +10,13 @@ X1Pays is a complete TypeScript monorepo enabling HTTP 402 Payment Required micr
 - **React Components** - Pre-built paywall components for easy integration
 - **Documentation Website** - Comprehensive guides and live demos on X1 testnet
 
+## 🚀 Production Deployment
+
+**Ready to deploy?** Follow the complete step-by-step guide:  
+**→ [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** ← Start here for production deployment
+
+This guide organizes all documentation in the correct deployment sequence with checklists, troubleshooting, and security best practices.
+
 ## Architecture
 
 ```

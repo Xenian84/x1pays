@@ -1,5 +1,12 @@
 # X1Pays - x402 Payment Protocol for X1 Blockchain
 
+## 📚 Quick Links
+
+**🚀 For Production Deployment:** [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) - Complete step-by-step deployment checklist  
+**📖 Documentation Index:** [DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md) - All docs organized by deployment sequence
+
+---
+
 ## Project Overview
 Complete x402 payment protocol implementation for X1 blockchain with 0% protocol fees. Enables instant, invisible payments for AI agents, microtransactions, and lightning-fast commerce using signature-first verification and background blockchain settlement.
 
