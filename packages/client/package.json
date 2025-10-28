@@ -1,6 +1,7 @@
 {
   "name": "@x1pays/client",
   "version": "0.1.0",
+  "type": "module",
   "description": "x402 payment client libraries for Axios and Fetch API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -9,3 +9,8 @@ dist
 coverage
 .vscode
 .idea
+
+# Wallet backups and sensitive files - NEVER commit these!
+.wallets-backup/
+*-wallet.json
+*.keypair
