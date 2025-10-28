@@ -41,7 +41,7 @@ import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 function App() {
-  const endpoint = 'https://x1-devnet-rpc.x1.network';
+  const endpoint = 'https://rpc-testnet.x1.xyz';
   const wallets = [
     new BackpackWalletAdapter(),
     new PhantomWalletAdapter(),
@@ -69,7 +69,7 @@ function PremiumPage() {
     <X402Paywall
       amount={2.50}
       description="Premium AI Chat Access"
-      network="x1-devnet"
+      network="x1-testnet"
       onPaymentSuccess={(txId) => console.log('Payment successful!', txId)}
     >
       <PremiumContent />
@@ -86,7 +86,7 @@ function PremiumPage() {
 |------|------|----------|---------|-------------|
 | `amount` | `number` | ✅ | - | Payment amount in USD |
 | `description` | `string` | ✅ | - | Payment description |
-| `network` | `'x1-mainnet' \| 'x1-devnet'` | ❌ | `'x1-devnet'` | X1 network to use |
+| `network` | `'x1-mainnet' \| 'x1-testnet'` | ❌ | `'x1-testnet'` | X1 network to use |
 | `theme` | `'x1' \| 'dark' \| 'light' \| 'custom'` | ❌ | `'x1'` | Visual theme |
 | `showBalance` | `boolean` | ❌ | `true` | Show wallet balance |
 | `showNetworkInfo` | `boolean` | ❌ | `true` | Show network info |

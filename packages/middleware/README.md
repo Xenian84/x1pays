@@ -101,7 +101,7 @@ All middleware accepts the following configuration:
 ```typescript
 interface X402Config {
   facilitatorUrl: string;        // URL of x402 facilitator service
-  network: string;               // 'x1-mainnet' or 'x1-devnet'
+  network: string;               // 'x1-mainnet' or 'x1-testnet'
   payToAddress: string;          // Merchant wallet address
   tokenMint: string;             // Token mint address (wXNT)
   amount?: string;               // Static payment amount

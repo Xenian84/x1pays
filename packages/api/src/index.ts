@@ -44,7 +44,7 @@ app.use("/premium", x420(), x402Middleware({
 
 app.use("/echo", x402Middleware({
   facilitatorUrl: process.env.FACILITATOR_URL || "http://localhost:4000",
-  network: process.env.NETWORK || "x1-devnet",
+  network: process.env.NETWORK || "x1-testnet",
   payToAddress: process.env.ECHO_MERCHANT_ADDRESS || process.env.PAYTO_ADDRESS || "",
   tokenMint: process.env.WXNT_MINT || "",
   amount: "1000",

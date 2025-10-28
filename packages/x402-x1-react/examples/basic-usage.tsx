@@ -25,7 +25,7 @@ function PremiumPage() {
     <X402Paywall
       amount={2.50}
       description="Premium AI Chat Access - Unlimited messages for 24 hours"
-      network="x1-devnet"
+      network="x1-testnet"
       onPaymentSuccess={(txId) => {
         console.log('Payment successful! Transaction:', txId);
         // Track analytics, unlock features, etc.
@@ -47,7 +47,7 @@ function PremiumPage() {
 // App with wallet providers
 export default function App() {
   // X1 Devnet RPC endpoint
-  const endpoint = 'https://x1-devnet-rpc.x1.network';
+  const endpoint = 'https://rpc-testnet.x1.xyz';
 
   // Configure wallets - Backpack, Phantom, and Solflare all work with X1
   const wallets = [

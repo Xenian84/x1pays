@@ -7,7 +7,7 @@ export type PayConfig = {
   facilitatorUrl: string;
   payTo: string;
   asset: string;
-  network?: "x1-mainnet" | "x1-devnet";
+  network?: "x1-mainnet" | "x1-testnet";
   amountAtomic: string;
 };
 

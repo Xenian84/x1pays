@@ -24,7 +24,7 @@ export function useX402Payment(networkConfig: X1NetworkConfig) {
         // Create unsigned payment
         const unsignedPayment = {
           scheme: 'x402',
-          network: networkConfig.rpcUrl.includes('devnet') ? 'x1-devnet' : 'x1-mainnet',
+          network: networkConfig.rpcUrl.includes('devnet') ? 'x1-testnet' : 'x1-mainnet',
           payTo: networkConfig.treasuryAddress,
           asset: networkConfig.usdcMint,
           amount: atomicAmount,

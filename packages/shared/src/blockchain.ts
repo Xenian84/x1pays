@@ -182,10 +182,9 @@ export async function fetchAddressTransactions(
 /**
  * Create RPC connection based on network
  */
-export function createConnection(network: 'x1-mainnet' | 'x1-devnet' | 'x1-testnet'): Connection {
+export function createConnection(network: 'x1-mainnet' | 'x1-testnet'): Connection {
   const rpcUrls = {
     'x1-mainnet': process.env.VITE_X1_MAINNET_RPC || 'https://rpc.x1.xyz',
-    'x1-devnet': process.env.VITE_X1_DEVNET_RPC || 'https://rpc-devnet.x1.xyz',
     'x1-testnet': process.env.VITE_X1_TESTNET_RPC || 'https://rpc-testnet.x1.xyz'
   };
 
@@ -196,9 +195,9 @@ export function createConnection(network: 'x1-mainnet' | 'x1-devnet' | 'x1-testn
 /**
  * Get network from RPC URL
  */
-export function getNetworkFromRpc(rpcUrl: string): 'x1-mainnet' | 'x1-devnet' | 'x1-testnet' {
+export function getNetworkFromRpc(rpcUrl: string): 'x1-mainnet' | 'x1-testnet' {
   if (rpcUrl.includes('mainnet')) return 'x1-mainnet';
-  if (rpcUrl.includes('devnet')) return 'x1-devnet';
+  if (rpcUrl.includes('testnet')) return 'x1-testnet';
   return 'x1-testnet';
 }
 

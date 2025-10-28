@@ -19,7 +19,7 @@ import type { X402PaywallProps } from '../types'
 export function X402Paywall({
   amount,
   description,
-  network = 'x1-devnet',
+  network = 'x1-testnet',
   rpcUrl,
   treasuryAddress,
   facilitatorUrl,

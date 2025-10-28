@@ -24,7 +24,7 @@ function ValidatedPaywall() {
       <X402Paywall
         amount={10.00}
         description="Premium API Access - 1000 requests/day"
-        network="x1-devnet"
+        network="x1-testnet"
         maxPaymentAmount={100}
         showBalance={true}
         showNetworkInfo={true}

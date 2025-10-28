@@ -1,6 +1,6 @@
 export type X402Payment = {
   scheme: "exact";
-  network: "x1-mainnet" | "x1-devnet";
+  network: "x1-mainnet" | "x1-testnet";
   payTo: string;
   asset: string;
   amount: string;

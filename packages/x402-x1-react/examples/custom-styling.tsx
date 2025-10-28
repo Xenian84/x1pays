@@ -8,7 +8,7 @@ function CustomStyledPaywall() {
     <X402Paywall
       amount={5.00}
       description="Premium Features Bundle"
-      network="x1-devnet"
+      network="x1-testnet"
       theme="custom"
       className="my-custom-paywall"
       style={{

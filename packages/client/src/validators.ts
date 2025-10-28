@@ -231,7 +231,7 @@ export function assertWalletSigner(obj: unknown): asserts obj is WalletSigner {
 export function validateNetwork(network: string): void {
   if (!isValidNetwork(network)) {
     throw new Error(
-      `Invalid network: ${network}. Must be 'x1-mainnet' or 'x1-devnet'`
+      `Invalid network: ${network}. Must be 'x1-mainnet' or 'x1-testnet'`
     );
   }
 }
