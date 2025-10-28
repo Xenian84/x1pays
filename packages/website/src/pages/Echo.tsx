@@ -43,8 +43,7 @@ export default function Echo() {
         asset: import.meta.env.VITE_WXNT_MINT || 'So11111111111111111111111111111111111111112',
         amount: '100000',
         memo: 'Echo Test Payment',
-        timestamp: Date.now(),
-        payer: publicKey.toString(),
+        buyer: publicKey.toString(),
       }
 
       const message = JSON.stringify(paymentPayload)
