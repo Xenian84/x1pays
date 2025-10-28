@@ -111,7 +111,7 @@ import { BackpackWalletAdapter } from '@solana/wallet-adapter-backpack'
 import '@solana/wallet-adapter-react-ui/styles.css'
 
 function App() {
-  const endpoint = 'https://x1-devnet-rpc.x1.network'
+  const endpoint = 'https://rpc-testnet.x1.xyz'
   const wallets = [new BackpackWalletAdapter()]
 
   return (
@@ -133,7 +133,7 @@ function PremiumPage() {
       <X402Paywall
         amount={2.50}
         description="Premium AI Chat Access"
-        network="x1-devnet"
+        network="x1-testnet"
         showBalance={true}
         onPaymentSuccess={(txId) => {
           console.log('Payment successful! TX:', txId)

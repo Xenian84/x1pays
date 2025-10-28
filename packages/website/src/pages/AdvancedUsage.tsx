@@ -69,7 +69,7 @@ const AdvancedUsage = () => {
 
 // Network constants
 const network = NETWORKS.X1_MAINNET  // 'x1-mainnet'
-const devNetwork = NETWORKS.X1_DEVNET  // 'x1-devnet'
+const testNetwork = NETWORKS.X1_TESTNET  // 'x1-testnet'
 
 // Facilitator URLs
 const facilitatorUrl = FACILITATOR_URLS.MAINNET
@@ -389,7 +389,7 @@ if (isValidPaymentResponse(settlement)) {
 // Check network value
 const network: string = getUserInput()
 if (isValidNetwork(network)) {
-  // TypeScript knows network is 'x1-mainnet' | 'x1-devnet'
+  // TypeScript knows network is 'x1-mainnet' | 'x1-testnet'
   await connectToNetwork(network)
 }
 

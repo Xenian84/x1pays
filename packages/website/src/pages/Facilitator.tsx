@@ -212,7 +212,7 @@ const Facilitator = () => {
                     }}
                   >
                     <Typography variant="body2" sx={{ fontFamily: 'monospace', color: 'text.secondary' }}>
-                      x1-mainnet, x1-devnet
+                      x1-mainnet, x1-testnet
                     </Typography>
                   </Paper>
                 ),

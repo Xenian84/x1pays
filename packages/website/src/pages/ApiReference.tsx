@@ -330,7 +330,7 @@ console.log(response.x402Payment);  // Payment details`} language="typescript" /
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1.5, mt: 3 }}>Config</Typography>
               <CodeBlock code={`interface X402Config {
   facilitatorUrl: string;         // Facilitator service URL
-  network: string;                // "x1-mainnet" or "x1-devnet"
+  network: string;                // "x1-mainnet" or "x1-testnet"
   payToAddress: string;           // Merchant wallet address
   tokenMint: string;              // wXNT token mint address
   amount: string;                 // Amount in atomic units
@@ -578,7 +578,7 @@ isValidAmount(-100)       // false (must be positive)`,
                 title: 'PaymentPayload',
                 code: `interface PaymentPayload {
   scheme: string;           // "exact"
-  network: string;          // "x1-mainnet" or "x1-devnet"
+  network: string;          // "x1-mainnet" or "x1-testnet"
   payTo: string;            // Merchant wallet address
   asset: string;            // wXNT token mint address
   amount: string;           // Amount in atomic units
@@ -645,7 +645,7 @@ isValidAmount(-100)       // false (must be positive)`,
             <Stack spacing={2}>
               {[
                 { key: 'FACILITATOR_URL', desc: 'URL of the facilitator service (e.g., http://localhost:4000)' },
-                { key: 'NETWORK', desc: 'Network identifier: "x1-mainnet" or "x1-devnet"' },
+                { key: 'NETWORK', desc: 'Network identifier: "x1-mainnet" or "x1-testnet"' },
                 { key: 'WXNT_MINT', desc: 'wXNT SPL token mint address on X1' },
                 { key: 'MERCHANT_WALLET', desc: 'Merchant wallet address (receives payments)' },
                 { key: 'FEE_PAYER_SECRET', desc: 'Facilitator fee payer wallet (base58 secret key)' },
