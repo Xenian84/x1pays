@@ -62,8 +62,8 @@ app.post("/verify", async (req, res) => {
       payTo: payment.payTo,
       asset: payment.asset,
       amount: payment.amount,
-      buyer: payment.buyer,
-      memo: payment.memo ?? null
+      memo: payment.memo ?? null,
+      buyer: payment.buyer
     };
     const messageStr = JSON.stringify(messageObj);
     const message = Buffer.from(messageStr);
