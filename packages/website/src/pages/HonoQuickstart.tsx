@@ -184,7 +184,7 @@ app.get('/api/premium/data', (c) => {
           <CodeBlock
             code={`// Shared configuration
 const config = {
-  facilitatorUrl: 'https://facilitator.x1pays.network',
+  facilitatorUrl: 'https://facilitator.x1pays.xyz',
   network: 'x1-mainnet',
   payToAddress: process.env.MERCHANT_WALLET!,
   tokenMint: process.env.WXNT_MINT!

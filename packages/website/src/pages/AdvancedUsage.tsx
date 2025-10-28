@@ -73,7 +73,7 @@ const testNetwork = NETWORKS.X1_TESTNET  // 'x1-testnet'
 
 // Facilitator URLs
 const facilitatorUrl = FACILITATOR_URLS.MAINNET
-// 'https://facilitator.x1pays.network'
+// 'https://facilitator.x1pays.xyz'
 
 // Protocol constants
 console.log(X402_VERSION)  // 1
@@ -465,7 +465,7 @@ try {
 
 // Validate middleware config
 const config = MiddlewareConfigSchema.parse({
-  facilitatorUrl: 'https://facilitator.x1pays.network',
+  facilitatorUrl: 'https://facilitator.x1pays.xyz',
   network: 'x1-mainnet',
   payToAddress: 'merchant_wallet_address',
   tokenMint: 'wxnt_mint_address',
@@ -475,7 +475,7 @@ const config = MiddlewareConfigSchema.parse({
 // Validate client config
 const clientConfig = ClientConfigSchema.parse({
   wallet: keypair,
-  facilitatorUrl: 'https://facilitator.x1pays.network',
+  facilitatorUrl: 'https://facilitator.x1pays.xyz',
   network: 'x1-mainnet',
   maxRetries: 3,
   paymentTimeout: 10000

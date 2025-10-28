@@ -28,7 +28,7 @@ const Facilitator = () => {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {
-    navigator.clipboard.writeText('https://facilitator.x1pays.network')
+    navigator.clipboard.writeText('https://facilitator.x1pays.xyz')
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -106,7 +106,7 @@ const Facilitator = () => {
                       wordBreak: 'break-all',
                     }}
                   >
-                    https://facilitator.x1pays.network
+                    https://facilitator.x1pays.xyz
                   </Typography>
                 </Box>
                 <IconButton
@@ -191,7 +191,7 @@ const Facilitator = () => {
                 step: '1',
                 title: (
                   <Typography variant="body1" color="text.secondary">
-                    Set <Box component="code" sx={{ px: 1.5, py: 0.5, bgcolor: 'rgba(0, 229, 255, 0.1)', borderRadius: 1, fontFamily: 'monospace', fontSize: '0.875rem', color: 'primary.main' }}>FACILITATOR_URL=https://facilitator.x1pays.network</Box> in your server.
+                    Set <Box component="code" sx={{ px: 1.5, py: 0.5, bgcolor: 'rgba(0, 229, 255, 0.1)', borderRadius: 1, fontFamily: 'monospace', fontSize: '0.875rem', color: 'primary.main' }}>FACILITATOR_URL=https://facilitator.x1pays.xyz</Box> in your server.
                   </Typography>
                 ),
                 color: 'primary',

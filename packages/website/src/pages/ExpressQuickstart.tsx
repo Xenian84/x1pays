@@ -127,7 +127,7 @@ PORT=3000`}
           <CodeBlock
             code={`// Shared configuration
 const baseConfig = {
-  facilitatorUrl: 'https://facilitator.x1pays.network',
+  facilitatorUrl: 'https://facilitator.x1pays.xyz',
   network: 'x1-mainnet',
   payToAddress: process.env.MERCHANT_WALLET,
   tokenMint: process.env.WXNT_MINT
