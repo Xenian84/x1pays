@@ -79,19 +79,11 @@ export default function Echo() {
       }
 
       const message = JSON.stringify(paymentPayload)
-      console.log('Signing message:', message)
-      console.log('Message length:', message.length)
-      console.log('Payload:', paymentPayload)
-      
       const encodedMessage = new TextEncoder().encode(message)
       const signature = await signMessage(encodedMessage)
       
-      console.log('Raw signature length:', signature.length)
-      
       // Convert signature to base58 format as expected by facilitator
       const bs58Signature = encodeBase58(signature)
-      console.log('Base58 signature:', bs58Signature)
-      console.log('Base58 signature length:', bs58Signature.length)
       
       const signedPayload = {
         ...paymentPayload,
@@ -290,7 +282,7 @@ export default function Echo() {
                           </Typography>
                           <Button
                             component="a"
-                            href={`https://explorer.solana.com/tx/${txHash}?cluster=custom&customUrl=https://rpc.testnet.x1.xyz`}
+                            href={`https://explorer.x1.xyz/tx/${txHash}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             size="small"

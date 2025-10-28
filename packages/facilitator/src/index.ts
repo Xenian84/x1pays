@@ -73,15 +73,7 @@ app.post("/verify", async (req, res) => {
       memo: payment.memo ?? null,
       buyer: payment.buyer
     };
-    const messageStr = JSON.stringify(messageObj);
-    const message = Buffer.from(messageStr);
-
-    logger.info({ 
-      messageStr, 
-      messageLength: message.length,
-      buyer: payment.buyer,
-      signatureLength: payment.signature?.length 
-    }, "Verifying signature");
+    const message = Buffer.from(JSON.stringify(messageObj));
 
     if (!payment.signature) {
       throw new InvalidSignatureError("Missing payment signature", { payment });
@@ -90,13 +82,11 @@ app.post("/verify", async (req, res) => {
     let signatureBytes;
     try {
       signatureBytes = bs58.decode(payment.signature);
-      logger.info({ signatureBytesLength: signatureBytes.length }, "Decoded signature");
     } catch (e: any) {
       throw new InvalidSignatureError("Invalid signature encoding", { error: e.message });
     }
 
     const publicKeyBytes = new PublicKey(payment.buyer).toBytes();
-    logger.info({ publicKeyBytesLength: publicKeyBytes.length }, "Public key bytes");
 
     const ok = nacl.sign.detached.verify(
       message,
@@ -104,14 +94,14 @@ app.post("/verify", async (req, res) => {
       publicKeyBytes
     );
 
-    logger.info({ ok, buyer: payment.buyer }, "Signature verification result");
-
     if (!ok) {
       throw new InvalidSignatureError(
         "Payment signature verification failed",
         { buyer: payment.buyer, amount: payment.amount }
       );
     }
+    
+    logger.info({ buyer: payment.buyer, amount: payment.amount }, "Signature verified successfully");
 
     return res.json({ valid: true, message: "verified" });
   } catch (e: any) {
