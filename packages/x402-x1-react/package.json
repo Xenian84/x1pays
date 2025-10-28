@@ -1,6 +1,6 @@
 {
-  "name": "x402-x1-react",
-  "version": "0.1.0-beta.1",
+  "name": "@x1pays/react",
+  "version": "0.1.0",
   "description": "React component library for x402 payment protocol on X1 blockchain",
   "type": "module",
   "main": "./dist/index.cjs",
