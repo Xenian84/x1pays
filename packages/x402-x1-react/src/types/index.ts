@@ -34,15 +34,15 @@ export interface X1NetworkConfig {
 
 export const X1_NETWORKS: Record<'x1-mainnet' | 'x1-testnet', X1NetworkConfig> = {
   'x1-mainnet': {
-    rpcUrl: 'https://x1-rpc.x1.network',
+    rpcUrl: 'https://rpc.x1.xyz',
     treasuryAddress: 'X1PaysTreasuryMainnet1111111111111111111111',
-    facilitatorUrl: 'https://facilitator.x1pays.com',
+    facilitatorUrl: 'https://facilitator.x1pays.xyz',
     usdcMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
   },
   'x1-testnet': {
     rpcUrl: 'https://rpc-testnet.x1.xyz',
     treasuryAddress: 'X1PaysDevTreasury1111111111111111111111111',
-    facilitatorUrl: 'https://facilitator-devnet.x1pays.com',
+    facilitatorUrl: 'https://facilitator-testnet.x1pays.xyz',
     usdcMint: 'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr',
   },
 }

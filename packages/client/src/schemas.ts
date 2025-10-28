@@ -66,8 +66,8 @@ export const VerificationResponseSchema = z.object({
  */
 export const MiddlewareConfigSchema = z.object({
   facilitatorUrl: z.string().url('Facilitator URL must be a valid URL'),
-  network: z.enum(['x1-mainnet', 'x1-testnet', 'x1-testnet'], {
-    errorMap: () => ({ message: "Network must be 'x1-mainnet', 'x1-testnet', or 'x1-testnet'" })
+  network: z.enum(['x1-mainnet', 'x1-testnet'], {
+    errorMap: () => ({ message: "Network must be 'x1-mainnet' or 'x1-testnet'" })
   }),
   payToAddress: z.string().min(32, 'Payment address must be at least 32 characters'),
   tokenMint: z.string().min(32, 'Token mint address must be at least 32 characters'),
