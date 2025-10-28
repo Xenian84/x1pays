@@ -2,12 +2,19 @@ import { Connection, Keypair, PublicKey, Transaction, sendAndConfirmTransaction 
 import { getAssociatedTokenAddress, createAssociatedTokenAccountInstruction, createTransferInstruction } from "@solana/spl-token";
 import bs58 from "bs58";
 
-export function getConnection(rpcUrl = process.env.RPC_URL!) {
+export function getConnection() {
+  const rpcUrl = process.env.RPC_URL || process.env.VITE_X1_RPC_URL || "https://xolana.xen.network";
   return new Connection(rpcUrl, "confirmed");
 }
 
 export function loadFeePayer(): Keypair {
-  const secret = process.env.FEE_PAYER_SECRET!;
+  const secret = process.env.FEE_PAYER_SECRET;
+  if (!secret) {
+    throw new Error("FEE_PAYER_SECRET environment variable is not set");
+  }
+  if (typeof secret !== 'string') {
+    throw new Error("FEE_PAYER_SECRET must be a string");
+  }
   return Keypair.fromSecretKey(bs58.decode(secret));
 }
 
