@@ -183,11 +183,11 @@ import {
 
 // Network constants
 const network = NETWORKS.X1_MAINNET  // 'x1-mainnet'
-const devNetwork = NETWORKS.X1_DEVNET  // 'x1-devnet'
+const testNetwork = NETWORKS.X1_TESTNET  // 'x1-testnet'
 
 // Facilitator URLs
 const facilitatorUrl = FACILITATOR_URLS.MAINNET
-// 'https://facilitator.x1pays.network'
+// 'https://facilitator.x1pays.xyz'
 
 // Protocol version
 console.log(X402_VERSION)  // 1

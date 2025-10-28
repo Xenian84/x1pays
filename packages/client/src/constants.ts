@@ -4,7 +4,6 @@
 
 export const NETWORKS = {
   X1_MAINNET: 'x1-mainnet',
-  X1_DEVNET: 'x1-devnet',
   X1_TESTNET: 'x1-testnet'
 } as const;
 
@@ -24,17 +23,15 @@ export const X402_VERSION = 1;
  * Default facilitator URLs
  */
 export const FACILITATOR_URLS = {
-  MAINNET: 'https://facilitator.x1pays.network',
-  DEVNET: 'https://facilitator-devnet.x1pays.network',
-  TESTNET: 'https://facilitator-testnet.x1pays.network'
+  MAINNET: 'https://facilitator.x1pays.xyz',
+  TESTNET: 'https://facilitator-testnet.x1pays.xyz'
 } as const;
 
 /**
  * X1 Explorer URLs by network
  */
 export const EXPLORER_URLS = {
-  'x1-mainnet': 'https://explorer.mainnet.x1.xyz',
-  'x1-devnet': 'https://explorer.testnet.x1.xyz',
+  'x1-mainnet': 'https://explorer.x1.xyz',
   'x1-testnet': 'https://explorer.testnet.x1.xyz'
 } as const;
 
