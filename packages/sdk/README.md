@@ -21,10 +21,10 @@ const wallet = new WalletManager(process.env.AGENT_KEY!, {
 // Check balances
 const balances = await wallet.getBalances()
 console.log(balances.XNT.uiAmount)   // 12.5 XNT
-console.log(balances.USDX.uiAmount)  // 100.0 USDX
+console.log(balances.USDC.x.uiAmount)  // 100.0 USDC.x
 
 // Send tokens
-const tx = await wallet.send('RecipientAddress...', '5.0', 'USDX')
+const tx = await wallet.send('RecipientAddress...', '5.0', 'USDC.x')
 console.log(tx.txHash)
 
 // Pay for x402-protected API
@@ -65,10 +65,10 @@ const wallet = WalletManager.fromSecretKey('base58key...', { network: 'x1-mainne
 ```typescript
 // All balances at once
 const balances = await wallet.getBalances()
-// Returns: { XNT: TokenBalance, WXNT: TokenBalance, USDX: TokenBalance }
+// Returns: { XNT: TokenBalance, WXNT: TokenBalance, USDC.x: TokenBalance }
 
 // Single asset
-const usdx = await wallet.getBalance('USDX')
+const usdx = await wallet.getBalance('USDC.x')
 console.log(usdx.uiAmount)  // 100.0
 console.log(usdx.amount)    // 100000000n (atomic)
 ```
@@ -77,8 +77,8 @@ console.log(usdx.amount)    // 100000000n (atomic)
 
 ```typescript
 interface TokenBalance {
-  symbol: string     // "USDX"
-  name: string       // "USDX"
+  symbol: string     // "USDC.x"
+  name: string       // "USDC.x"
   mint: string       // "B69chRzqz..."
   amount: bigint     // 100000000n (atomic units)
   decimals: number   // 6
@@ -96,7 +96,7 @@ const result = await wallet.send(to, amount, asset)
 |-----------|------|-------------|
 | `to` | `string` | Recipient wallet address |
 | `amount` | `string` | Human-readable amount (e.g. `'5.0'`) |
-| `asset` | `'USDX' \| 'WXNT' \| 'XNT'` | Asset to send |
+| `asset` | `'USDC.x' \| 'WXNT' \| 'XNT'` | Asset to send |
 
 Returns `TxResult`:
 
@@ -156,22 +156,22 @@ Control how much your agent can spend:
 
 ```typescript
 wallet.setPolicy({
-  maxPerTransaction: 1_000_000n,     // Max 1 USDX per tx
-  sessionBudget: 10_000_000n,        // Max 10 USDX per session
-  dailyBudget: 50_000_000n,          // Max 50 USDX per day
-  allowedAssets: ['USDX'],           // Only USDX payments
+  maxPerTransaction: 1_000_000n,     // Max 1 USDC.x per tx
+  sessionBudget: 10_000_000n,        // Max 10 USDC.x per session
+  dailyBudget: 50_000_000n,          // Max 50 USDC.x per day
+  allowedAssets: ['USDC.x'],           // Only USDC.x payments
   allowedRecipients: ['addr1...'],   // Whitelist recipients
-  requireConfirmation: 5_000_000n,   // Confirm above 5 USDX
+  requireConfirmation: 5_000_000n,   // Confirm above 5 USDC.x
 })
 
 // Check before paying
-const check = wallet.checkPolicy(1_000_000n, 'USDX', 'recipient...')
+const check = wallet.checkPolicy(1_000_000n, 'USDC.x', 'recipient...')
 if (!check.allowed) {
   console.log(check.reason)  // "Amount exceeds per-transaction limit"
 }
 ```
 
-All amounts are in atomic units (USDX has 6 decimals, so `1_000_000n` = 1 USDX).
+All amounts are in atomic units (USDC.x has 6 decimals, so `1_000_000n` = 1 USDC.x).
 
 ## Asset Registry
 
@@ -181,12 +181,12 @@ Resolve assets by symbol, alias, or mint address:
 import { resolveAsset, tryResolveAsset, ASSETS } from '@x1pay/sdk'
 
 // By symbol
-const usdx = resolveAsset('USDX')
-// { symbol: 'USDX', mint: 'B69chRzq...', decimals: 6, name: 'USDX', type: 'token-2022' }
+const usdx = resolveAsset('USDC.x')
+// { symbol: 'USDC.x', mint: 'B69chRzq...', decimals: 6, name: 'USDC.x', type: 'token-2022' }
 
 // By alias (case-insensitive)
 resolveAsset('usdx')    // works
-resolveAsset('USDX')    // works
+resolveAsset('USDC.x')    // works
 
 // Safe resolve (returns null instead of throwing)
 const asset = tryResolveAsset('UNKNOWN')  // null
@@ -194,7 +194,7 @@ const asset = tryResolveAsset('UNKNOWN')  // null
 // All assets
 console.log(ASSETS.XNT)   // Native XNT
 console.log(ASSETS.WXNT)  // Wrapped XNT (SPL)
-console.log(ASSETS.USDX)  // USDX (Token-2022)
+console.log(ASSETS.USDC.x)  // USDC.x (Token-2022)
 ```
 
 ### Supported Assets
@@ -203,7 +203,7 @@ console.log(ASSETS.USDX)  // USDX (Token-2022)
 |--------|------|----------|------|
 | `XNT` | native | 9 | Native |
 | `WXNT` | `So111...112` | 9 | SPL Token |
-| `USDX` | `B69chRzq...` | 6 | Token-2022 |
+| `USDC.x` | `B69chRzq...` | 6 | Token-2022 |
 
 ## Payment Builder
 
@@ -260,7 +260,7 @@ const history = wallet.history
 
 | Method | Description |
 |--------|-------------|
-| `getBalances()` | All token balances (XNT, WXNT, USDX) |
+| `getBalances()` | All token balances (XNT, WXNT, USDC.x) |
 | `getBalance(asset)` | Single asset balance |
 | `send(to, amount, asset)` | Transfer tokens (sender pays gas) |
 | `payForResource(url, opts?)` | Full x402 payment flow (facilitator pays gas) |
@@ -285,13 +285,13 @@ All methods throw descriptive errors:
 
 ```typescript
 try {
-  await wallet.send('invalid-address', '5.0', 'USDX')
+  await wallet.send('invalid-address', '5.0', 'USDC.x')
 } catch (err) {
   // "Invalid recipient address: invalid-address"
 }
 
 try {
-  await wallet.send('addr...', '-1', 'USDX')
+  await wallet.send('addr...', '-1', 'USDC.x')
 } catch (err) {
   // "Invalid amount: -1. Must be a positive number"
 }

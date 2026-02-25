@@ -16,9 +16,9 @@ export function registerPortfolioTools(
         {
           address: stats.address,
           network: stats.network,
-          totalSpent: `${stats.totalSpent / 1e6} USDX`,
-          sessionBudget: `${stats.sessionBudget / 1e6} USDX`,
-          budgetRemaining: `${stats.budgetRemaining / 1e6} USDX`,
+          totalSpent: `${stats.totalSpent / 1e6} USDC.x`,
+          sessionBudget: `${stats.sessionBudget / 1e6} USDC.x`,
+          budgetRemaining: `${stats.budgetRemaining / 1e6} USDC.x`,
           budgetUsedPercent: `${((stats.totalSpent / stats.sessionBudget) * 100).toFixed(1)}%`,
           transactionCount: stats.transactionCount,
         },

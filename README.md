@@ -50,9 +50,9 @@ const wallet = new WalletManager(process.env.AGENT_KEY!, {
 
 // Enforce spending limits
 wallet.setPolicy({
-  maxPerTransaction: 10_000_000n,   // 10 USDX max per tx
-  sessionBudget: 100_000_000n,      // 100 USDX session cap
-  allowedAssets: ['USDX'],          // Only USDX payments
+  maxPerTransaction: 10_000_000n,   // 10 USDC.x max per tx
+  sessionBudget: 100_000_000n,      // 100 USDC.x session cap
+  allowedAssets: ['USDC.x'],          // Only USDC.x payments
 })
 
 // Pay for an x402-protected API (facilitator covers gas)
@@ -62,10 +62,10 @@ console.log(result.txHash)   // On-chain tx hash
 
 // Check balances
 const balances = await wallet.getBalances()
-console.log(balances.USDX.uiAmount)  // 95.0
+console.log(balances.USDC.x.uiAmount)  // 95.0
 
 // Direct token transfer (agent pays gas)
-await wallet.send('RecipientAddress...', '5.0', 'USDX')
+await wallet.send('RecipientAddress...', '5.0', 'USDC.x')
 ```
 
 ### 2. Merchant — Paywall an API endpoint
@@ -82,8 +82,8 @@ const app = express()
 
 app.use('/api/premium', x402({
   payTo: 'YOUR_WALLET_ADDRESS',
-  amount: '100000',           // 0.1 USDX
-  tokenMint: 'USDX',
+  amount: '100000',           // 0.1 USDC.x
+  tokenMint: 'USDC.x',
   network: 'x1-mainnet',
   facilitatorUrl: 'https://x1pays.xyz/facilitator-alpha-mainnet',
 }))
@@ -107,16 +107,16 @@ import { XDex } from '@x1pay/dex'
 const dex = XDex.create('x1-mainnet')
 
 // Get a quote
-const quote = await dex.getQuote('USDX', 'WXNT', '10.0')
+const quote = await dex.getQuote('USDC.x', 'WXNT', '10.0')
 console.log(`Expected: ${quote.amountOut}, Impact: ${quote.priceImpact}%`)
 
 // Execute swap (agent wallet pays gas)
-const result = await dex.swap(wallet.keypair, 'USDX', 'WXNT', '10.0')
+const result = await dex.swap(wallet.keypair, 'USDC.x', 'WXNT', '10.0')
 console.log(`TX: ${result.txHash}`)
 
 // Price feed
-const price = await dex.getPrice('WXNT', 'USDX')
-console.log(`1 WXNT = ${price} USDX`)
+const price = await dex.getPrice('WXNT', 'USDC.x')
+console.log(`1 WXNT = ${price} USDC.x`)
 
 // Discover pools
 const pools = await dex.listPools()
@@ -168,7 +168,7 @@ Client                    Server                   Facilitator          X1 Chain
 | Symbol | Name | Type | Decimals | Mint |
 |--------|------|------|----------|------|
 | `XNT` | Native XNT | Native | 9 | — |
-| `USDX` | USD Coin (X1) | Token-2022 | 6 | `B69chRzqzDCmdB5WYB8NRu5Yv5ZA95ABiZcdzCgGm9Tq` |
+| `USDC.x` | USD Coin (X1) | Token-2022 | 6 | `B69chRzqzDCmdB5WYB8NRu5Yv5ZA95ABiZcdzCgGm9Tq` |
 | `WXNT` | Wrapped XNT | SPL Token | 9 | `So11111111111111111111111111111111111111112` |
 
 ---
@@ -204,7 +204,7 @@ Add to `~/.openclaw/openclaw.json`:
 
 | Tool | Description |
 |------|-------------|
-| `x1pays_balance` | Check wallet balances (XNT, USDX, WXNT) |
+| `x1pays_balance` | Check wallet balances (XNT, USDC.x, WXNT) |
 | `x1pays_send` | Send tokens to any X1 address |
 | `x1pays_pay` | Pay for an x402-protected resource |
 | `x1pays_probe` | Check payment requirements without paying |
@@ -222,8 +222,8 @@ Add to `~/.openclaw/openclaw.json`:
 | Command | Example |
 |---------|---------|
 | `/balance` | Quick balance check |
-| `/swap <amount> <from> <to>` | `/swap 10 USDX WXNT` |
-| `/send <address> <amount> <asset>` | `/send addr... 5 USDX` |
+| `/swap <amount> <from> <to>` | `/swap 10 USDC.x WXNT` |
+| `/send <address> <amount> <asset>` | `/send addr... 5 USDC.x` |
 | `/price <token>` | `/price WXNT` |
 | `/portfolio` | Full portfolio view |
 
@@ -288,18 +288,18 @@ Enforce strict limits on what your agent can spend:
 
 ```typescript
 wallet.setPolicy({
-  maxPerTransaction: 1_000_000n,     // Max 1 USDX per tx
-  sessionBudget: 10_000_000n,        // Max 10 USDX per session
-  dailyBudget: 50_000_000n,          // Max 50 USDX per day
-  allowedAssets: ['USDX'],           // Only USDX payments
+  maxPerTransaction: 1_000_000n,     // Max 1 USDC.x per tx
+  sessionBudget: 10_000_000n,        // Max 10 USDC.x per session
+  dailyBudget: 50_000_000n,          // Max 50 USDC.x per day
+  allowedAssets: ['USDC.x'],           // Only USDC.x payments
   allowedRecipients: ['addr1...'],   // Whitelist recipients
 })
 
-const check = wallet.checkPolicy(1_000_000n, 'USDX', 'recipient...')
+const check = wallet.checkPolicy(1_000_000n, 'USDC.x', 'recipient...')
 // { allowed: true } or { allowed: false, reason: "..." }
 ```
 
-All amounts in atomic units (USDX: 6 decimals, so `1_000_000n` = 1 USDX).
+All amounts in atomic units (USDC.x: 6 decimals, so `1_000_000n` = 1 USDC.x).
 
 ---
 

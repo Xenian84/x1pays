@@ -7,7 +7,7 @@ export function registerPaymentTools(
 ) {
   api.registerTool({
     name: "x1pays_balance",
-    description: "Check the agent wallet's token balances on X1 blockchain (XNT, USDX, wXNT)",
+    description: "Check the agent wallet's token balances on X1 blockchain (XNT, USDC.x, wXNT)",
     parameters: {},
     handler: async () => {
       const balances = await wallet.getBalances();
@@ -16,8 +16,8 @@ export function registerPaymentTools(
         result[sym] = `${bal.uiAmount.toFixed(bal.decimals)} ${bal.name}`;
       }
       const stats = wallet.stats;
-      result.sessionSpent = `${stats.totalSpent / 1e6} USDX`;
-      result.budgetRemaining = `${stats.budgetRemaining / 1e6} USDX`;
+      result.sessionSpent = `${stats.totalSpent / 1e6} USDC.x`;
+      result.budgetRemaining = `${stats.budgetRemaining / 1e6} USDC.x`;
       return JSON.stringify(result, null, 2);
     },
   });
@@ -30,7 +30,7 @@ export function registerPaymentTools(
       properties: {
         to: { type: "string", description: "Recipient wallet address" },
         amount: { type: "string", description: "Amount in human-readable form (e.g. '0.5')" },
-        asset: { type: "string", enum: ["USDX", "WXNT"], description: "Token to send" },
+        asset: { type: "string", enum: ["USDX", "WXNT"], description: "Token to send (USDC.x or WXNT)" },
       },
       required: ["to", "amount", "asset"],
     },
@@ -51,7 +51,7 @@ export function registerPaymentTools(
       type: "object",
       properties: {
         url: { type: "string", description: "The x402-protected URL to access" },
-        asset: { type: "string", enum: ["USDX", "WXNT"], description: "Token to pay with (default USDX)" },
+        asset: { type: "string", enum: ["USDX", "WXNT"], description: "Token to pay with (default USDC.x)" },
       },
       required: ["url"],
     },
@@ -64,7 +64,7 @@ export function registerPaymentTools(
         const stats = wallet.stats;
         return [
           `Payment OK | TX: ${result.txHash}`,
-          `Amount: ${result.amount} | Session: ${stats.totalSpent / 1e6} USDX`,
+          `Amount: ${result.amount} | Session: ${stats.totalSpent / 1e6} USDC.x`,
           "---",
           typeof result.data === "string" ? result.data : JSON.stringify(result.data),
         ].join("\n");

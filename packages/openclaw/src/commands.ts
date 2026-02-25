@@ -25,7 +25,7 @@ export function registerCommands(
     handler: async (ctx: any) => {
       const args = (ctx.args || "").trim().split(/\s+/);
       if (args.length < 3) {
-        return { text: "Usage: /swap <amount> <from> <to>\nExample: /swap 10 USDX WXNT" };
+        return { text: "Usage: /swap <amount> <from> <to>\nExample: /swap 10 USDC.x WXNT" };
       }
       const [amount, from, to] = args;
       try {
@@ -46,7 +46,7 @@ export function registerCommands(
     handler: async (ctx: any) => {
       const args = (ctx.args || "").trim().split(/\s+/);
       if (args.length < 3) {
-        return { text: "Usage: /send <amount> <asset> <address>\nExample: /send 5 USDX 7xKp..." };
+        return { text: "Usage: /send <amount> <asset> <address>\nExample: /send 5 USDC.x 7xKp..." };
       }
       const [amount, asset, to] = args;
       try {
@@ -65,7 +65,7 @@ export function registerCommands(
     handler: async (ctx: any) => {
       const args = (ctx.args || "").trim().split(/\s+/);
       if (args.length < 2) {
-        return { text: "Usage: /price <tokenA> <tokenB>\nExample: /price USDX WXNT" };
+        return { text: "Usage: /price <tokenA> <tokenB>\nExample: /price USDC.x WXNT" };
       }
       const [tokenA, tokenB] = args;
       try {
@@ -88,8 +88,8 @@ export function registerCommands(
       }
       const stats = wallet.stats;
       lines.push("");
-      lines.push(`Session spent: ${stats.totalSpent / 1e6} USDX`);
-      lines.push(`Budget remaining: ${stats.budgetRemaining / 1e6} USDX`);
+      lines.push(`Session spent: ${stats.totalSpent / 1e6} USDC.x`);
+      lines.push(`Budget remaining: ${stats.budgetRemaining / 1e6} USDC.x`);
       return { text: lines.join("\n") };
     },
   });

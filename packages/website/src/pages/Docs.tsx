@@ -153,9 +153,9 @@ const wallet = new WalletManager(
 
 // Set spending limits
 wallet.setPolicy({
-  maxPerTransaction: 10_000_000n,  // 10 USDX
-  sessionBudget: 100_000_000n,     // 100 USDX
-  dailyBudget: 500_000_000n,       // 500 USDX
+  maxPerTransaction: 10_000_000n,  // 10 USDC.x
+  sessionBudget: 100_000_000n,     // 100 USDC.x
+  dailyBudget: 500_000_000n,       // 500 USDC.x
 })
 
 // Pay for x402 resource
@@ -290,7 +290,7 @@ const pools = await dex.listPools()`} />
           <Section id="assets" title="Supported Assets">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-surface-border rounded-xl overflow-hidden">
               {[
-                { symbol: 'USDX', name: 'USD Coin (X1)', mint: 'B69chRzq...Gm9Tq', decimals: 6, program: 'Token-2022' },
+                { symbol: 'USDX', name: 'USDC.x', mint: 'B69chRzq...Gm9Tq', decimals: 6, program: 'Token-2022' },
                 { symbol: 'wXNT', name: 'Wrapped XNT', mint: 'So111111...1112', decimals: 6, program: 'SPL Token' },
                 { symbol: 'XNT', name: 'Native XNT', mint: 'native', decimals: 9, program: 'System' },
               ].map((a) => (

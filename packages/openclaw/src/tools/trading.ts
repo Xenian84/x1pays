@@ -9,13 +9,13 @@ export function registerTradingTools(
   api.registerTool({
     name: "x1pays_swap",
     description:
-      "Swap tokens on xDEX (X1's decentralized exchange). Supports USDX, wXNT, and any xDEX-listed token. Always gets a quote first and warns about high price impact.",
+      "Swap tokens on xDEX (X1's decentralized exchange). Supports USDC.x, wXNT, and any xDEX-listed token. Always gets a quote first and warns about high price impact.",
     parameters: {
       type: "object",
       properties: {
         input_token: {
           type: "string",
-          description: "Input token symbol or mint address (e.g. 'USDX', 'WXNT', or mint address)",
+          description: "Input token symbol or mint address (e.g. 'USDC.x', 'WXNT', or mint address)",
         },
         output_token: {
           type: "string",
@@ -123,7 +123,7 @@ export function registerTradingTools(
     parameters: {
       type: "object",
       properties: {
-        token_a: { type: "string", description: "First token (e.g. 'USDX')" },
+        token_a: { type: "string", description: "First token (e.g. 'USDC.x')" },
         token_b: { type: "string", description: "Second token (e.g. 'WXNT')" },
       },
       required: ["token_a", "token_b"],

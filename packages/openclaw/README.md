@@ -32,7 +32,7 @@ Add to your OpenClaw config (`~/.openclaw/openclaw.json`):
           "sessionBudget": 100000000,
           "maxPerTransaction": 10000000,
           "priceAlerts": true,
-          "priceAlertTokens": ["WXNT", "USDX"]
+          "priceAlertTokens": ["WXNT", "USDC.x"]
         }
       }
     }
@@ -60,8 +60,8 @@ Add to your OpenClaw config (`~/.openclaw/openclaw.json`):
 ## Slash Commands
 
 - `/balance` — Quick balance check
-- `/swap USDX WXNT 10` — Swap tokens
-- `/send ADDRESS 5 USDX` — Send tokens
+- `/swap USDC.x WXNT 10` — Swap tokens
+- `/send ADDRESS 5 USDC.x` — Send tokens
 - `/price WXNT` — Token price
 - `/portfolio` — Full portfolio
 

@@ -24,13 +24,13 @@ import { XDex } from '@x1pay/dex'
 
 const dex = XDex.create('x1-mainnet')
 
-const quote = await dex.getQuote('USDX', 'WXNT', '10.0')
+const quote = await dex.getQuote('USDC.x', 'WXNT', '10.0')
 console.log(`Out: ${quote.amountOut}, Impact: ${quote.priceImpact}%`)
 
-const price = await dex.getPrice('WXNT', 'USDX')
-console.log(`1 WXNT = ${price} USDX`)
+const price = await dex.getPrice('WXNT', 'USDC.x')
+console.log(`1 WXNT = ${price} USDC.x`)
 
-const result = await dex.swap(keypair, 'USDX', 'WXNT', '10.0', {
+const result = await dex.swap(keypair, 'USDC.x', 'WXNT', '10.0', {
   slippageBps: 50,
 })
 console.log(`TX: ${result.txHash}`)

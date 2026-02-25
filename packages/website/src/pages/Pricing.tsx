@@ -2,16 +2,16 @@ import { Link } from 'react-router-dom'
 import { Check, ArrowRight, Zap } from 'lucide-react'
 
 const EXAMPLES = [
-  { amount: '0.01 USDX', fee: '0.000001 USDX', desc: 'Micro API call' },
-  { amount: '0.10 USDX', fee: '0.00001 USDX', desc: 'AI agent query' },
-  { amount: '1.00 USDX', fee: '0.0001 USDX', desc: 'Premium data request' },
-  { amount: '10.00 USDX', fee: '0.001 USDX', desc: 'DEX swap (10 USDX)' },
-  { amount: '100.00 USDX', fee: '0.01 USDX', desc: 'Large swap or batch' },
+  { amount: '0.01 USDC.x', fee: '0.000001 USDC.x', desc: 'Micro API call' },
+  { amount: '0.10 USDC.x', fee: '0.00001 USDC.x', desc: 'AI agent query' },
+  { amount: '1.00 USDC.x', fee: '0.0001 USDC.x', desc: 'Premium data request' },
+  { amount: '10.00 USDC.x', fee: '0.001 USDC.x', desc: 'DEX swap (10 USDC.x)' },
+  { amount: '100.00 USDC.x', fee: '0.01 USDC.x', desc: 'Large swap or batch' },
 ]
 
 const INCLUDED = [
   'Gasless settlement — facilitator pays gas',
-  'Multi-asset support (USDX, wXNT, XNT)',
+  'Multi-asset support (USDC.x, wXNT, XNT)',
   'On-chain proof for every transaction',
   'OpenClaw plugin with 12 tools',
   'MCP server for Claude/Cursor',

@@ -21,7 +21,7 @@ export const ASSETS: Record<AssetSymbol, AssetInfo> = {
     symbol: "USDX",
     mint: "B69chRzqzDCmdB5WYB8NRu5Yv5ZA95ABiZcdzCgGm9Tq",
     decimals: 6,
-    name: "USDX",
+    name: "USDC.x",
     type: "token-2022",
   },
 };

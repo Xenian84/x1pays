@@ -48,7 +48,7 @@ export function createX1PaysMcp(config: X1PaysMcpConfig) {
 
   server.tool(
     "x1pays_balance",
-    "Check the agent wallet's token balances on X1 (XNT, USDX, wXNT)",
+    "Check the agent wallet's token balances on X1 (XNT, USDC.x, wXNT)",
     {},
     async () => {
       const balances = await wallet.getBalances();
@@ -57,8 +57,8 @@ export function createX1PaysMcp(config: X1PaysMcpConfig) {
         result[sym] = `${bal.uiAmount.toFixed(bal.decimals)} ${bal.name}`;
       }
       const stats = wallet.stats;
-      result.sessionSpent = `${stats.totalSpent / 1e6} USDX`;
-      result.budgetRemaining = `${stats.budgetRemaining / 1e6} USDX`;
+      result.sessionSpent = `${stats.totalSpent / 1e6} USDC.x`;
+      result.budgetRemaining = `${stats.budgetRemaining / 1e6} USDC.x`;
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }
   );
@@ -68,7 +68,7 @@ export function createX1PaysMcp(config: X1PaysMcpConfig) {
     "Access an x402-protected resource by automatically handling the 402 payment flow",
     {
       url: z.string().url().describe("The URL of the x402-protected resource"),
-      preferred_asset: z.enum(["USDX", "WXNT"]).optional().describe("Preferred token (default: USDX)"),
+      preferred_asset: z.enum(["USDX", "WXNT"]).optional().describe("Preferred token (default: USDC.x)"),
     },
     async ({ url, preferred_asset }) => {
       try {
@@ -82,7 +82,7 @@ export function createX1PaysMcp(config: X1PaysMcpConfig) {
         const stats = wallet.stats;
         const summary = [
           `Payment successful! TX: ${result.txHash}`,
-          `Amount: ${result.amount} | Session total: ${stats.totalSpent / 1e6} USDX`,
+          `Amount: ${result.amount} | Session total: ${stats.totalSpent / 1e6} USDC.x`,
           "---",
           typeof result.data === "string" ? result.data : JSON.stringify(result.data),
         ].join("\n");
@@ -144,7 +144,7 @@ export function createX1PaysMcp(config: X1PaysMcpConfig) {
     "x1pays_swap",
     "Swap tokens on xDEX (X1 DEX). Gets a quote, checks price impact, and executes.",
     {
-      input_token: z.string().describe("Input token symbol or mint (e.g. 'USDX')"),
+      input_token: z.string().describe("Input token symbol or mint (e.g. 'USDC.x')"),
       output_token: z.string().describe("Output token symbol or mint (e.g. 'WXNT')"),
       amount: z.string().describe("Amount to swap (human-readable, e.g. '10.0')"),
       slippage_bps: z.number().optional().describe("Slippage in basis points (default 100 = 1%)"),
@@ -204,7 +204,7 @@ export function createX1PaysMcp(config: X1PaysMcpConfig) {
     "x1pays_price",
     "Get current token price from xDEX pool",
     {
-      token_a: z.string().describe("First token (e.g. 'USDX')"),
+      token_a: z.string().describe("First token (e.g. 'USDC.x')"),
       token_b: z.string().describe("Second token (e.g. 'WXNT')"),
     },
     async ({ token_a, token_b }) => {
@@ -252,8 +252,8 @@ export function createX1PaysMcp(config: X1PaysMcpConfig) {
           text: JSON.stringify({
             address: stats.address,
             network: stats.network,
-            totalSpent: `${stats.totalSpent / 1e6} USDX`,
-            budgetRemaining: `${stats.budgetRemaining / 1e6} USDX`,
+            totalSpent: `${stats.totalSpent / 1e6} USDC.x`,
+            budgetRemaining: `${stats.budgetRemaining / 1e6} USDC.x`,
             transactions: stats.transactionCount,
           }, null, 2),
         }],

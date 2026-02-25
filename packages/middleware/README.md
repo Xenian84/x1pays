@@ -19,7 +19,7 @@ const app = express()
 app.use('/api/premium', x402({
   payTo: 'YOUR_WALLET_ADDRESS',
   amount: '100000',
-  tokenMint: 'USDX',
+  tokenMint: 'USDC.x',
   network: 'x1-mainnet',
   facilitatorUrl: 'https://x1pays.xyz/facilitator-alpha-mainnet',
 }))

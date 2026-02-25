@@ -38,7 +38,7 @@ const FEATURES = [
   {
     icon: Layers,
     title: 'Multi-Asset',
-    desc: 'USDX, wXNT, or native XNT. Token-2022 compatible. Pay with stablecoins or native tokens — same flow.',
+    desc: 'USDC.x, wXNT, or native XNT. Token-2022 compatible. Pay with stablecoins or native tokens — same flow.',
   },
   {
     icon: BarChart3,
