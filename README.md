@@ -6,18 +6,30 @@ X1Pays enables AI agents to pay for API calls, trade tokens on xDEX, manage wall
 
 ## Architecture
 
-```
-@x1pay/sdk ─── WalletManager, payments, spending policies
-  │
-  ├── @x1pay/dex ─── xDEX swaps, quotes, pool discovery
-  │     │
-  │     ├── @x1pay/openclaw ─── 12 tools, 5 commands, 3 skills
-  │     └── @x1pay/mcp ─── MCP server for Claude/Cursor
-  │
-  └── @x1pay/middleware ─── Express/Hono/Fastify x402 paywall
+```mermaid
+graph TD
+    SDK["@x1pay/sdk<br/>WalletManager · Payments · Policies"]
+    DEX["@x1pay/dex<br/>xDEX Swaps · Quotes · Pools"]
+    MW["@x1pay/middleware<br/>Express · Hono · Fastify x402"]
+    OC["@x1pay/openclaw<br/>12 Tools · 5 Commands · 3 Skills"]
+    MCP["@x1pay/mcp<br/>Claude · Cursor · MCP Agents"]
+    FAC["@x1pay/facilitator<br/>Verify · Settle · Pay Gas"]
+    API["@x1pay/api<br/>REST API · Facilitator Registry"]
 
-@x1pay/facilitator ─── Verify, settle, pay gas
-@x1pay/api ─── REST API + facilitator registry
+    SDK --> DEX
+    SDK --> MW
+    DEX --> OC
+    DEX --> MCP
+    FAC -.->|"co-sign & submit"| SDK
+    API -.->|"discovery"| FAC
+
+    style SDK fill:#0369A1,stroke:#0369A1,color:#fff
+    style DEX fill:#0369A1,stroke:#0369A1,color:#fff
+    style MW fill:#0369A1,stroke:#0369A1,color:#fff
+    style OC fill:#1e40af,stroke:#1e40af,color:#fff
+    style MCP fill:#1e40af,stroke:#1e40af,color:#fff
+    style FAC fill:#065f46,stroke:#065f46,color:#fff
+    style API fill:#065f46,stroke:#065f46,color:#fff
 ```
 
 ## Packages
@@ -127,22 +139,27 @@ console.log(`${pools.length} pools on xDEX`)
 
 ## How x402 Works
 
-```
-Client                    Server                   Facilitator          X1 Chain
-  │                         │                         │                    │
-  │── GET /premium ────────>│                         │                    │
-  │<── 402 + payment terms ─│                         │                    │
-  │                         │                         │                    │
-  │── build tx, partial sign│                         │                    │
-  │── POST /verify ────────────────────────────────>  │                    │
-  │<── { valid: true } ───────────────────────────── │                    │
-  │── POST /settle ────────────────────────────────>  │                    │
-  │                         │                         │── co-sign + submit─>│
-  │                         │                         │<── confirmed ──────│
-  │<── { txHash } ──────────────────────────────────  │                    │
-  │                         │                         │                    │
-  │── GET /premium + X-Payment header ──>│            │                    │
-  │<── 200 + data ──────────│                         │                    │
+```mermaid
+sequenceDiagram
+    participant C as Client (SDK)
+    participant S as Server (Middleware)
+    participant F as Facilitator
+    participant X as X1 Chain
+
+    C->>S: GET /premium
+    S-->>C: 402 + payment terms
+
+    Note over C: Build tx, partial sign
+
+    C->>F: POST /verify
+    F-->>C: { valid: true }
+    C->>F: POST /settle
+    F->>X: Co-sign + submit tx
+    X-->>F: Confirmed
+    F-->>C: { txHash }
+
+    C->>S: GET /premium + X-Payment header
+    S-->>C: 200 + data
 ```
 
 1. **Probe** — Client requests the resource. Server responds HTTP 402 with payment terms.
