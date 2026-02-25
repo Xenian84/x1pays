@@ -22,13 +22,14 @@ X1Pays enables AI agents to pay for API calls, trade tokens on xDEX, manage wall
 
 ## Packages
 
-| Package | Description | npm |
-|---------|-------------|-----|
-| [`@x1pay/sdk`](packages/sdk) | Core — WalletManager, AssetRegistry, SpendingPolicy, PaymentBuilder | [![npm](https://img.shields.io/npm/v/@x1pay/sdk)](https://www.npmjs.com/package/@x1pay/sdk) |
-| [`@x1pay/dex`](packages/dex) | xDEX integration — swaps, quotes, pool discovery, AMM math | [![npm](https://img.shields.io/npm/v/@x1pay/dex)](https://www.npmjs.com/package/@x1pay/dex) |
-| [`@x1pay/middleware`](packages/middleware) | Express/Hono/Fastify/Next.js middleware for x402 paywalls | [![npm](https://img.shields.io/npm/v/@x1pay/middleware)](https://www.npmjs.com/package/@x1pay/middleware) |
-| [`@x1pay/openclaw`](packages/openclaw) | OpenClaw plugin — 12 tools, 5 commands, 3 skills | [![npm](https://img.shields.io/npm/v/@x1pay/openclaw)](https://www.npmjs.com/package/@x1pay/openclaw) |
-| [`@x1pay/mcp`](packages/mcp) | MCP server for Claude Desktop, Cursor, and MCP-compatible agents | [![npm](https://img.shields.io/npm/v/@x1pay/mcp)](https://www.npmjs.com/package/@x1pay/mcp) |
+| Package | Description | Version |
+|---------|-------------|---------|
+| [`@x1pay/sdk`](packages/sdk) | Core — WalletManager, AssetRegistry, SpendingPolicy, PaymentBuilder | [v0.4.0](https://www.npmjs.com/package/@x1pay/sdk) |
+| [`@x1pay/dex`](packages/dex) | xDEX integration — swaps, quotes, pool discovery, AMM math | [v0.1.0](https://www.npmjs.com/package/@x1pay/dex) |
+| [`@x1pay/middleware`](packages/middleware) | Express/Hono/Fastify/Next.js middleware for x402 paywalls | [v0.3.0](https://www.npmjs.com/package/@x1pay/middleware) |
+| [`@x1pay/openclaw`](packages/openclaw) | OpenClaw plugin — 12 tools, 5 commands, 3 skills | [v0.3.0](https://www.npmjs.com/package/@x1pay/openclaw) |
+| [`@x1pay/mcp`](packages/mcp) | MCP server for Claude Desktop, Cursor, and MCP-compatible agents | [v0.3.0](https://www.npmjs.com/package/@x1pay/mcp) |
+| [`@x1pay/client`](packages/client) | Low-level x402 client utilities and facilitator discovery | [v0.2.0](https://www.npmjs.com/package/@x1pay/client) |
 
 ---
 
