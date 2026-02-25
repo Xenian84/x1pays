@@ -7,21 +7,33 @@ X1Pays enables AI agents to pay for API calls, trade tokens on xDEX, manage wall
 ## Architecture
 
 ```mermaid
-graph TD
-    SDK[SDK - WalletManager, Payments, Policies]
-    DEX[DEX - Swaps, Quotes, Pools]
-    MW[Middleware - Express x402 Paywall]
-    OC[OpenClaw - 12 Tools, 5 Commands, 3 Skills]
-    MCP[MCP Server - Claude, Cursor]
-    FAC[Facilitator - Verify, Settle, Pay Gas]
-    API[API - REST, Facilitator Registry]
+graph LR
+    subgraph agent ["What AI Agents Use"]
+        OC[OpenClaw\n12 Tools, 5 Commands]
+        MCP[MCP Server\nClaude, Cursor]
+        SDK[SDK\nWalletManager, Policies]
+        DEX[DEX\nSwaps, Quotes, Pools]
+    end
 
+    subgraph merchant ["What Merchants Use"]
+        MW[Middleware\nExpress x402 Paywall]
+    end
+
+    subgraph infra ["X1Pays Infrastructure"]
+        FAC[Facilitator\nCo-sign tx, Pay gas]
+        API[API Server\nFacilitator Registry]
+    end
+
+    OC --> SDK
+    MCP --> SDK
     SDK --> DEX
-    SDK --> MW
-    DEX --> OC
-    DEX --> MCP
-    FAC -.-> SDK
-    API -.-> FAC
+
+    MW -->|verify and settle| FAC
+    SDK -->|x402 payments| FAC
+    API -->|discover| FAC
+
+    SDK -->|send, swap| X1[X1 Chain]
+    FAC -->|submit tx| X1
 ```
 
 ## Packages
