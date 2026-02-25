@@ -1,4 +1,4 @@
-import { x402Client } from '@x1pays/client/axios';
+import { x402Client } from '@x1pay/client/axios';
 import { Keypair } from '@solana/web3.js';
 
 // Initialize wallet

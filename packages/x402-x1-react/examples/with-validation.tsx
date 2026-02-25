@@ -1,5 +1,5 @@
 import { useWallet } from '@solana/wallet-adapter-react';
-import { X402Paywall } from '@x1pays/react';
+import { X402Paywall } from '@x1pay/react';
 import { useState } from 'react';
 
 function ValidatedPaywall() {

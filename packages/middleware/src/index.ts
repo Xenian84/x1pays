@@ -17,8 +17,10 @@ export {
   validatePayment 
 } from './core.js';
 
-// Export framework middlewares
-export { x402Middleware, default as express } from './express.js';
-export { x402, default as hono } from './hono.js';
+// Express is the primary middleware — `x402` is the main export
+export { x402, x402Middleware, default as express } from './express.js';
+
+// Additional framework support (kept for compatibility)
+export { x402 as honoX402, default as hono } from './hono.js';
 export { x402Plugin, default as fastify } from './fastify.js';
 export { x402Handler, default as nextjs } from './nextjs.js';

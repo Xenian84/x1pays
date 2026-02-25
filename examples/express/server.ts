@@ -1,5 +1,5 @@
 import express from 'express';
-import { x402Middleware } from '@x1pays/middleware';
+import { x402Middleware } from '@x1pay/middleware';
 
 const app = express();
 

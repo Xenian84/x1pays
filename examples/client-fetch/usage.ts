@@ -1,4 +1,4 @@
-import { fetchX402JSON } from '@x1pays/client/fetch';
+import { fetchX402JSON } from '@x1pay/client/fetch';
 import { Keypair } from '@solana/web3.js';
 
 // Initialize wallet

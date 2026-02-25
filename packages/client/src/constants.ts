@@ -20,6 +20,59 @@ export const PAYMENT_SCHEME = 'x402' as const;
 export const X402_VERSION = 1;
 
 /**
+ * Supported payment assets on X1.
+ * 'native' is a sentinel value for native XNT transfers via SystemProgram.
+ */
+export interface AssetConfig {
+  symbol: string;
+  mint: string;
+  decimals: number;
+  name: string;
+}
+
+export const NATIVE_MINT_SENTINEL = 'native';
+
+export const SUPPORTED_ASSETS = {
+  XNT: {
+    symbol: 'XNT',
+    mint: NATIVE_MINT_SENTINEL,
+    decimals: 9,
+    name: 'XNT (Native)',
+  },
+  WXNT: {
+    symbol: 'wXNT',
+    mint: 'So11111111111111111111111111111111111111112',
+    decimals: 6,
+    name: 'Wrapped XNT',
+  },
+  USDX: {
+    symbol: 'USDX',
+    mint: 'B69chRzqzDCmdB5WYB8NRu5Yv5ZA95ABiZcdzCgGm9Tq',
+    decimals: 6,
+    name: 'USDX',
+  },
+} as const;
+
+export type AssetSymbol = keyof typeof SUPPORTED_ASSETS;
+
+export function isNativeAsset(asset: string): boolean {
+  return asset === NATIVE_MINT_SENTINEL || asset === '' || asset === 'native';
+}
+
+export function getAssetByMint(mint: string): AssetConfig | undefined {
+  return Object.values(SUPPORTED_ASSETS).find(a => a.mint === mint);
+}
+
+export function getAssetSymbolByMint(mint: string): string {
+  const asset = getAssetByMint(mint);
+  return asset?.symbol ?? mint.slice(0, 6) + '...' + mint.slice(-4);
+}
+
+export function getAllSupportedMints(): string[] {
+  return Object.values(SUPPORTED_ASSETS).map(a => a.mint);
+}
+
+/**
  * Default facilitator URLs
  */
 export const FACILITATOR_URLS = {

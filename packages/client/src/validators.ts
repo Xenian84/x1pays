@@ -83,41 +83,16 @@ export function isValidPaymentResponse(response: unknown): response is PaymentRe
  * @returns true if signature is valid
  * @throws InvalidSignatureError if signature cannot be verified
  */
-export async function verifyPaymentSignature(payment: PaymentPayload): Promise<boolean> {
+/**
+ * Check that a v2 payment payload contains a valid base64 transaction.
+ * Full verification (instruction safety, simulation) is done server-side by the facilitator.
+ */
+export function hasValidTransaction(payment: PaymentPayload): boolean {
   try {
-    // Dynamically import nacl to avoid bundling issues
-    const nacl = await import('tweetnacl');
-    
-    // Create the message that was signed (payment without signature)
-    const { signature, ...paymentWithoutSig } = payment;
-    const message = new TextEncoder().encode(JSON.stringify(paymentWithoutSig));
-    
-    // Decode signature from base58
-    const signatureBytes = bs58.decode(signature);
-    
-    // Ed25519 signatures must be exactly 64 bytes
-    if (signatureBytes.length !== 64) {
-      return false;
-    }
-    
-    // Decode buyer public key from base58
-    const buyerPublicKey = bs58.decode(payment.buyer);
-    
-    // Ed25519 public keys must be exactly 32 bytes
-    if (buyerPublicKey.length !== 32) {
-      return false;
-    }
-    
-    // Verify signature using Ed25519
-    const isValid = nacl.sign.detached.verify(
-      message,
-      signatureBytes,
-      buyerPublicKey
-    );
-    
-    return isValid;
-  } catch (error: any) {
-    // Invalid base58 encoding or verification failure
+    if (!payment.payload?.transaction) return false;
+    const buf = Buffer.from(payment.payload.transaction, 'base64');
+    return buf.length > 0;
+  } catch {
     return false;
   }
 }

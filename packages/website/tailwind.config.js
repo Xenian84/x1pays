@@ -7,24 +7,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#00E5FF',
-          light: '#6EFFFF',
-          dark: '#00B2CC',
+        surface: {
+          DEFAULT: '#0a0a0f',
+          raised: '#12131a',
+          overlay: '#1a1b24',
+          border: 'rgba(255,255,255,0.06)',
         },
-        secondary: {
-          DEFAULT: '#76FF03',
-          light: '#B2FF59',
-          dark: '#64DD17',
-        },
-        background: {
-          DEFAULT: '#0A1929',
-          paper: '#132F4C',
+        accent: {
+          DEFAULT: '#0369A1',
+          light: '#0ea5e9',
+          glow: 'rgba(3,105,161,0.25)',
         },
       },
       fontFamily: {
-        sans: ['Sora', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        mono: ['Fira Code', 'Monaco', 'monospace'],
+        heading: ['Orbitron', 'sans-serif'],
+        body: ['Exo 2', 'sans-serif'],
+        mono: ['Fira Code', 'monospace'],
       },
     },
   },

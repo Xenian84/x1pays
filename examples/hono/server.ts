@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { x402 } from '@x1pays/middleware/hono';
+import { x402 } from '@x1pay/middleware/hono';
 
 const app = new Hono();
 

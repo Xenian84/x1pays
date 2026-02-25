@@ -1,0 +1,42 @@
+{
+  "name": "@x1pay/mcp",
+  "version": "0.3.0",
+  "description": "MCP server for AI agents to make payments and trade on X1",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "publishConfig": { "access": "public" },
+  "license": "MIT",
+  "author": "X1Pays <team@x1pays.xyz>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xenian84/x1pays.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://x1pays.xyz",
+  "bugs": {
+    "url": "https://github.com/Xenian84/x1pays/issues"
+  },
+  "bin": {
+    "x1pays-mcp": "dist/server.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/server.ts --format esm --dts",
+    "dev": "tsx src/server.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "@x1pay/sdk": "workspace:*",
+    "@x1pay/dex": "workspace:*",
+    "@solana/web3.js": "^1.87.6",
+    "@solana/spl-token": "^0.3.9",
+    "bs58": "^5.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.1",
+    "tsx": "^4.7.0",
+    "@types/node": "^20.10.6"
+  }
+}

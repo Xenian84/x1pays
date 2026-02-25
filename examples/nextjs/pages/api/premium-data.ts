@@ -1,4 +1,4 @@
-import { x402Handler } from '@x1pays/middleware/nextjs';
+import { x402Handler } from '@x1pay/middleware/nextjs';
 
 export default x402Handler({
   facilitatorUrl: process.env.FACILITATOR_URL || 'http://localhost:4000',

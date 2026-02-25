@@ -1,5 +1,5 @@
 {
-  "name": "@x1pays/react",
+  "name": "@x1pay/react",
   "version": "0.1.0",
   "description": "React component library for x402 payment protocol on X1 blockchain",
   "type": "module",
@@ -56,10 +56,15 @@
     "backpack",
     "wallet"
   ],
-  "author": "X1Pays",
+  "author": "X1Pays <team@x1pays.xyz>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/x1pays"
+    "url": "https://github.com/Xenian84/x1pays.git",
+    "directory": "packages/x402-x1-react"
+  },
+  "homepage": "https://x1pays.xyz",
+  "bugs": {
+    "url": "https://github.com/Xenian84/x1pays/issues"
   }
 }

@@ -1,0 +1,38 @@
+{
+  "name": "@x1pay/openclaw",
+  "version": "0.3.0",
+  "description": "OpenClaw plugin for X1Pays — payments, trading, and DeFi on X1 blockchain",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "skills", "openclaw.plugin.json"],
+  "publishConfig": { "access": "public" },
+  "license": "MIT",
+  "author": "X1Pays <team@x1pays.xyz>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xenian84/x1pays.git",
+    "directory": "packages/openclaw"
+  },
+  "homepage": "https://x1pays.xyz",
+  "bugs": {
+    "url": "https://github.com/Xenian84/x1pays/issues"
+  },
+  "openclaw": {
+    "extensions": ["./dist/index.js"]
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts"
+  },
+  "dependencies": {
+    "@x1pay/sdk": "workspace:*",
+    "@x1pay/dex": "workspace:*",
+    "@solana/web3.js": "^1.87.6",
+    "@solana/spl-token": "^0.3.9",
+    "bs58": "^5.0.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.1",
+    "@types/node": "^20.10.6"
+  }
+}

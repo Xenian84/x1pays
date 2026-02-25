@@ -1,6 +1,7 @@
 {
-  "name": "@x1pays/middleware",
-  "version": "0.1.0",
+  "name": "@x1pay/middleware",
+  "version": "0.3.0",
+  "type": "module",
   "description": "x402 payment middleware for Express, Hono, Fastify, and Next.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -43,8 +44,19 @@
     "x1",
     "blockchain"
   ],
-  "author": "X1Pays",
+  "author": "X1Pays <team@x1pays.xyz>",
   "license": "MIT",
+  "files": ["dist"],
+  "publishConfig": { "access": "public" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xenian84/x1pays.git",
+    "directory": "packages/middleware"
+  },
+  "homepage": "https://x1pays.xyz",
+  "bugs": {
+    "url": "https://github.com/Xenian84/x1pays/issues"
+  },
   "peerDependencies": {
     "express": "^4.18.0 || ^5.0.0",
     "fastify": "^4.0.0",

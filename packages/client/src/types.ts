@@ -10,6 +10,9 @@ export interface PaymentRequirement {
     resource: string;
     description: string;
     facilitatorUrl?: string;
+    extra?: {
+      feePayer?: string;
+    };
   }>;
 }
 
@@ -19,9 +22,13 @@ export interface PaymentPayload {
   payTo: string;
   asset: string;
   amount: string;
-  resource?: string; // API endpoint or resource path
+  resource?: string;
   buyer: string;
-  signature: string;
+  x402Version?: number;
+  payload: {
+    transaction: string;
+  };
+  signature?: string;
   txSignature?: string;
   memo?: string | null;
 }
@@ -43,4 +50,14 @@ export interface WalletSigner {
   secretKey?: Uint8Array;
   signMessage?(message: Uint8Array): Promise<Uint8Array>;
   sign?(message: Uint8Array): Uint8Array;
+}
+
+export interface PermitSigner {
+  publicKey: string;
+  signPaymentTransaction(
+    payment: Omit<PaymentPayload, 'buyer' | 'payload'>,
+    feePayer: string,
+    rpcUrl?: string,
+    decimals?: number
+  ): Promise<{ signedPayment: PaymentPayload; transaction: string }>;
 }

@@ -1,11 +1,10 @@
 /**
- * Zod validation schemas for x402 payment protocol
- * These schemas mirror the TypeScript types in types.ts
+ * Zod validation schemas for x402 payment protocol (v2 only)
  */
 import { z } from 'zod';
 
 /**
- * Payment payload schema - matches PaymentPayload from types.ts
+ * Payment payload schema — v2 requires payload.transaction
  */
 export const PaymentPayloadSchema = z.object({
   scheme: z.string(),
@@ -13,11 +12,15 @@ export const PaymentPayloadSchema = z.object({
   payTo: z.string().min(1, 'Payment recipient address is required'),
   asset: z.string().min(1, 'Asset address is required'),
   amount: z.string().regex(/^\d+$/, 'Amount must be a positive integer string'),
-  resource: z.string().optional(), // API endpoint or resource path
+  resource: z.string().optional(),
   buyer: z.string().min(1, 'Buyer public key is required'),
-  signature: z.string().min(1, 'Payment signature is required'),
+  x402Version: z.number().optional(),
+  payload: z.object({
+    transaction: z.string().min(1, 'Base64-encoded transaction is required'),
+  }),
+  signature: z.string().optional(),
   txSignature: z.string().optional(),
-  memo: z.string().nullable(),
+  memo: z.string().nullable().optional(),
 });
 
 /**
@@ -32,38 +35,29 @@ const PaymentAcceptSchema = z.object({
   resource: z.string(),
   description: z.string(),
   facilitatorUrl: z.string().url().optional(),
+  extra: z.object({
+    feePayer: z.string().optional(),
+  }).optional(),
 });
 
-/**
- * Payment requirement schema - matches PaymentRequirement from types.ts
- */
 export const PaymentRequirementSchema = z.object({
   x402Version: z.number(),
   info: z.string(),
   accepts: z.array(PaymentAcceptSchema),
 });
 
-/**
- * Payment response schema - matches PaymentResponse from types.ts
- */
 export const PaymentResponseSchema = z.object({
   txHash: z.string(),
   amount: z.string(),
   simulated: z.boolean(),
 });
 
-/**
- * Verification response schema - facilitator verify endpoint
- */
 export const VerificationResponseSchema = z.object({
   valid: z.boolean(),
   message: z.string().optional(),
   details: z.any().optional(),
 });
 
-/**
- * Middleware configuration schema
- */
 export const MiddlewareConfigSchema = z.object({
   facilitatorUrl: z.string().url('Facilitator URL must be a valid URL'),
   network: z.enum(['x1-mainnet', 'x1-testnet'], {
@@ -76,15 +70,9 @@ export const MiddlewareConfigSchema = z.object({
   getDynamicAmount: z.function().optional(),
 });
 
-/**
- * Client configuration schema
- */
 export const ClientConfigSchema = z.object({
-  wallet: z.any(), // WalletSigner type guard validated separately
+  wallet: z.any(),
   maxPaymentAmount: z.string().regex(/^\d+$/).optional(),
   timeout: z.number().positive().optional(),
   paymentTimeout: z.number().positive().optional(),
 });
-
-// Note: Type interfaces are exported from types.ts to avoid duplicate exports
-// These Zod-inferred types match the TypeScript interfaces in types.ts

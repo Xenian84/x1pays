@@ -65,14 +65,14 @@ const x402Plugin: FastifyPluginAsync<X402PluginOptions> = async (fastify, option
         validatePayment(payment, config, requiredAmount);
 
         // Verify payment signature with facilitator
-        const verifyResult = await verifyPayment(config.facilitatorUrl, payment);
+        const verifyResult = await verifyPayment(config.facilitatorUrl || 'http://localhost:4000', payment);
 
         if (!verifyResult.valid) {
           throw new X402Error('Payment verification failed', 402, verifyResult);
         }
 
         // Settle payment on blockchain
-        const settlement = await settlePayment(config.facilitatorUrl, payment);
+        const settlement = await settlePayment(config.facilitatorUrl || 'http://localhost:4000', payment);
 
         // Store settlement details in request for access in route handler
         request.x402Payment = {
@@ -105,7 +105,7 @@ const x402Plugin: FastifyPluginAsync<X402PluginOptions> = async (fastify, option
 };
 
 export default fp(x402Plugin, {
-  name: '@x1pays/fastify-x402',
+  name: '@x1pay/fastify-x402',
   fastify: '4.x || 5.x'
 });
 

@@ -1,14 +1,13 @@
 {
-  "name": "@x1pays/website",
-  "version": "0.1.0",
-  "description": "X1Pays documentation website - comprehensive guide to x402 payment protocol",
+  "name": "@x1pay/website",
+  "version": "0.3.0",
+  "description": "X1Pays — AI payment infrastructure on X1 blockchain",
   "type": "module",
   "private": true,
-  "author": "X1Pays",
-  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/x1pays"
+    "url": "https://github.com/Xenian84/x1pays.git",
+    "directory": "packages/website"
   },
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5000",
@@ -16,22 +15,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@icons-pack/react-simple-icons": "^13.8.0",
-    "@mui/icons-material": "^7.3.4",
-    "@mui/material": "^7.3.4",
-    "@mui/system": "^7.3.3",
-    "@solana/wallet-adapter-base": "^0.9.23",
-    "@solana/wallet-adapter-react": "^0.15.35",
-    "@solana/wallet-adapter-react-ui": "^0.9.35",
-    "@solana/wallet-adapter-wallets": "^0.19.32",
-    "@solana/web3.js": "^1.95.8",
-    "prism-react-renderer": "^2.3.1",
+    "lucide-react": "^0.460.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.1",
-    "@x1pays/react": "workspace:*"
+    "react-router-dom": "^6.20.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

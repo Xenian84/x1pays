@@ -1,13 +1,13 @@
-# @x1pays/client
+# @x1pay/client
 
 x402 payment client libraries for Axios and Fetch. Automatically handles 402 Payment Required responses, signs payments, and retries with payment proof.
 
 ## Installation
 
 ```bash
-npm install @x1pays/client
+npm install @x1pay/client
 # or
-pnpm add @x1pays/client
+pnpm add @x1pay/client
 ```
 
 ## Quick Start
@@ -15,7 +15,7 @@ pnpm add @x1pays/client
 ### Axios Client
 
 ```typescript
-import { x402Client } from '@x1pays/client/axios';
+import { x402Client } from '@x1pay/client/axios';
 import { Keypair } from '@solana/web3.js';
 
 const wallet = Keypair.fromSecretKey(/* your secret key */);
@@ -37,7 +37,7 @@ console.log(response.payment);   // Payment details
 ### Fetch Client
 
 ```typescript
-import { fetchX402JSON } from '@x1pays/client/fetch';
+import { fetchX402JSON } from '@x1pay/client/fetch';
 import { Keypair } from '@solana/web3.js';
 
 const wallet = Keypair.fromSecretKey(/* your secret key */);
@@ -144,7 +144,7 @@ import {
   InvalidAmountError,
   InvalidNetworkError,
   PaymentVerificationError
-} from '@x1pays/client'
+} from '@x1pay/client'
 
 try {
   const response = await x402Client({ ... });
@@ -179,7 +179,7 @@ import {
   PAYMENT_SCHEME,
   MAX_PAYMENT_AMOUNT,
   X402_HEADERS
-} from '@x1pays/client'
+} from '@x1pay/client'
 
 // Network constants
 const network = NETWORKS.X1_MAINNET  // 'x1-mainnet'
@@ -212,7 +212,7 @@ import {
   validateAmount,
   validateNetwork,
   verifyPaymentSignature
-} from '@x1pays/client'
+} from '@x1pay/client'
 
 // Validate payment structure
 validatePaymentPayload(paymentData)  // Throws if invalid
@@ -245,7 +245,7 @@ import {
   isValidNetwork,
   assertWalletSigner,
   assertValidNetwork
-} from '@x1pays/client'
+} from '@x1pay/client'
 
 // Check if object is a valid wallet
 if (isWalletSigner(wallet)) {
@@ -280,7 +280,7 @@ import {
   PaymentResponseSchema,
   MiddlewareConfigSchema,
   ClientConfigSchema
-} from '@x1pays/client'
+} from '@x1pay/client'
 
 // Parse and validate
 const result = PaymentPayloadSchema.safeParse(data)

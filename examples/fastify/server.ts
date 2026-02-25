@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import x402Plugin from '@x1pays/middleware/fastify';
+import x402Plugin from '@x1pay/middleware/fastify';
 
 const fastify = Fastify({ logger: true });
 

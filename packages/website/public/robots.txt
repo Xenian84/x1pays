@@ -1,0 +1,18 @@
+# X1Pays - x402 Payment Protocol on X1 Blockchain
+User-agent: *
+Allow: /
+
+# Priority pages for crawlers
+Allow: /docs/
+Allow: /echo
+Allow: /network
+Allow: /facilitator
+Allow: /facilitator-discovery
+Allow: /pricing
+
+# Sitemap location
+Sitemap: https://x1pays.xyz/sitemap.xml
+
+# Crawl-delay for good behavior
+Crawl-delay: 1
+

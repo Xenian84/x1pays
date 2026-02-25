@@ -1,41 +1,38 @@
-import axios from "axios";
-import nacl from "tweetnacl";
-import bs58 from "bs58";
-import { Keypair } from "@solana/web3.js";
+export {
+  ASSETS,
+  resolveAsset,
+  tryResolveAsset,
+  resolveTokenProgram,
+  defaultRpcUrl,
+} from "./assets.js";
 
-export type PayConfig = {
-  facilitatorUrl: string;
-  payTo: string;
-  asset: string;
-  network?: "x1-mainnet" | "x1-testnet";
-  amountAtomic: string;
-};
+export {
+  createPaymentTransaction,
+  calculateFee,
+  buildPaymentHeader,
+  buildSignedPayment,
+} from "./payment.js";
 
-export function signPayment(payer: Keypair, payload: object) {
-  const msg = Buffer.from(JSON.stringify(payload));
-  const sig = nacl.sign.detached(msg, payer.secretKey);
-  return bs58.encode(sig);
-}
+export { WalletManager } from "./wallet.js";
 
-export async function getWithPayment(url: string, payer: Keypair, cfg: PayConfig) {
-  const pay = {
-    scheme: "exact" as const,
-    network: cfg.network || "x1-mainnet" as const,
-    payTo: cfg.payTo,
-    asset: cfg.asset,
-    amount: cfg.amountAtomic,
-    buyer: payer.publicKey.toBase58(),
-    memo: null
-  };
+export { PolicyManager } from "./policy.js";
 
-  const signature = signPayment(payer, pay);
-  const headers = { "X-PAYMENT": JSON.stringify({ ...pay, signature }) };
-
-  const res = await axios.get(url, { headers, validateStatus: () => true });
-
-  if (res.status === 402) {
-    throw new Error("Payment not accepted / verify failed");
-  }
-
-  return res.data;
-}
+export type {
+  Network,
+  AssetSymbol,
+  AssetType,
+  AssetInfo,
+  TokenBalance,
+  TxResult,
+  PayResult,
+  PaymentRequirement,
+  AcceptsEntry,
+  PayOptions,
+  WalletConfig,
+  WalletStats,
+  TxRecord,
+  PolicyCheck,
+  PaymentTxOpts,
+  SignedPayment,
+  SpendingPolicy,
+} from "./types.js";

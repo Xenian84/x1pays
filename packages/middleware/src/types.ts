@@ -1,8 +1,20 @@
 export interface X402Config {
-  facilitatorUrl: string;
+  allowedNetworks?: string[];  // Optional: allow multiple networks (e.g., ['x1-testnet', 'x1-mainnet'])
+  facilitatorUrl?: string;  // Single facilitator (backward compatible)
+  facilitatorRegistryUrl?: string;  // Registry endpoint for multiple facilitators
+  facilitators?: Array<{
+    id: string
+    name: string
+    url: string
+    fee: number
+    status: 'active' | 'inactive' | 'offline'
+    network: 'x1-testnet' | 'x1-mainnet'
+    address?: string
+  }>;  // Multiple facilitators (new)
   network: string;
   payToAddress: string;
   tokenMint: string;
+  acceptedAssets?: string[];
   amount?: string;
   getDynamicAmount?: (req: any) => string | Promise<string>;
   description?: string;
@@ -16,8 +28,13 @@ export interface PaymentPayload {
   asset: string;
   amount: string;
   buyer: string;
+  x402Version?: number;
+  payload: {
+    transaction: string;
+  };
   signature?: string;
   txSignature?: string;
+  txHash?: string;
   memo?: string | null;
 }
 
@@ -33,6 +50,9 @@ export interface PaymentRequirement {
     resource: string;
     description: string;
     facilitatorUrl?: string;
+    extra?: {
+      feePayer?: string;
+    };
   }>;
 }
 

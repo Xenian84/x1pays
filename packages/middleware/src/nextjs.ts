@@ -39,14 +39,14 @@ export function x402Handler(config: X402HandlerConfig) {
       validatePayment(payment, config, requiredAmount);
 
       // Verify payment signature with facilitator
-      const verifyResult = await verifyPayment(config.facilitatorUrl, payment);
+      const verifyResult = await verifyPayment(config.facilitatorUrl || 'http://localhost:4000', payment);
 
       if (!verifyResult.valid) {
         throw new X402Error('Payment verification failed', 402, verifyResult);
       }
 
       // Settle payment on blockchain
-      const settlement = await settlePayment(config.facilitatorUrl, payment);
+      const settlement = await settlePayment(config.facilitatorUrl || 'http://localhost:4000', payment);
 
       // Attach payment to request object
       (req as any).x402Payment = {

@@ -12,7 +12,7 @@ export function x402(config: X402Config): MiddlewareHandler {
         ? await config.getDynamicAmount(c.req)
         : config.amount;
 
-      const requirement = createPaymentRequirement(config, c.req.path, amount);
+      const requirement = await createPaymentRequirement(config, c.req.path, amount);
 
       c.header('Cache-Control', 'no-store');
       c.header('X-Payment-Required', JSON.stringify(requirement));
@@ -32,14 +32,14 @@ export function x402(config: X402Config): MiddlewareHandler {
       validatePayment(payment, config, requiredAmount);
 
       // Verify payment signature with facilitator
-      const verifyResult = await verifyPayment(config.facilitatorUrl, payment);
+      const verifyResult = await verifyPayment(config.facilitatorUrl || 'http://localhost:4000', payment);
 
       if (!verifyResult.valid) {
         throw new X402Error('Payment verification failed', 402, verifyResult);
       }
 
       // Settle payment on blockchain
-      const settlement = await settlePayment(config.facilitatorUrl, payment);
+      const settlement = await settlePayment(config.facilitatorUrl || 'http://localhost:4000', payment);
 
       // Store settlement details in context for access in route handler
       c.set('txHash', settlement.txHash);

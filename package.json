@@ -1,24 +1,35 @@
 {
   "name": "x1pays",
   "private": true,
+  "description": "AI payment infrastructure for X1 blockchain",
   "version": "0.1.0",
   "type": "module",
   "packageManager": "pnpm@9.0.0",
   "scripts": {
     "dev:fac": "pnpm -C packages/facilitator dev",
+    "dev:fac:alpha": "pnpm -C packages/facilitator dev:alpha",
+    "dev:fac:beta": "pnpm -C packages/facilitator dev:beta",
+    "dev:fac:gamma": "pnpm -C packages/facilitator dev:gamma",
+    "dev:facilitators": "concurrently -k -n alpha,beta,gamma \"pnpm dev:fac:alpha\" \"pnpm dev:fac:beta\" \"pnpm dev:fac:gamma\"",
     "dev:api": "pnpm -C packages/api dev",
     "dev:web": "pnpm -C packages/website dev",
-    "dev:backend": "concurrently -k \"pnpm dev:fac\" \"pnpm dev:api\"",
+    "dev:backend": "concurrently -k \"pnpm dev:facilitators\" \"pnpm dev:api\"",
+    "dev:all": "concurrently -k \"pnpm dev:facilitators\" \"pnpm dev:api\" \"pnpm dev:web\"",
     "dev": "concurrently -k \"pnpm dev:api\" \"pnpm dev:web\"",
+    "generate:facilitators": "pnpm -C packages/facilitator generate",
     "build": "pnpm -C packages/facilitator build && pnpm -C packages/api build && pnpm -C packages/sdk build && pnpm -C packages/website build",
     "test": "pnpm -C packages/facilitator test && pnpm -C packages/api test && pnpm -C packages/sdk test",
     "lint": "eslint .",
     "fmt": "prettier -w ."
   },
   "devDependencies": {
+    "@solana/spl-token": "^0.3.9",
+    "@solana/web3.js": "^1.98.4",
+    "bs58": "^5.0.0",
     "concurrently": "^9.0.0",
     "eslint": "^9.0.0",
     "prettier": "^3.3.0",
+    "tsx": "^4.7.0",
     "typescript": "^5.6.0"
   }
 }

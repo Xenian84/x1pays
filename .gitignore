@@ -1,26 +1,56 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+
+# Build output
+build/
+dist/
+dist-production/
+coverage/
+
+# ===================================================================
+# ENVIRONMENT & SECRETS
+# ===================================================================
 .env
 .env.*
 !.env.example
-.pnpm-store
-.DS_Store
-*.log
-coverage
-.vscode
-.idea
+!.env.*.example
+!**/.env.example
+!**/.env.*.example
 
-# Wallet backups and sensitive files - NEVER commit these!
+# Wallet files (contain private keys)
+*wallet*.json
 .wallets-backup/
-*-wallet.json
-*.keypair
 
-# Temporary files
-attached_assets/
-*.old.*
-*.tmp
-*.temp
+# ===================================================================
+# TESTS & DEVELOPMENT (lives in /tests/, not committed)
+# ===================================================================
+/tests/
 
-# Build artifacts
+# ===================================================================
+# TYPESCRIPT / BUILD
+# ===================================================================
 *.tsbuildinfo
-.turbo
+next-env.d.ts
+.turbo/
+
+# ===================================================================
+# IDE / OS
+# ===================================================================
+.idea/
+.vscode/
+.cursor/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+*~
+
+# ===================================================================
+# LOGS & MISC
+# ===================================================================
+*.log
+logs/
+*.backup
+*.bak
+.vercel
+.replit

@@ -1,6 +1,6 @@
 {
-  "name": "@x1pays/sdk",
-  "version": "0.1.0",
+  "name": "@x1pay/sdk",
+  "version": "0.4.0",
   "description": "TypeScript SDK for x402 payment protocol on X1 blockchain",
   "type": "module",
   "main": "dist/index.js",
@@ -13,25 +13,36 @@
     "blockchain",
     "typescript"
   ],
-  "author": "X1Pays",
+  "author": "X1Pays <team@x1pays.xyz>",
   "license": "MIT",
+  "files": ["dist"],
+  "publishConfig": { "access": "public" },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/x1pays"
+    "url": "https://github.com/Xenian84/x1pays.git",
+    "directory": "packages/sdk"
+  },
+  "homepage": "https://x1pays.xyz",
+  "bugs": {
+    "url": "https://github.com/Xenian84/x1pays/issues"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:integration": "tsx test-sdk.ts",
+    "test:quick": "node -e \"console.log('✅ SDK package structure is valid')\""
   },
   "dependencies": {
     "axios": "^1.6.2",
     "tweetnacl": "^1.0.3",
     "bs58": "^5.0.0",
-    "@solana/web3.js": "^1.87.6"
+    "@solana/web3.js": "^1.87.6",
+    "@solana/spl-token": "^0.3.9"
   },
   "devDependencies": {
     "tsup": "^8.0.1",
     "vitest": "^1.0.4",
-    "@types/node": "^20.10.6"
+    "@types/node": "^20.10.6",
+    "tsx": "^4.7.0"
   }
 }

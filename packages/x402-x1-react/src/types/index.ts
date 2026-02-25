@@ -30,6 +30,7 @@ export interface X1NetworkConfig {
   treasuryAddress: string
   facilitatorUrl: string
   usdcMint: string
+  usdxMint: string
 }
 
 export const X1_NETWORKS: Record<'x1-mainnet' | 'x1-testnet', X1NetworkConfig> = {
@@ -38,11 +39,13 @@ export const X1_NETWORKS: Record<'x1-mainnet' | 'x1-testnet', X1NetworkConfig> =
     treasuryAddress: 'X1PaysTreasuryMainnet1111111111111111111111',
     facilitatorUrl: 'https://facilitator.x1pays.xyz',
     usdcMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+    usdxMint: 'B69chRzqzDCmdB5WYB8NRu5Yv5ZA95ABiZcdzCgGm9Tq',
   },
   'x1-testnet': {
     rpcUrl: 'https://rpc.testnet.x1.xyz',
     treasuryAddress: 'X1PaysDevTreasury1111111111111111111111111',
     facilitatorUrl: 'https://facilitator-testnet.x1pays.xyz',
     usdcMint: 'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr',
+    usdxMint: 'B69chRzqzDCmdB5WYB8NRu5Yv5ZA95ABiZcdzCgGm9Tq',
   },
 }

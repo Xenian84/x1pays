@@ -1,0 +1,30 @@
+{
+  "id": "x1pays",
+  "name": "X1Pays",
+  "version": "0.3.0",
+  "description": "Payments, trading, and DeFi on X1 blockchain. Swap tokens on xDEX, pay for x402 resources, manage portfolio — all via natural language.",
+  "configSchema": {
+    "type": "object",
+    "properties": {
+      "privateKey": { "type": "string" },
+      "rpcUrl": { "type": "string" },
+      "network": { "type": "string", "enum": ["x1-mainnet", "x1-testnet"] },
+      "facilitatorUrl": { "type": "string" },
+      "maxPerTransaction": { "type": "number" },
+      "sessionBudget": { "type": "number" },
+      "dailyBudget": { "type": "number" },
+      "priceAlerts": { "type": "boolean" }
+    },
+    "required": ["privateKey"]
+  },
+  "uiHints": {
+    "privateKey": { "label": "Agent Wallet Private Key (base58)", "sensitive": true },
+    "rpcUrl": { "label": "X1 RPC URL", "placeholder": "https://rpc.mainnet.x1.xyz" },
+    "network": { "label": "Network" },
+    "maxPerTransaction": { "label": "Max per transaction (atomic units)", "placeholder": "10000000" },
+    "sessionBudget": { "label": "Session budget (atomic units)", "placeholder": "100000000" },
+    "dailyBudget": { "label": "Daily budget (atomic units)", "placeholder": "500000000" },
+    "priceAlerts": { "label": "Enable background price monitoring" }
+  },
+  "skills": ["skills/x1pays", "skills/x1pays-trading", "skills/x1pays-defi"]
+}

@@ -1,0 +1,71 @@
+name: Publish to NPM
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package to publish'
+        required: true
+        type: choice
+        options:
+          - client
+          - middleware
+          - react
+          - all
+
+jobs:
+  publish:
+    name: Publish NPM Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.0.0
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Build Client SDK
+        if: github.event.inputs.package == 'client' || github.event.inputs.package == 'all' || github.event_name == 'release'
+        run: cd packages/client && pnpm build
+      
+      - name: Publish Client SDK
+        if: github.event.inputs.package == 'client' || github.event.inputs.package == 'all' || github.event_name == 'release'
+        run: cd packages/client && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - name: Build Middleware SDK
+        if: github.event.inputs.package == 'middleware' || github.event.inputs.package == 'all' || github.event_name == 'release'
+        run: cd packages/middleware && pnpm build
+      
+      - name: Publish Middleware SDK
+        if: github.event.inputs.package == 'middleware' || github.event.inputs.package == 'all' || github.event_name == 'release'
+        run: cd packages/middleware && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - name: Build React Components
+        if: github.event.inputs.package == 'react' || github.event.inputs.package == 'all' || github.event_name == 'release'
+        run: cd packages/x402-x1-react && pnpm build
+      
+      - name: Publish React Components
+        if: github.event.inputs.package == 'react' || github.event.inputs.package == 'all' || github.event_name == 'release'
+        run: cd packages/x402-x1-react && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+

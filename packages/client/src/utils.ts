@@ -1,60 +1,124 @@
-import bs58 from 'bs58';
-import type { WalletSigner, PaymentPayload } from './types.js';
-import { assertWalletSigner } from './validators.js';
+import { randomBytes } from 'crypto';
+import {
+  Connection,
+  PublicKey,
+  Transaction,
+  TransactionInstruction,
+  ComputeBudgetProgram,
+  Keypair,
+} from '@solana/web3.js';
+import {
+  createTransferCheckedInstruction,
+  getAssociatedTokenAddress,
+  createAssociatedTokenAccountInstruction,
+  getMint,
+  TOKEN_PROGRAM_ID,
+  TOKEN_2022_PROGRAM_ID,
+} from '@solana/spl-token';
+import type { PaymentPayload } from './types.js';
 
-export async function signPayment(
-  payment: Omit<PaymentPayload, 'signature' | 'buyer'>,
-  wallet: WalletSigner
-): Promise<PaymentPayload> {
-  // Validate wallet
-  assertWalletSigner(wallet);
-  
-  // Get public key as string
-  const publicKey = 'toBase58' in wallet.publicKey
-    ? wallet.publicKey.toBase58()
-    : wallet.publicKey.toString();
+const MEMO_PROGRAM_ID = new PublicKey('MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr');
 
-  const paymentWithBuyer = {
-    ...payment,
-    buyer: publicKey,
-    memo: payment.memo ?? null
-  };
+function defaultRpcUrl(network: string): string {
+  if (network === 'x1-mainnet') return 'https://rpc.mainnet.x1.xyz';
+  return 'https://rpc.testnet.x1.xyz';
+}
 
-  // Create message to sign
-  const message = new TextEncoder().encode(JSON.stringify(paymentWithBuyer));
+/**
+ * Build and partially sign a real Solana TransferChecked transaction (v2).
+ * The buyer signs the tx; the facilitator co-signs as feePayer later.
+ */
+export function calculateFee(amount: bigint, feeBasisPoints: number): bigint {
+  if (feeBasisPoints <= 0) return 0n;
+  return (amount * BigInt(feeBasisPoints)) / 10000n;
+}
 
-  // Sign message
-  let signature: Uint8Array;
-  
-  if (wallet.signMessage) {
-    signature = await wallet.signMessage(message);
-  } else if (wallet.sign && wallet.secretKey) {
-    // Use ed25519 signature from secretKey
-    signature = wallet.sign(message);
-  } else {
-    throw new Error('Wallet must implement signMessage or sign method');
+export async function signPaymentV2(opts: {
+  payment: Omit<PaymentPayload, 'buyer' | 'payload'>;
+  keypair: Keypair;
+  feePayer: string;
+  rpcUrl?: string;
+  decimals?: number;
+  treasury?: string;
+  feeBasisPoints?: number;
+}): Promise<{ signedPayment: PaymentPayload; transaction: string }> {
+  const { payment, keypair, feePayer, rpcUrl } = opts;
+  const network = payment.network || 'x1-mainnet';
+  const connection = new Connection(rpcUrl || defaultRpcUrl(network), 'confirmed');
+
+  const mint = new PublicKey(payment.asset);
+  const merchant = new PublicKey(payment.payTo);
+  const feePayerPubkey = new PublicKey(feePayer);
+  const amount = BigInt(payment.amount);
+  const feeBps = opts.feeBasisPoints || 0;
+  const feeAmount = calculateFee(amount, feeBps);
+  const treasury = opts.treasury ? new PublicKey(opts.treasury) : feePayerPubkey;
+
+  const mintInfo = await connection.getAccountInfo(mint);
+  if (!mintInfo) throw new Error(`Mint account ${mint.toBase58()} not found`);
+  const tokenProgramId = mintInfo.owner.equals(TOKEN_2022_PROGRAM_ID) ? TOKEN_2022_PROGRAM_ID : TOKEN_PROGRAM_ID;
+
+  const decimals = opts.decimals ?? (await getMint(connection, mint, undefined, tokenProgramId)).decimals;
+
+  const buyerAta = await getAssociatedTokenAddress(mint, keypair.publicKey, false, tokenProgramId);
+  const merchantAta = await getAssociatedTokenAddress(mint, merchant, false, tokenProgramId);
+
+  const tx = new Transaction();
+
+  tx.add(ComputeBudgetProgram.setComputeUnitLimit({ units: 300_000 }));
+  tx.add(ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 1_000 }));
+
+  const merchantAtaInfo = await connection.getAccountInfo(merchantAta);
+  if (!merchantAtaInfo) {
+    tx.add(createAssociatedTokenAccountInstruction(feePayerPubkey, merchantAta, merchant, mint, tokenProgramId));
   }
 
-  // Encode signature
-  const signatureB58 = bs58.encode(signature);
+  tx.add(createTransferCheckedInstruction(buyerAta, mint, merchantAta, keypair.publicKey, amount, decimals, [], tokenProgramId));
 
+  if (feeAmount > 0n) {
+    const treasuryAta = await getAssociatedTokenAddress(mint, treasury, false, tokenProgramId);
+    const treasuryAtaInfo = await connection.getAccountInfo(treasuryAta);
+    if (!treasuryAtaInfo) {
+      tx.add(createAssociatedTokenAccountInstruction(feePayerPubkey, treasuryAta, treasury, mint, tokenProgramId));
+    }
+    tx.add(createTransferCheckedInstruction(buyerAta, mint, treasuryAta, keypair.publicKey, feeAmount, decimals, [], tokenProgramId));
+  }
+
+  tx.add(new TransactionInstruction({
+    keys: [],
+    programId: MEMO_PROGRAM_ID,
+    data: Buffer.from(randomBytes(16).toString('hex'), 'utf-8'),
+  }));
+
+  const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
+  tx.recentBlockhash = blockhash;
+  tx.lastValidBlockHeight = lastValidBlockHeight;
+  tx.feePayer = feePayerPubkey;
+
+  tx.partialSign(keypair);
+
+  const serialized = tx.serialize({ requireAllSignatures: false }).toString('base64');
+
+  const buyer = keypair.publicKey.toBase58();
   return {
-    ...paymentWithBuyer,
-    signature: signatureB58
+    signedPayment: {
+      x402Version: 2,
+      scheme: payment.scheme || 'exact',
+      network,
+      payTo: payment.payTo,
+      asset: payment.asset,
+      amount: payment.amount,
+      buyer,
+      payload: { transaction: serialized },
+    },
+    transaction: serialized,
   };
 }
 
-// Re-export errors from errors.ts for backwards compatibility
 export { X402Error } from './errors.js';
 
 /**
  * Convert wXNT amount to atomic units (6 decimals)
- * Uses string-based parsing to avoid floating-point precision issues
- * @param wXNT - Amount in wXNT as number or string (e.g., 0.001 or "0.001")
- * @returns Atomic units as string (e.g., "1000")
- * @throws Error if input has more than 6 decimal places or results in <1 atomic unit
- * @example wXNTToAtomicUnits(0.001) // "1000"
- * @example wXNTToAtomicUnits("0.000001") // "1"
  */
 export function wXNTToAtomicUnits(wXNT: number | string): string {
   let decimalStr: string;
@@ -63,21 +127,13 @@ export function wXNTToAtomicUnits(wXNT: number | string): string {
     if (isNaN(wXNT) || !isFinite(wXNT) || wXNT < 0) {
       throw new Error(`Invalid wXNT amount: ${wXNT}`);
     }
-    // Convert number to canonical decimal string
-    // Use toString to preserve the exact number representation
     decimalStr = wXNT.toString();
-    
-    // Handle scientific notation (e.g., 1e-7)
     if (decimalStr.includes('e') || decimalStr.includes('E')) {
-      // For very small numbers in scientific notation, use toFixed with enough precision
-      // Then we'll validate the decimal places below
-      decimalStr = wXNT.toFixed(20); // Use large precision, will validate below
-      // Remove trailing zeros
+      decimalStr = wXNT.toFixed(20);
       decimalStr = decimalStr.replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '');
     }
   } else if (typeof wXNT === 'string') {
     decimalStr = wXNT.trim();
-    // Validate string format
     if (!/^(\d+\.?\d*|\.\d+)$/.test(decimalStr)) {
       throw new Error(`Invalid wXNT string format: ${wXNT}`);
     }
@@ -85,22 +141,16 @@ export function wXNTToAtomicUnits(wXNT: number | string): string {
     throw new Error(`Invalid wXNT type: ${typeof wXNT}`);
   }
   
-  // Split into integer and fractional parts
   const parts = decimalStr.split('.');
   const integerPart = parts[0] || '0';
   const fractionalPart = parts[1] || '';
   
-  // Check decimal places (max 6)
   if (fractionalPart.length > 6) {
     throw new Error(`wXNT amount has too many decimal places (max 6): ${wXNT}`);
   }
   
-  // Build atomic units by combining integer and fractional parts
-  // Pad fractional part to 6 digits
   const paddedFractional = fractionalPart.padEnd(6, '0');
   const atomicUnitsStr = integerPart + paddedFractional;
-  
-  // Remove leading zeros
   const atomicUnits = BigInt(atomicUnitsStr);
   
   if (atomicUnits < 1n) {
@@ -114,45 +164,23 @@ export function wXNTToAtomicUnits(wXNT: number | string): string {
   return atomicUnits.toString();
 }
 
-/**
- * Convert atomic units to wXNT (6 decimals)
- * @param atomicUnits - Atomic units as string or number
- * @returns wXNT amount (e.g., 0.001)
- * @example atomicUnitsToWXNT("1000") // 0.001
- */
 export function atomicUnitsToWXNT(atomicUnits: string | number): number {
   const units = typeof atomicUnits === 'string' ? parseInt(atomicUnits, 10) : atomicUnits;
-  
   if (isNaN(units) || units < 0 || !Number.isInteger(units)) {
     throw new Error(`Invalid atomic units: ${atomicUnits}`);
   }
-  
   return units / 1_000_000;
 }
 
-/**
- * Format atomic units as human-readable wXNT
- * @param atomicUnits - Atomic units as string or number
- * @returns Formatted string (e.g., "0.001 wXNT")
- * @example formatWXNT("1000") // "0.001 wXNT"
- */
 export function formatWXNT(atomicUnits: string | number): string {
   const wXNT = atomicUnitsToWXNT(atomicUnits);
   return `${wXNT.toFixed(6).replace(/\.?0+$/, '')} wXNT`;
 }
 
-/**
- * Validate atomic units amount
- * @param amount - Amount to validate (must be positive integer)
- * @returns true if valid positive integer with no decimal places
- */
 export function isValidAmount(amount: string | number): boolean {
   try {
     if (typeof amount === 'string') {
-      // Must be all digits, no decimals, no negative
-      if (!/^\d+$/.test(amount)) {
-        return false;
-      }
+      if (!/^\d+$/.test(amount)) return false;
       const num = parseInt(amount, 10);
       return num > 0 && num <= Number.MAX_SAFE_INTEGER;
     } else if (typeof amount === 'number') {

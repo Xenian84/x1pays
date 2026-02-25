@@ -1,5 +1,5 @@
 {
-  "name": "@x1pays/shared",
+  "name": "@x1pay/shared",
   "version": "0.1.0",
   "description": "Shared utilities for X1 blockchain interactions and x402 protocol",
   "type": "module",
@@ -9,10 +9,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/x1pays"
+    "url": "https://github.com/Xenian84/x1pays.git",
+    "directory": "packages/shared"
   },
   "exports": {
-    "./blockchain": "./src/blockchain.ts"
+    "./blockchain": "./src/blockchain.ts",
+    "./facilitator": "./src/facilitator.ts",
+    "./facilitators": "./src/facilitators.ts",
+    "./src/facilitators": "./src/facilitators.ts",
+    "./src/security/sanitize.js": "./src/security/sanitize.js"
   },
   "dependencies": {
     "@solana/web3.js": "^1.87.6"
