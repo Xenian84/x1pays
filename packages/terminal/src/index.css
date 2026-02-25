@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #0a0a0f;
+  --color-surface-raised: #12131a;
+  --color-surface-overlay: #1a1b24;
+  --color-surface-border: rgba(255,255,255,0.06);
+  --color-accent: #0369A1;
+  --color-accent-light: #0ea5e9;
+  --color-accent-glow: rgba(3,105,161,0.25);
+  --font-heading: 'Orbitron', sans-serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap');
+
+body {
+  margin: 0;
+  background: #0a0a0f;
+  color: #e5e5e5;
+  font-family: 'Exo 2', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #12131a;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2b34;
+  border-radius: 3px;
+}

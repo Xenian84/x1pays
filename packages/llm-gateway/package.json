@@ -1,0 +1,32 @@
+{
+  "name": "@x1pay/llm-gateway",
+  "version": "0.1.0",
+  "private": true,
+  "description": "LLM Gateway for X1Pays — multi-provider proxy with rate limiting, usage tracking, and BYOK support",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.4",
+    "@types/uuid": "^10.0.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xenian84/x1pays.git",
+    "directory": "packages/llm-gateway"
+  },
+  "license": "MIT"
+}
