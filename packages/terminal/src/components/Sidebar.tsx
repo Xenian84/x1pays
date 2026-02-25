@@ -1,15 +1,14 @@
 import { Wallet, Activity, Settings, ExternalLink } from 'lucide-react';
+import { ConnectButton } from './ConnectButton';
 
 interface Props {
   connected: boolean;
   walletAddress: string | null;
   agentAddress: string | null;
   network: string | null;
-  onConnect: () => void;
-  onDisconnect: () => void;
 }
 
-export function Sidebar({ connected, walletAddress, agentAddress, network, onConnect, onDisconnect }: Props) {
+export function Sidebar({ connected, walletAddress, agentAddress, network }: Props) {
   return (
     <aside className="w-72 border-r border-surface-border bg-surface flex flex-col h-full">
       {/* Header */}
@@ -27,36 +26,19 @@ export function Sidebar({ connected, walletAddress, agentAddress, network, onCon
           Wallet
         </div>
 
-        {connected && walletAddress ? (
-          <div className="space-y-2">
+        <ConnectButton />
+
+        {walletAddress && agentAddress && (
+          <div className="mt-3 space-y-2">
             <div>
-              <div className="text-[10px] text-white/20 uppercase tracking-wider">Your Wallet</div>
-              <div className="text-xs font-mono text-white/50 truncate">{walletAddress}</div>
+              <div className="text-[10px] text-white/20 uppercase tracking-wider">Agent Wallet</div>
+              <div className="text-xs font-mono text-accent-light/60 truncate">{agentAddress}</div>
             </div>
-            {agentAddress && (
-              <div>
-                <div className="text-[10px] text-white/20 uppercase tracking-wider">Agent Wallet</div>
-                <div className="text-xs font-mono text-accent-light/60 truncate">{agentAddress}</div>
-              </div>
-            )}
             <div className="flex items-center gap-1.5">
               <div className={`w-1.5 h-1.5 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'}`} />
               <span className="text-[11px] text-white/25">{network || 'disconnected'}</span>
             </div>
-            <button
-              onClick={onDisconnect}
-              className="w-full text-[11px] text-white/20 hover:text-red-400 transition py-1"
-            >
-              Disconnect
-            </button>
           </div>
-        ) : (
-          <button
-            onClick={onConnect}
-            className="w-full px-3 py-2 rounded-lg bg-accent text-white text-sm font-medium hover:brightness-110 transition"
-          >
-            Connect Wallet
-          </button>
         )}
       </div>
 

@@ -1,26 +1,19 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
+import { useWallet } from '@ident1/x1-connector/react';
 import { useAgent } from './hooks/useAgent';
 import { ChatMessage } from './components/ChatMessage';
 import { ChatInput } from './components/ChatInput';
 import { Sidebar } from './components/Sidebar';
 
 export default function App() {
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const { account, isConnected } = useWallet();
+  const walletAddress = isConnected && account ? account : null;
   const { messages, state, loading, sendMessage } = useAgent(walletAddress);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  const handleConnect = () => {
-    const addr = prompt('Enter your X1 wallet address (base58):');
-    if (addr?.trim()) setWalletAddress(addr.trim());
-  };
-
-  const handleDisconnect = () => {
-    setWalletAddress(null);
-  };
 
   return (
     <div className="flex h-screen bg-surface">
@@ -29,12 +22,9 @@ export default function App() {
         walletAddress={walletAddress}
         agentAddress={state.agentAddress}
         network={state.network}
-        onConnect={handleConnect}
-        onDisconnect={handleDisconnect}
       />
 
       <main className="flex-1 flex flex-col">
-        {/* Chat area */}
         <div className="flex-1 overflow-y-auto">
           {messages.length === 0 ? (
             <div className="flex items-center justify-center h-full">
