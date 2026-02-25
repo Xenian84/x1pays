@@ -57,6 +57,10 @@ const spotP = spotPrice(reserveA, reserveB, decimalsA, decimalsB)
 const impact = priceImpact(reserveIn, reserveOut, amountIn)
 ```
 
+## Gas Model
+
+DEX swaps, quotes, and pool queries go directly to the X1 blockchain. The agent wallet pays gas for swap transactions. The X1Pays facilitator is NOT involved in DEX operations — it only handles x402 API payments.
+
 ## License
 
 MIT

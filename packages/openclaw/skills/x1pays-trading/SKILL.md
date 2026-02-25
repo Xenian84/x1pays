@@ -22,6 +22,10 @@ These execute instantly without AI processing:
 3. **Default slippage**: 1% (100 basis points). Adjust with `slippage_bps` parameter
 4. **Abort high impact**: If price impact > 5%, do not execute — suggest a smaller amount
 
+## Gas for Trading
+
+DEX swaps go directly to the X1 blockchain. The agent wallet pays gas for every swap. No facilitator is involved in trading — the facilitator only handles x402 API payments.
+
 ## Supported Pairs
 
 Any token pair that has an xDEX pool. Common pairs:

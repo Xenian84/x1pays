@@ -10,7 +10,7 @@ const EXAMPLES = [
 ]
 
 const INCLUDED = [
-  'Gasless settlement — facilitator pays gas',
+  'Gasless x402 API payments — facilitator pays gas',
   'Multi-asset support (USDC.x, wXNT, XNT)',
   'On-chain proof for every transaction',
   'OpenClaw plugin with 12 tools',
@@ -50,9 +50,9 @@ export default function Pricing() {
           </div>
 
           <p className="text-white/30 text-base mb-8">
-            10 basis points on every settled transaction.<br />
-            Applies to x402 payments and DEX swaps.<br />
-            Gas fees covered by X1Pays.
+            10 basis points on every settled x402 payment.<br />
+            Gas covered by X1Pays for x402 payments only.<br />
+            Direct sends and DEX swaps: agent pays its own gas.
           </p>
 
           <Link
@@ -112,8 +112,8 @@ export default function Pricing() {
         </div>
 
         <p className="text-white/15 text-sm mt-4 text-center">
-          Buyer pays the resource price + 0.10% fee. Gas always covered by X1Pays.
-          DEX swaps also incur xDEX pool fees (set by pool creator).
+          x402 payments: buyer pays resource price + 0.10% fee, gas covered by X1Pays.
+          DEX swaps and direct sends: agent wallet pays gas directly.
         </p>
       </div>
     </div>

@@ -20,7 +20,7 @@ graph LR
     end
 
     subgraph infra ["X1Pays Infrastructure"]
-        FAC[Facilitator\nCo-sign tx, Pay gas]
+        FAC[Facilitator\nx402 only: co-sign, pay gas]
         API[API Server\nFacilitator Registry]
     end
 
@@ -174,13 +174,35 @@ sequenceDiagram
 
 ---
 
-## Gas Model
+## Two Modes of Operation
 
-| Operation | Who pays gas |
-|-----------|-------------|
-| `payForResource()` (x402) | **Facilitator** (buyer pays 0 gas) |
-| `wallet.send()` | Sender's wallet |
-| `dex.swap()` | Agent's wallet |
+X1Pays has two completely separate modes. The **facilitator is only involved in x402 API payments**. Everything else goes directly to the blockchain.
+
+### x402 API Payments (facilitator involved)
+
+When an AI agent pays for a paywalled API, the facilitator co-signs and submits the transaction. The buyer pays 0 gas — the facilitator covers it. This is the only time the facilitator is involved.
+
+```
+Agent --> Merchant API --> Facilitator --> X1 Chain
+```
+
+### Direct Operations (no facilitator)
+
+When an agent sends tokens, swaps on xDEX, or checks balances, it talks directly to the X1 blockchain. No facilitator, no middleman. The agent's wallet pays its own gas.
+
+```
+Agent --> X1 Chain (direct)
+```
+
+### Gas Model
+
+| Operation | Facilitator involved? | Who pays gas |
+|-----------|----------------------|--------------|
+| `payForResource()` (x402 API payment) | Yes | Facilitator |
+| `wallet.send()` (direct transfer) | **No** | Sender's wallet |
+| `dex.swap()` (DEX trading) | **No** | Agent's wallet |
+| `wallet.getBalances()` (read) | **No** | Free (RPC read) |
+| `dex.getQuote()` (read) | **No** | Free (RPC read) |
 
 ---
 

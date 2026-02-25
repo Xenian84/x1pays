@@ -73,6 +73,12 @@ Three SKILL.md files are included for agent guidance:
 - **x1pays-trading** — DEX trading best practices
 - **x1pays-defi** — DCA, alerts, recurring payments
 
+## Facilitator Scope
+
+The X1Pays facilitator is ONLY involved in x402 API payments (`x1pays_pay`). It co-signs transactions and pays gas so buyers don't need XNT for gas.
+
+All other tools (`x1pays_send`, `x1pays_swap`, `x1pays_quote`, etc.) interact directly with the X1 blockchain. The agent wallet pays its own gas for sends and swaps.
+
 ## License
 
 MIT

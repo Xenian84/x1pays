@@ -26,6 +26,12 @@ You have access to X1Pays tools for sending payments and accessing paywalled res
 - You encounter an HTTP 402 Payment Required response
 - User asks what tokens are supported
 
+## Important: Facilitator Role
+
+The facilitator is ONLY involved in x402 API payments (x1pays_pay). It co-signs and pays gas for those transactions.
+
+For all other operations (x1pays_send, x1pays_swap, balance checks), the agent wallet interacts directly with the X1 blockchain. No facilitator is involved. The agent wallet pays its own gas for sends and swaps.
+
 ## Example Flows
 
 **Check balance**: Call `x1pays_balance` with no arguments.

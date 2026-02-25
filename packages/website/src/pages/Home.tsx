@@ -27,8 +27,8 @@ const FEATURES = [
   },
   {
     icon: Zap,
-    title: 'Gasless for Buyers',
-    desc: 'The facilitator covers gas. Buyers only pay the resource price. Zero friction, zero wallet setup complexity.',
+    title: 'Gasless x402 Payments',
+    desc: 'For x402 API payments, the facilitator co-signs and covers gas — buyers pay only the resource price. Direct sends and DEX swaps use the agent wallet for gas.',
   },
   {
     icon: Shield,
@@ -111,7 +111,7 @@ export default function Home() {
 
             <p className="text-white/40 text-xl sm:text-2xl leading-relaxed max-w-xl mb-10">
               AI agents pay for APIs, trade on xDEX, manage portfolios.
-              One protocol, gasless settlement, on-chain proof.
+              x402 protocol with gasless settlement. Direct sends and swaps on-chain.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
