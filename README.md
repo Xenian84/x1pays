@@ -8,28 +8,20 @@ X1Pays enables AI agents to pay for API calls, trade tokens on xDEX, manage wall
 
 ```mermaid
 graph TD
-    SDK["@x1pay/sdk<br/>WalletManager · Payments · Policies"]
-    DEX["@x1pay/dex<br/>xDEX Swaps · Quotes · Pools"]
-    MW["@x1pay/middleware<br/>Express · Hono · Fastify x402"]
-    OC["@x1pay/openclaw<br/>12 Tools · 5 Commands · 3 Skills"]
-    MCP["@x1pay/mcp<br/>Claude · Cursor · MCP Agents"]
-    FAC["@x1pay/facilitator<br/>Verify · Settle · Pay Gas"]
-    API["@x1pay/api<br/>REST API · Facilitator Registry"]
+    SDK[SDK - WalletManager, Payments, Policies]
+    DEX[DEX - Swaps, Quotes, Pools]
+    MW[Middleware - Express x402 Paywall]
+    OC[OpenClaw - 12 Tools, 5 Commands, 3 Skills]
+    MCP[MCP Server - Claude, Cursor]
+    FAC[Facilitator - Verify, Settle, Pay Gas]
+    API[API - REST, Facilitator Registry]
 
     SDK --> DEX
     SDK --> MW
     DEX --> OC
     DEX --> MCP
-    FAC -.->|"co-sign & submit"| SDK
-    API -.->|"discovery"| FAC
-
-    style SDK fill:#0369A1,stroke:#0369A1,color:#fff
-    style DEX fill:#0369A1,stroke:#0369A1,color:#fff
-    style MW fill:#0369A1,stroke:#0369A1,color:#fff
-    style OC fill:#1e40af,stroke:#1e40af,color:#fff
-    style MCP fill:#1e40af,stroke:#1e40af,color:#fff
-    style FAC fill:#065f46,stroke:#065f46,color:#fff
-    style API fill:#065f46,stroke:#065f46,color:#fff
+    FAC -.-> SDK
+    API -.-> FAC
 ```
 
 ## Packages
@@ -141,25 +133,25 @@ console.log(`${pools.length} pools on xDEX`)
 
 ```mermaid
 sequenceDiagram
-    participant C as Client (SDK)
-    participant S as Server (Middleware)
+    participant C as Client
+    participant S as Server
     participant F as Facilitator
     participant X as X1 Chain
 
     C->>S: GET /premium
-    S-->>C: 402 + payment terms
+    S-->>C: 402 Payment Required
 
-    Note over C: Build tx, partial sign
+    Note over C: Build tx and partial sign
 
     C->>F: POST /verify
-    F-->>C: { valid: true }
+    F-->>C: valid
     C->>F: POST /settle
-    F->>X: Co-sign + submit tx
+    F->>X: Co-sign and submit
     X-->>F: Confirmed
-    F-->>C: { txHash }
+    F-->>C: txHash
 
-    C->>S: GET /premium + X-Payment header
-    S-->>C: 200 + data
+    C->>S: GET /premium with payment
+    S-->>C: 200 OK with data
 ```
 
 1. **Probe** — Client requests the resource. Server responds HTTP 402 with payment terms.
